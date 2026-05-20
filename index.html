@@ -27,6 +27,7 @@
     --text3: #6b6888;
     --glow: 0 0 30px #7c3aed55;
     --radius: 16px;
+    --green: #10b981;
   }
 
   html, body {
@@ -144,7 +145,7 @@
     gap: 8px;
   }
 
-  /* Внутренние экраны прайсов (по умолчанию скрыты) */
+  /* Внутренние экраны прайсов */
   .price-screen {
     display: none;
     padding: 0 16px;
@@ -220,11 +221,12 @@
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
-    padding: 12px 16px;
+    padding: 12px 14px;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     transition: all 0.2s;
     cursor: pointer;
+    gap: 12px;
   }
 
   .uc-price-card:hover {
@@ -238,15 +240,17 @@
   .uc-amount {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     font-family: 'Unbounded', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: #fff;
+    flex: 1;
+    min-width: 0;
   }
 
   .uc-icon {
-    font-size: 16px;
+    font-size: 15px;
     filter: drop-shadow(0 0 6px var(--gold));
   }
 
@@ -254,21 +258,247 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 2px;
+    gap: 1px;
+    justify-content: center;
+    text-align: right;
   }
 
   .price-uah {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
     color: #fff;
+    white-space: nowrap;
   }
 
   .price-pln {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text3);
+    white-space: nowrap;
   }
 
-  /* Базовая карточка каталога */
+  /* Кнопка "Купить" */
+  .buy-pack-btn {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(124, 58, 237, 0.3);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .uc-price-card:hover .buy-pack-btn {
+    box-shadow: 0 0 14px rgba(168, 85, 247, 0.6);
+    transform: translateY(-1px);
+  }
+
+  .buy-pack-btn:active {
+    transform: scale(0.95) !important;
+  }
+
+  /* МОДАЛЬНОЕ ОКНО */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 10, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-content {
+    background: #111122;
+    border: 1px solid rgba(124, 58, 237, 0.25);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 360px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), var(--glow);
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .modal-overlay.active .modal-content {
+    transform: translateY(0);
+  }
+
+  .modal-step {
+    display: none;
+  }
+
+  .modal-step.step-active {
+    display: block;
+  }
+
+  .modal-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .modal-desc {
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  .id-input-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .id-input {
+    width: 100%;
+    background: #16162a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px;
+    color: #fff;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 2px;
+    outline: none;
+    transition: all 0.25s;
+  }
+
+  .id-input:focus {
+    border-color: var(--purple2);
+    background: #1a1a36;
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+  }
+
+  .id-counter {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 6px;
+    text-align: right;
+    display: block;
+    padding-right: 4px;
+  }
+
+  /* Блок реквизитов на 2-м шаге */
+  .payment-details {
+    background: #16162a;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .detail-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text3);
+    font-weight: 600;
+  }
+
+  .detail-value {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .detail-value.price-accent {
+    font-family: 'Unbounded', sans-serif;
+    color: var(--purple3);
+    font-size: 16px;
+  }
+
+  .modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-submit {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .btn-submit.valid {
+    opacity: 1;
+    pointer-events: all;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+  }
+
+  .btn-paid {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, var(--green), #059669);
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  }
+
+  .btn-submit.valid:active, .btn-paid:active {
+    transform: scale(0.98);
+  }
+
+  .btn-cancel {
+    font-family: 'Mulish', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text3);
+    background: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .btn-cancel:hover {
+    color: var(--text2);
+  }
+
+  /* Стили категорий аккордеона */
   .cat-card {
     display: flex;
     flex-direction: column;
@@ -284,6 +514,7 @@
     -webkit-backdrop-filter: blur(8px);
     text-decoration: none;
     color: inherit;
+    animation: fadeInUp 0.35s ease both;
   }
 
   .cat-card-trigger {
@@ -306,20 +537,10 @@
     pointer-events: none;
   }
 
-  .cat-card:not(.active-dropdown):active {
-    transform: scale(0.97);
-  }
+  .cat-card:not(.active-dropdown):active { transform: scale(0.97); }
+  .cat-card:hover::before { opacity: 1; }
+  .cat-card:hover { border-color: var(--clr1, #7c3aed)44; box-shadow: 0 4px 20px var(--clr1, #7c3aed)22; }
 
-  .cat-card:hover::before {
-    opacity: 1;
-  }
-
-  .cat-card:hover {
-    border-color: var(--clr1, #7c3aed)44;
-    box-shadow: 0 4px 20px var(--clr1, #7c3aed)22;
-  }
-
-  /* Левая неоновая полоска */
   .cat-card::after {
     content: '';
     position: absolute;
@@ -332,158 +553,40 @@
     pointer-events: none;
   }
 
-  .cat-card:hover::after {
-    opacity: 1;
-  }
-
-  /* Спец-состояние полоски для открытого выпадающего меню */
-  .cat-card.active-dropdown::after {
-    opacity: 1;
-    top: 14px;
-    bottom: calc(100% - 44px);
-  }
+  .cat-card:hover::after { opacity: 1; }
+  .cat-card.active-dropdown::after { opacity: 1; top: 14px; bottom: calc(100% - 44px); }
 
   .cat-icon-wrap {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 22px;
+    width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; font-size: 22px;
     background: linear-gradient(135deg, var(--clr1, #7c3aed)30, var(--clr2, #a855f7)20);
-    border: 1px solid var(--clr1, #7c3aed)30;
-    position: relative;
-    z-index: 1;
+    border: 1px solid var(--clr1, #7c3aed)30; position: relative; z-index: 1;
   }
 
-  .cat-info {
-    flex: 1;
-    min-width: 0;
-    position: relative;
-    z-index: 1;
-  }
-
-  .cat-name {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.3;
-    margin-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .cat-desc {
-    font-size: 11px;
-    color: var(--text3);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .cat-badge {
-    flex-shrink: 0;
-    font-family: 'Unbounded', sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 100px;
-    position: relative;
-    z-index: 1;
-  }
-
+  .cat-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
+  .cat-name { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cat-desc { font-size: 11px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cat-badge { flex-shrink: 0; font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 100px; position: relative; z-index: 1; }
+  
   .badge-new { background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; box-shadow: 0 0 12px #7c3aed88; }
   .badge-hot { background: linear-gradient(135deg, #dc2626, #f59e0b); color: #fff; box-shadow: 0 0 12px #dc262688; }
   .badge-pro { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #78350f; }
 
-  .arrow-icon {
-    font-size: 18px;
-    color: var(--text3);
-    position: relative;
-    z-index: 1;
-    transition: transform 0.22s, color 0.22s;
-    flex-shrink: 0;
-  }
+  .arrow-icon { font-size: 18px; color: var(--text3); position: relative; z-index: 1; transition: transform 0.22s, color 0.22s; flex-shrink: 0; }
+  .cat-card:hover .arrow-icon { color: var(--purple3); }
+  .cat-card.active-dropdown .arrow-icon { transform: rotate(90deg); color: var(--purple3); }
 
-  .cat-card:hover .arrow-icon {
-    color: var(--purple3);
-  }
+  .dropdown-container { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease; display: flex; flex-direction: column; gap: 6px; padding: 0 12px; position: relative; z-index: 2; }
+  .cat-card.active-dropdown .dropdown-container { max-height: 140px; opacity: 1; padding-bottom: 12px; }
 
-  .cat-card.active-dropdown .arrow-icon {
-    transform: rotate(90deg);
-    color: var(--purple3);
-  }
+  .sub-btn { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 12px; padding: 10px 14px; transition: all 0.15s ease; }
+  .sub-btn:hover { background: rgba(124, 58, 237, 0.1); border-color: rgba(124, 58, 237, 0.2); }
+  .sub-btn:active { transform: scale(0.98); }
+  .sub-btn-title { font-size: 11.5px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
+  .sub-btn-desc { font-size: 10px; color: var(--text3); }
+  .sub-arrow { font-size: 16px; color: var(--text3); }
 
-  /* Контейнер выпадающего меню (аккордеон) */
-  .dropdown-container {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 0 12px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .cat-card.active-dropdown .dropdown-container {
-    max-height: 140px;
-    opacity: 1;
-    padding-bottom: 12px;
-  }
-
-  /* Вложенные кнопки выбора */
-  .sub-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 12px;
-    padding: 10px 14px;
-    transition: all 0.15s ease;
-  }
-
-  .sub-btn:hover {
-    background: rgba(124, 58, 237, 0.1);
-    border-color: rgba(124, 58, 237, 0.2);
-  }
-
-  .sub-btn:active {
-    transform: scale(0.98);
-  }
-
-  .sub-btn-title {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 1px;
-  }
-
-  .sub-btn-desc {
-    font-size: 10px;
-    color: var(--text3);
-  }
-
-  .sub-arrow {
-    font-size: 16px;
-    color: var(--text3);
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .cat-card {
-    animation: fadeInUp 0.35s ease both;
-  }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -497,7 +600,6 @@
   <div class="divider"></div>
 
   <div class="categories" id="catList">
-
     <div class="cat-card" id="ucCard" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.05s">
       <div class="cat-card-trigger" onclick="toggleDropdown(event)">
         <div class="cat-icon-wrap">💰</div>
@@ -507,7 +609,6 @@
         </div>
         <span class="arrow-icon">›</span>
       </div>
-      
       <div class="dropdown-container">
         <div class="sub-btn" onclick="showIdScreen(event)">
           <div>
@@ -526,105 +627,33 @@
       </div>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.10s" onclick="handleNav('boss')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">⚔️</div>
-        <div class="cat-info">
-          <div class="cat-name">Грозовой вершитель</div>
-          <div class="cat-desc">Ледяной арбитр</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.10s" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/187')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">⚔️</div><div class="cat-info"><div class="cat-name">Грозовой вершитель</div><div class="cat-desc">Ледяной арбитр</div></div><span class="arrow-icon">›</span></div>
     </div>
-
-    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.15s" onclick="handleNav('prime')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">💎</div>
-        <div class="cat-info">
-          <div class="cat-name">Prime и Prime Plus</div>
-          <div class="cat-desc">Премиум подписки</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.15s" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/111')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">💎</div><div class="cat-info"><div class="cat-name">Prime и Prime Plus</div><div class="cat-desc">Премиум подписки</div></div><span class="arrow-icon">›</span></div>
     </div>
-
-    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.20s" onclick="handleNav('xsuit')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">🧥</div>
-        <div class="cat-info">
-          <div class="cat-name">X — Костюм</div>
-          <div class="cat-desc">Эксклюзивные скины</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.20s" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/182')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">🧥</div><div class="cat-info"><div class="cat-name">X — Костюм</div><div class="cat-desc">Эксклюзивные скины</div></div><span class="arrow-icon">›</span></div>
     </div>
-
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.25s" onclick="handleNav('popularity')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">📈</div>
-        <div class="cat-info">
-          <div class="cat-name">Популярность</div>
-          <div class="cat-desc">Топ товаров и рейтинги</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.25s" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/189')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">📈</div><div class="cat-info"><div class="cat-name">Популярность</div><div class="cat-desc">Топ товаров и рейтинги</div></div><span class="arrow-icon">›</span></div>
     </div>
-
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.30s" onclick="handleNav('reward')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">🎁</div>
-        <div class="cat-info">
-          <div class="cat-name">Награда за покупку</div>
-          <div class="cat-desc">Бонусы и привилегии</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.30s" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/31')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">🎁</div><div class="cat-info"><div class="cat-name">Награда за покупку</div><div class="cat-desc">Бонусы и привилегии</div></div><span class="arrow-icon">›</span></div>
     </div>
-
-    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.35s" onclick="handleNav('collab')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">🤝</div>
-        <div class="cat-info">
-          <div class="cat-name">Сотрудничество</div>
-          <div class="cat-desc">Партнёрские программы</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.35s" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/98')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">🤝</div><div class="cat-info"><div class="cat-name">Сотрудничество</div><div class="cat-desc">Партнёрские программы</div></div><span class="arrow-icon">›</span></div>
     </div>
-
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.40s" onclick="handleNav('ads')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">📢</div>
-        <div class="cat-info">
-          <div class="cat-name">Реклама</div>
-          <div class="cat-desc">Размещение и продвижение</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.40s" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/112')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">📢</div><div class="cat-info"><div class="cat-name">Реклама</div><div class="cat-desc">Размещение и продвижение</div></div><span class="arrow-icon">›</span></div>
     </div>
-
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.45s" onclick="handleNav('reviews')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">⭐</div>
-        <div class="cat-info">
-          <div class="cat-name">Отзывы</div>
-          <div class="cat-desc">Мнения покупателей</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.45s" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">⭐</div><div class="cat-info"><div class="cat-name">Отзывы</div><div class="cat-desc">Мнения покупателей</div></div><span class="arrow-icon">›</span></div>
     </div>
-
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.50s" onclick="handleNav('clans')">
-      <div class="cat-card-trigger">
-        <div class="cat-icon-wrap">🏆</div>
-        <div class="cat-info">
-          <div class="cat-name">Кланы</div>
-          <div class="cat-desc">Клановые активности</div>
-        </div>
-        <span class="arrow-icon">›</span>
-      </div>
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.50s" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/185')">
+      <div class="cat-card-trigger"><div class="cat-icon-wrap">🏆</div><div class="cat-info"><div class="cat-name">Кланы</div><div class="cat-desc">Клановые активности</div></div><span class="arrow-icon">›</span></div>
     </div>
-
   </div>
 
   <div class="price-screen" id="idPriceScreen">
@@ -632,195 +661,175 @@
 
     <div class="price-tier-title">📦 LITE PACKS</div>
     <div class="price-grid">
-      <div class="uc-price-card" onclick="handleNav('buy_id_60')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_60', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 60 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">40 грн</div>
-          <div class="price-pln">5 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">40 грн</div><div class="price-pln">5 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_325')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_325', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 325 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">195 грн</div>
-          <div class="price-pln">20 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">195 грн</div><div class="price-pln">20 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_660')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_660', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 660 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">385 грн</div>
-          <div class="price-pln">35 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">385 грн</div><div class="price-pln">35 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
     </div>
 
     <div class="price-tier-title">💼 MEDIUM PACKS</div>
     <div class="price-grid">
-      <div class="uc-price-card" onclick="handleNav('buy_id_1800')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_1800', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 1800 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">965 грн</div>
-          <div class="price-pln">80 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">965 грн</div><div class="price-pln">80 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_3850')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_3850', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 3850 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">1 950 грн</div>
-          <div class="price-pln">160 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">1 950 грн</div><div class="price-pln">160 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_8100')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_8100', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 8100 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">3 850 грн</div>
-          <div class="price-pln">320 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">3 850 грн</div><div class="price-pln">320 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_16200')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_16200', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 16200 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">7 700 грн</div>
-          <div class="price-pln">630 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">7 700 грн</div><div class="price-pln">630 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
     </div>
 
     <div class="price-tier-title">👑 ELITE PACKS</div>
     <div class="price-grid">
-      <div class="uc-price-card" onclick="handleNav('buy_id_24300')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_24300', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 24300 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">11 600 грн</div>
-          <div class="price-pln">945 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">11 600 грн</div><div class="price-pln">945 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_32400')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_32400', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 32400 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">15 450 грн</div>
-          <div class="price-pln">1300 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">15 450 грн</div><div class="price-pln">1300 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_40500')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_40500', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 40500 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">19 350 грн</div>
-          <div class="price-pln">1600 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">19 350 грн</div><div class="price-pln">1600 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_48600')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_48600', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 48600 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">23 450 грн</div>
-          <div class="price-pln">1900 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">23 450 грн</div><div class="price-pln">1900 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
-      <div class="uc-price-card" onclick="handleNav('buy_id_81000')">
+      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_81000', this)">
         <div class="uc-amount"><span class="uc-icon">💰</span> 81000 UC</div>
-        <div class="uc-cost-box">
-          <div class="price-uah">38 500 грн</div>
-          <div class="price-pln">3200 zł</div>
-        </div>
+        <div class="uc-cost-box"><div class="price-uah">38 500 грн</div><div class="price-pln">3200 zł</div></div>
+        <button class="buy-pack-btn">Купить</button>
       </div>
     </div>
   </div>
 
   <div class="price-screen" id="entryPriceScreen">
     <div class="back-btn" onclick="hidePriceScreen()">‹ Назад в меню</div>
-
-    <div class="price-info-card">
-      <div>📱 Инфо по зачислению</div>
-      Пополнение производится только по QR-коду.<br>
-      ⚡ Быстрое зачисление — от 5 до 20 минут.
-    </div>
+    <div class="price-info-card"><div>📱 Инфо по зачислению</div>Пополнение производится только по QR-коду.<br>⚡ Быстрое зачисление — от 5 до 20 минут.</div>
 
     <div class="price-tier-title">📦 LITE PACKS</div>
     <div class="price-grid">
-      <div class="uc-price-card" onclick="handleNav('buy_entry_1800')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 1800 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">930 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_2300')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 2300 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">1 450 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_3850')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 3850 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">1 850 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_4500')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 4500 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">2 300 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_8100')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 8100 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">3 500 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_9500')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 9500 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">4 350 грн</div></div>
-      </div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_1800', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 1800 UC</div><div class="uc-cost-box"><div class="price-uah">930 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_2300', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 2300 UC</div><div class="uc-cost-box"><div class="price-uah">1450 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_3850', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 3850 UC</div><div class="uc-cost-box"><div class="price-uah">1850 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_4500', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 4500 UC</div><div class="uc-cost-box"><div class="price-uah">2300 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_8100', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 8100 UC</div><div class="uc-cost-box"><div class="price-uah">3500 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_9500', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 9500 UC</div><div class="uc-cost-box"><div class="price-uah">4350 грн</div></div><button class="buy-pack-btn">Купить</button></div>
     </div>
 
     <div class="price-tier-title">💼 MEDIUM PACKS</div>
     <div class="price-grid">
-      <div class="uc-price-card" onclick="handleNav('buy_entry_16200')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 16200 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">6 900 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_18100')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 18100 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">8 300 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_24300')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 24300 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">10 300 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_26500')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 26500 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">12 100 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_32400')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 32400 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">13 700 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_35500')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 35500 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">15 700 грн</div></div>
-      </div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_16200', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 16200 UC</div><div class="uc-cost-box"><div class="price-uah">6900 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_18100', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 18100 UC</div><div class="uc-cost-box"><div class="price-uah">8300 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_24300', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 24300 UC</div><div class="uc-cost-box"><div class="price-uah">10300 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_26500', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 26500 UC</div><div class="uc-cost-box"><div class="price-uah">12100 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_32400', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 32400 UC</div><div class="uc-cost-box"><div class="price-uah">13700 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_35500', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 35500 UC</div><div class="uc-cost-box"><div class="price-uah">15700 грн</div></div><button class="buy-pack-btn">Купить</button></div>
     </div>
 
     <div class="price-tier-title">👑 ELITE PACKS</div>
     <div class="price-grid">
-      <div class="uc-price-card" onclick="handleNav('buy_entry_40500')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 40500 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">17 000 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_43500')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 43500 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">19 500 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_52100')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 52100 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">24 100 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_81000')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 81000 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">34 000 грн</div></div>
-      </div>
-      <div class="uc-price-card" onclick="handleNav('buy_entry_86250')">
-        <div class="uc-amount"><span class="uc-icon">💰</span> 86250 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">39 000 грн</div></div>
-      </div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_40500', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 40500 UC</div><div class="uc-cost-box"><div class="price-uah">17000 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_43500', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 43500 UC</div><div class="uc-cost-box"><div class="price-uah">19500 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_52100', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 52100 UC</div><div class="uc-cost-box"><div class="price-uah">24100 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_81000', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 81000 UC</div><div class="uc-cost-box"><div class="price-uah">34000 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_86250', this)"><div class="uc-amount"><span class="uc-icon">💰</span> 86250 UC</div><div class="uc-cost-box"><div class="price-uah">39000 грн</div></div><button class="buy-pack-btn">Купить</button></div>
     </div>
   </div>
 
 </div>
 
+<div class="modal-overlay" id="idModalOverlay" onclick="closeIdModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    
+    <div class="modal-step step-active" id="modalStepId">
+      <div class="modal-title">Ввод ID игрока</div>
+      <div class="modal-desc">Для продолжения покупки введите ваш уникальный 10-значный числовой ID.</div>
+      
+      <div class="id-input-wrapper">
+        <input 
+          type="text" 
+          id="playerUidInput" 
+          class="id-input" 
+          placeholder="0123456789" 
+          maxlength="10"
+          oninput="validatePlayerId(this)"
+        >
+        <span class="id-counter" id="idLengthCounter">0 / 10</span>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-submit" id="btnSubmitOrder" onclick="goToPaymentStep()">Подтвердить</button>
+        <button class="btn-cancel" onclick="closeIdModal()">Отмена</button>
+      </div>
+    </div>
+
+    <div class="modal-step" id="modalStepPayment">
+      <div class="modal-title">Оплата заказа</div>
+      <div class="modal-desc">Переведите точную сумму по указанным реквизитам:</div>
+      
+      <div class="payment-details">
+        <div class="detail-item">
+          <span class="detail-label">Название банка</span>
+          <span class="detail-value" id="payBankName">Sense Bank</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Номер карты</span>
+          <span class="detail-value" style="letter-spacing: 1px;" id="payCardNumber">4028 0820 1619 2153</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Сумма к оплате</span>
+          <span class="detail-value price-accent" id="payProductCost">0 грн</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-paid" onclick="submitFinalOrder()">Я оплатил</button>
+        <button class="btn-cancel" onclick="closeIdModal()">Отмена</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
   const tg = window.Telegram ? window.Telegram.WebApp : null;
+  
+  let currentSelectedPackId = null; 
+  let currentSelectedPriceText = ""; 
+  let isEntryMode = false; 
+  
+  const BANK_NAME = "Sense Bank";
+  const CARD_NUMBER = "4028 0820 1619 2153";
 
   if (tg) {
     tg.ready();
@@ -829,13 +838,21 @@
     tg.setBackgroundColor('#0a0a12');
   }
 
-  function triggerHaptic() {
+  function triggerHaptic(type = 'light') {
     if (tg && tg.HapticFeedback) {
-      tg.HapticFeedback.impactOccurred('light');
+      tg.HapticFeedback.impactOccurred(type);
     }
   }
 
-  // Переключение состояния выпадающего списка
+  function handleTelegramLink(url) {
+    triggerHaptic();
+    if (tg && tg.openTelegramLink) {
+      tg.openTelegramLink(url);
+    } else {
+      window.open(url, '_blank');
+    }
+  }
+
   function toggleDropdown(event) {
     event.stopPropagation();
     const card = document.getElementById('ucCard');
@@ -843,48 +860,142 @@
     triggerHaptic();
   }
 
-  // Переход в прайс по ID
   function showIdScreen(event) {
     event.stopPropagation();
     triggerHaptic();
     document.getElementById('catList').style.display = 'none';
     document.getElementById('idPriceScreen').style.display = 'block';
-
     document.getElementById('topBadge').innerText = '● ПРАЙС ПО ID';
     document.getElementById('mainTitle').innerText = 'ПРАЙС-ЛИСТ';
     document.getElementById('subTitle').innerText = 'Цены на пакеты UC по идентификатору';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Переход в прайс по входу
   function showEntryScreen(event) {
     event.stopPropagation();
     triggerHaptic();
     document.getElementById('catList').style.display = 'none';
     document.getElementById('entryPriceScreen').style.display = 'block';
-
     document.getElementById('topBadge').innerText = '● ПРАЙС ПО ВХОДУ';
     document.getElementById('mainTitle').innerText = 'ПО ВХОДУ / QR';
     document.getElementById('subTitle').innerText = 'Цены на пакеты UC при авторизации';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Универсальный возврат назад
   function hidePriceScreen() {
     triggerHaptic();
     document.getElementById('idPriceScreen').style.display = 'none';
     document.getElementById('entryPriceScreen').style.display = 'none';
     document.getElementById('catList').style.display = 'flex';
-
     document.getElementById('topBadge').innerText = '● НАВИГАЦИЯ';
     document.getElementById('mainTitle').innerText = 'КАТАЛОГ';
     document.getElementById('subTitle').innerText = 'Выберите раздел для просмотра';
   }
 
+  function parsePriceText(cardElement) {
+    const uahText = cardElement.querySelector('.price-uah') ? cardElement.querySelector('.price-uah').innerText : '';
+    const plnText = cardElement.querySelector('.price-pln') ? ` (${cardElement.querySelector('.price-pln').innerText})` : '';
+    return uahText + plnText;
+  }
+
+  function openIdModal(event, packId, cardElement) {
+    event.stopPropagation();
+    triggerHaptic();
+    currentSelectedPackId = packId;
+    currentSelectedPriceText = parsePriceText(cardElement);
+    isEntryMode = false;
+
+    const input = document.getElementById('playerUidInput');
+    input.value = '';
+    document.getElementById('idLengthCounter').innerText = '0 / 10';
+    document.getElementById('btnSubmitOrder').classList.remove('valid');
+    
+    document.getElementById('modalStepPayment').classList.remove('step-active');
+    document.getElementById('modalStepId').classList.add('step-active');
+    
+    document.getElementById('idModalOverlay').classList.add('active');
+    setTimeout(() => input.focus(), 100);
+  }
+
+  function openEntryModal(event, packId, cardElement) {
+    event.stopPropagation();
+    triggerHaptic();
+    currentSelectedPackId = packId;
+    currentSelectedPriceText = parsePriceText(cardElement);
+    isEntryMode = true;
+
+    document.getElementById('payBankName').innerText = BANK_NAME;
+    document.getElementById('payCardNumber').innerText = CARD_NUMBER;
+    document.getElementById('payProductCost').innerText = currentSelectedPriceText;
+
+    document.getElementById('modalStepId').classList.remove('step-active');
+    document.getElementById('modalStepPayment').classList.add('step-active');
+    
+    document.getElementById('idModalOverlay').classList.add('active');
+  }
+
+  document.getElementById('idModalOverlay').addEventListener('click', closeIdModal);
+
+  function closeIdModal() {
+    triggerHaptic();
+    document.getElementById('idModalOverlay').classList.remove('remove');
+    document.getElementById('idModalOverlay').classList.remove('active');
+    currentSelectedPackId = null;
+  }
+
+  function validatePlayerId(input) {
+    input.value = input.value.replace(/\D/g, ''); 
+    const len = input.value.length;
+    document.getElementById('idLengthCounter').innerText = `${len} / 10`;
+    
+    const submitBtn = document.getElementById('btnSubmitOrder');
+    if (len === 10) {
+      if (!submitBtn.classList.contains('valid')) {
+        if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      }
+      submitBtn.classList.add('valid');
+    } else {
+      submitBtn.classList.remove('valid');
+    }
+  }
+
+  function goToPaymentStep() {
+    const userId = document.getElementById('playerUidInput').value;
+    if (userId.length !== 10) return;
+
+    triggerHaptic();
+
+    document.getElementById('payBankName').innerText = BANK_NAME;
+    document.getElementById('payCardNumber').innerText = CARD_NUMBER;
+    document.getElementById('payProductCost').innerText = currentSelectedPriceText;
+
+    document.getElementById('modalStepId').classList.remove('step-active');
+    document.getElementById('modalStepPayment').classList.add('step-active');
+  }
+
+  function submitFinalOrder() {
+    if (tg && tg.HapticFeedback) {
+      tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    let actionString = "";
+    if (isEntryMode) {
+      console.log(`Заявка создана! ID товара: ${currentSelectedPackId}, Способ: По входу/QR, Статус: Оплачено`);
+      actionString = `${currentSelectedPackId}_status_paid`;
+    } else {
+      const userId = document.getElementById('playerUidInput').value;
+      console.log(`Заявка создана! ID товара: ${currentSelectedPackId}, UID игрока: ${userId}, Статус: Оплачено`);
+      actionString = `${currentSelectedPackId}_uid_${userId}_status_paid`;
+    }
+    
+    document.getElementById('idModalOverlay').classList.remove('active');
+    handleNav(actionString);
+  }
+
   function handleNav(section) {
     triggerHaptic();
-    console.log('Navigate to:', section);
-    // Здесь обрабатываются клики по обычным категориям и по выбранным ценникам
+    console.log('Navigate or action triggered:', section);
+    // Сюда можно добавить tg.sendData(section) для отправки строки боту
   }
 </script>
 </body>
