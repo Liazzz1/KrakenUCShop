@@ -5,22 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Каталог</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Mulish:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #06060f;
-    --card: rgba(18, 18, 32, 0.6);
-    --card-border: rgba(255, 255, 255, 0.06);
+    --bg: #0a0a12;
+    --bg2: #10101e;
+    --bg3: #16162a;
+    --card: #13132280;
+    --card-border: #ffffff0f;
     --purple1: #7c3aed;
     --purple2: #a855f7;
     --purple3: #c084fc;
     --purple4: #e879f9;
+    --accent: #6d28d9;
+    --gold: #f59e0b;
     --text: #f1f0f7;
+    --text2: #9d9ab8;
     --text3: #6b6888;
-    --radius: 18px;
+    --glow: 0 0 30px #7c3aed55;
+    --radius: 16px;
   }
 
   html, body {
@@ -29,89 +35,50 @@
     font-family: 'Mulish', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-    position: relative;
   }
 
-  /* --- ЖИВОЙ И НЕОДНООБРАЗНЫЙ ЗАДНИЙ ФОН --- */
-
-  /* Процедурная текстура кинематографичного шума на весь экран */
+  /* Фоновые звезды */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    opacity: 0.02;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  /* Абсолютный контейнер для дрейфующих неоновых туманностей */
-  .bg-glow-container {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, #ffffff22 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, #ffffff1a 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 50% 60%, #a855f722 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 80%, #ffffff18 0%, transparent 100%),
+      radial-gradient(2px 2px at 90% 70%, #7c3aed22 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 90%, #ffffff15 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 40%, #c084fc1a 0%, transparent 100%);
     pointer-events: none;
     z-index: 0;
   }
 
-  /* Первая анимированная сфера (Индиго / Фиолетовый) */
-  .bg-blob-1 {
-    position: absolute;
-    top: -15%;
-    left: -15%;
-    width: 65vw;
-    height: 65vw;
-    max-width: 600px;
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 70%);
-    animation: drift-smooth 28s infinite alternate ease-in-out;
+  /* Свечение сверху */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, #7c3aed44 0%, #a855f722 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
   }
 
-  /* Вторая анимированная сфера (Маджента / Розовый) */
-  .bg-blob-2 {
-    position: absolute;
-    bottom: -10%;
-    right: -20%;
-    width: 75vw;
-    height: 75vw;
-    max-width: 700px;
-    background: radial-gradient(circle, rgba(232, 121, 249, 0.16) 0%, rgba(124, 58, 237, 0.04) 50%, transparent 70%);
-    animation: drift-smooth 34s infinite alternate-reverse ease-in-out;
-  }
-
-  /* Тонкая россыпь мягких звезд на дальнем плане */
-  .bg-stars {
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 15% 25%, rgba(255, 255, 255, 0.15) 0%, transparent 100%),
-      radial-gradient(1.5px 1.5px at 75% 15%, rgba(255, 255, 255, 0.18) 0%, transparent 100%),
-      radial-gradient(1px 1px at 45% 65%, rgba(192, 132, 252, 0.12) 0%, transparent 100%),
-      radial-gradient(1px 1px at 85% 85%, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
-  }
-
-  @keyframes drift-smooth {
-    0% { transform: translateY(0) scale(1) rotate(0deg); }
-    50% { transform: translateY(40px) scale(1.1) rotate(45deg); }
-    100% { transform: translateY(-20px) scale(0.95) rotate(90deg); }
-  }
-
-  /* ------------------------------------- */
-
-  /* Контейнер теперь гибкий и адаптивный */
   .container {
     position: relative;
-    z-index: 2;
-    max-width: 1200px;
-    width: 100%;
+    z-index: 1;
+    max-width: 480px;
     margin: 0 auto;
     padding: 0 0 40px;
   }
 
   /* Header */
   .header {
-    padding: 35px 20px 20px;
+    padding: 28px 20px 20px;
     text-align: center;
     position: relative;
   }
@@ -120,15 +87,15 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(168, 85, 247, 0.12));
-    border: 1px solid rgba(124, 58, 237, 0.25);
+    background: linear-gradient(135deg, #7c3aed22, #a855f722);
+    border: 1px solid #7c3aed44;
     border-radius: 100px;
-    padding: 5px 16px;
+    padding: 4px 14px;
     font-size: 11px;
     font-family: 'Unbounded', sans-serif;
     color: var(--purple3);
     letter-spacing: 0.08em;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .header-badge::before {
@@ -147,15 +114,14 @@
 
   .header h1 {
     font-family: 'Unbounded', sans-serif;
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 900;
-    background: linear-gradient(135deg, #ffffff 0%, #c084fc 50%, #e879f9 100%);
+    background: linear-gradient(135deg, #fff 0%, #c084fc 50%, #e879f9 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     line-height: 1.2;
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
+    margin-bottom: 6px;
   }
 
   .header p {
@@ -167,106 +133,227 @@
   .divider {
     height: 1px;
     margin: 4px 20px 24px;
-    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.3), rgba(168, 85, 247, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, #7c3aed55, #a855f755, transparent);
   }
 
-  /* Сетка карточек стала "умной" (Grid вместо одномерного Flex) */
+  /* Сетка главных категорий */
   .categories {
     padding: 0 16px;
-    display: grid;
-    grid-template-columns: 1fr; /* 1 колонка на смартфонах */
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
-  /* Настройки сетки под разные дисплеи */
-  @media (min-width: 650px) {
-    .categories {
-      grid-template-columns: repeat(2, 1fr); /* 2 колонки на планшетах */
-    }
+  /* Внутренние экраны прайсов (по умолчанию скрыты) */
+  .price-screen {
+    display: none;
+    padding: 0 16px;
   }
 
-  @media (min-width: 1000px) {
-    .categories {
-      grid-template-columns: repeat(3, 1fr); /* 3 колонки на экранах ПК */
-    }
+  /* Инфо-плашка для прайса по входу */
+  .price-info-card {
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text2);
   }
-
-  /* Обновленная матовая карточка категории */
-  .cat-card {
+  .price-info-card div {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 8px;
+    margin-bottom: 4px;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* Кнопка назад */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    color: var(--purple3);
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    padding: 8px 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+  }
+
+  .back-btn:active {
+    transform: scale(0.95);
+    background: rgba(124, 58, 237, 0.2);
+  }
+
+  /* Заголовки категорий ценников */
+  .price-tier-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--purple3);
+    letter-spacing: 0.05em;
+    margin: 18px 0 10px;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .price-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Карточка товара с ценой */
+  .uc-price-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
-    padding: 16px;
+    padding: 12px 16px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .uc-price-card:hover {
+    border-color: rgba(124, 58, 237, 0.25);
+  }
+  .uc-price-card:active {
+    transform: scale(0.99);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .uc-amount {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .uc-icon {
+    font-size: 16px;
+    filter: drop-shadow(0 0 6px var(--gold));
+  }
+
+  .uc-cost-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .price-uah {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .price-pln {
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  /* Базовая карточка каталога */
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 0;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(14px); /* Сильное преломление движущегося фона */
-    -webkit-backdrop-filter: blur(14px);
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   }
 
-  /* Эффект легкой неоновой подсветки при наведении */
+  .cat-card-trigger {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
   .cat-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, var(--clr1, #7c3aed), var(--clr2, #a855f7));
-    opacity: 0;
-    transition: opacity 0.25s;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .cat-card:hover::before {
-    opacity: 0.05; /* Едва заметный внутренний тон */
-  }
-
-  .cat-card:active {
-    transform: scale(0.97);
-    border-color: rgba(124, 58, 237, 0.35);
-  }
-
-  .cat-card:hover {
-    border-color: rgba(124, 58, 237, 0.25);
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);
-  }
-
-  /* Боковой неоновый маркер */
-  .cat-card::after {
-    content: '';
-    position: absolute;
-    left: 0; top: 20%; bottom: 20%;
-    width: 3.5px;
-    border-radius: 0 4px 4px 0;
-    background: linear-gradient(180deg, var(--clr1, #7c3aed), var(--clr2, #a855f7));
+    background: linear-gradient(135deg, var(--clr1, #7c3aed)15, var(--clr2, #a855f7)05);
     opacity: 0;
     transition: opacity 0.22s;
     pointer-events: none;
   }
 
-  .cat-card:hover::after,
-  .cat-card:active::after {
+  .cat-card:not(.active-dropdown):active {
+    transform: scale(0.97);
+  }
+
+  .cat-card:hover::before {
     opacity: 1;
   }
 
-  /* Иконка-контейнер */
+  .cat-card:hover {
+    border-color: var(--clr1, #7c3aed)44;
+    box-shadow: 0 4px 20px var(--clr1, #7c3aed)22;
+  }
+
+  /* Левая неоновая полоска */
+  .cat-card::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 16%; bottom: 16%;
+    width: 3px;
+    border-radius: 0 4px 4px 0;
+    background: linear-gradient(180deg, var(--clr1, #7c3aed), var(--clr2, #a855f7));
+    opacity: 0;
+    transition: all 0.22s;
+    pointer-events: none;
+  }
+
+  .cat-card:hover::after {
+    opacity: 1;
+  }
+
+  /* Спец-состояние полоски для открытого выпадающего меню */
+  .cat-card.active-dropdown::after {
+    opacity: 1;
+    top: 14px;
+    bottom: calc(100% - 44px);
+  }
+
   .cat-icon-wrap {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     font-size: 22px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.12) 30%, rgba(168, 85, 247, 0.04) 20%);
-    border: 1px solid rgba(124, 58, 237, 0.2);
+    background: linear-gradient(135deg, var(--clr1, #7c3aed)30, var(--clr2, #a855f7)20);
+    border: 1px solid var(--clr1, #7c3aed)30;
     position: relative;
     z-index: 1;
   }
@@ -280,11 +367,11 @@
 
   .cat-name {
     font-family: 'Unbounded', sans-serif;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--text);
     line-height: 1.3;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -298,177 +385,506 @@
     text-overflow: ellipsis;
   }
 
+  .cat-badge {
+    flex-shrink: 0;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge-new { background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; box-shadow: 0 0 12px #7c3aed88; }
+  .badge-hot { background: linear-gradient(135deg, #dc2626, #f59e0b); color: #fff; box-shadow: 0 0 12px #dc262688; }
+  .badge-pro { background: linear-gradient(135deg, #f59e0b, #fcd34d); color: #78350f; }
+
   .arrow-icon {
     font-size: 18px;
     color: var(--text3);
     position: relative;
     z-index: 1;
-    transition: transform 0.2s, color 0.2s;
+    transition: transform 0.22s, color 0.22s;
     flex-shrink: 0;
   }
 
   .cat-card:hover .arrow-icon {
-    transform: translateX(3px);
     color: var(--purple3);
   }
 
+  .cat-card.active-dropdown .arrow-icon {
+    transform: rotate(90deg);
+    color: var(--purple3);
+  }
+
+  /* Контейнер выпадающего меню (аккордеон) */
+  .dropdown-container {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 12px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cat-card.active-dropdown .dropdown-container {
+    max-height: 140px;
+    opacity: 1;
+    padding-bottom: 12px;
+  }
+
+  /* Вложенные кнопки выбора */
+  .sub-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 10px 14px;
+    transition: all 0.15s ease;
+  }
+
+  .sub-btn:hover {
+    background: rgba(124, 58, 237, 0.1);
+    border-color: rgba(124, 58, 237, 0.2);
+  }
+
+  .sub-btn:active {
+    transform: scale(0.98);
+  }
+
+  .sub-btn-title {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1px;
+  }
+
+  .sub-btn-desc {
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  .sub-arrow {
+    font-size: 16px;
+    color: var(--text3);
+  }
+
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(14px); }
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
   .cat-card {
-    animation: fadeInUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) both;
+    animation: fadeInUp 0.35s ease both;
   }
 </style>
 </head>
 <body>
-
-<div class="bg-glow-container">
-  <div class="bg-stars"></div>
-  <div class="bg-blob-1"></div>
-  <div class="bg-blob-2"></div>
-</div>
-
 <div class="container">
 
   <div class="header">
-    <div class="header-badge">● НАВИГАЦИЯ</div>
-    <h1>КАТАЛОГ</h1>
-    <p>Выберите раздел для просмотра</p>
+    <div class="header-badge" id="topBadge">● НАВИГАЦИЯ</div>
+    <h1 id="mainTitle">КАТАЛОГ</h1>
+    <p id="subTitle">Выберите раздел для просмотра</p>
   </div>
   <div class="divider"></div>
 
   <div class="categories" id="catList">
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.04s" onclick="openLink('https://t.me/kraken_shop_U_C/176')">
-      <div class="cat-icon-wrap">💰</div>
-      <div class="cat-info">
-        <div class="cat-name">Актуальный прайс по ID</div>
-        <div class="cat-desc">Цены по идентификатору</div>
+    <div class="cat-card" id="ucCard" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.05s">
+      <div class="cat-card-trigger" onclick="toggleDropdown(event)">
+        <div class="cat-icon-wrap">💰</div>
+        <div class="cat-info">
+          <div class="cat-name">Пополнение UC</div>
+          <div class="cat-desc">Варианты зачисления на аккаунт</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
+      
+      <div class="dropdown-container">
+        <div class="sub-btn" onclick="showIdScreen(event)">
+          <div>
+            <div class="sub-btn-title">Актуальный прайс по ID</div>
+            <div class="sub-btn-desc">Цены по идентификатору</div>
+          </div>
+          <span class="sub-arrow">›</span>
+        </div>
+        <div class="sub-btn" onclick="showEntryScreen(event)">
+          <div>
+            <div class="sub-btn-title">Актуальный прайс по входу</div>
+            <div class="sub-btn-desc">Цены для входящих заявок</div>
+          </div>
+          <span class="sub-arrow">›</span>
+        </div>
+      </div>
     </div>
 
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.08s" onclick="openLink('https://t.me/kraken_shop_U_C/222')">
-      <div class="cat-icon-wrap">🎯</div>
-      <div class="cat-info">
-        <div class="cat-name">Актуальный прайс по входу</div>
-        <div class="cat-desc">Цены для входящих заявок</div>
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.10s" onclick="handleNav('boss')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">⚔️</div>
+        <div class="cat-info">
+          <div class="cat-name">Грозовой вершитель</div>
+          <div class="cat-desc">Ледяной арбитр</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.12s" onclick="openLink('https://t.me/kraken_shop_U_C/187')">
-      <div class="cat-icon-wrap">⚔️</div>
-      <div class="cat-info">
-        <div class="cat-name">Грозовой вершитель</div>
-        <div class="cat-desc">Ледяной арбитр</div>
+    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.15s" onclick="handleNav('prime')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">💎</div>
+        <div class="cat-info">
+          <div class="cat-name">Prime и Prime Plus</div>
+          <div class="cat-desc">Премиум подписки</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.16s" onclick="openLink('https://t.me/kraken_shop_U_C/111')">
-      <div class="cat-icon-wrap">💎</div>
-      <div class="cat-info">
-        <div class="cat-name">Prime и Prime Plus</div>
-        <div class="cat-desc">Премиум подписки</div>
+    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.20s" onclick="handleNav('xsuit')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">🧥</div>
+        <div class="cat-info">
+          <div class="cat-name">X — Костюм</div>
+          <div class="cat-desc">Эксклюзивные скины</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.20s" onclick="openLink('https://t.me/kraken_shop_U_C/182')">
-      <div class="cat-icon-wrap">🧥</div>
-      <div class="cat-info">
-        <div class="cat-name">X — Костюм</div>
-        <div class="cat-desc">Эксклюзивные скины</div>
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.25s" onclick="handleNav('popularity')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">📈</div>
+        <div class="cat-info">
+          <div class="cat-name">Популярность</div>
+          <div class="cat-desc">Топ товаров и рейтинги</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.24s" onclick="openLink('https://t.me/kraken_shop_U_C/189')">
-      <div class="cat-icon-wrap">📈</div>
-      <div class="cat-info">
-        <div class="cat-name">Популярность</div>
-        <div class="cat-desc">Топ товаров и рейтинги</div>
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.30s" onclick="handleNav('reward')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">🎁</div>
+        <div class="cat-info">
+          <div class="cat-name">Награда за покупку</div>
+          <div class="cat-desc">Бонусы и привилегии</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.28s" onclick="openLink('https://t.me/kraken_shop_U_C/31')">
-      <div class="cat-icon-wrap">🎁</div>
-      <div class="cat-info">
-        <div class="cat-name">Награда за покупку</div>
-        <div class="cat-desc">Бонусы и привилегии</div>
+    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.35s" onclick="handleNav('collab')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">🤝</div>
+        <div class="cat-info">
+          <div class="cat-name">Сотрудничество</div>
+          <div class="cat-desc">Партнёрские программы</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.32s" onclick="openLink('https://t.me/kraken_shop_U_C/98')">
-      <div class="cat-icon-wrap">🤝</div>
-      <div class="cat-info">
-        <div class="cat-name">Сотрудничество</div>
-        <div class="cat-desc">Партнёрские программы</div>
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.40s" onclick="handleNav('ads')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">📢</div>
+        <div class="cat-info">
+          <div class="cat-name">Реклама</div>
+          <div class="cat-desc">Размещение и продвижение</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.36s" onclick="openLink('https://t.me/kraken_shop_U_C/112')">
-      <div class="cat-icon-wrap">📢</div>
-      <div class="cat-info">
-        <div class="cat-name">Реклама</div>
-        <div class="cat-desc">Размещение и продвижение</div>
+    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.45s" onclick="handleNav('reviews')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">⭐</div>
+        <div class="cat-info">
+          <div class="cat-name">Отзывы</div>
+          <div class="cat-desc">Мнения покупателей</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.40s" onclick="openLink('https://t.me/kraken_shop_uc')">
-      <div class="cat-icon-wrap">⭐</div>
-      <div class="cat-info">
-        <div class="cat-name">Отзывы</div>
-        <div class="cat-desc">Мнения покупателей</div>
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.50s" onclick="handleNav('clans')">
+      <div class="cat-card-trigger">
+        <div class="cat-icon-wrap">🏆</div>
+        <div class="cat-info">
+          <div class="cat-name">Кланы</div>
+          <div class="cat-desc">Клановые активности</div>
+        </div>
+        <span class="arrow-icon">›</span>
       </div>
-      <span class="arrow-icon">›</span>
-    </div>
-
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.44s" onclick="openLink('https://t.me/kraken_shop_U_C/185')">
-      <div class="cat-icon-wrap">🏆</div>
-      <div class="cat-info">
-        <div class="cat-name">Кланы</div>
-        <div class="cat-desc">Клановые активности</div>
-      </div>
-      <span class="arrow-icon">›</span>
     </div>
 
   </div>
+
+  <div class="price-screen" id="idPriceScreen">
+    <div class="back-btn" onclick="hidePriceScreen()">‹ Назад в меню</div>
+
+    <div class="price-tier-title">📦 LITE PACKS</div>
+    <div class="price-grid">
+      <div class="uc-price-card" onclick="handleNav('buy_id_60')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 60 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">40 грн</div>
+          <div class="price-pln">5 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_325')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 325 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">195 грн</div>
+          <div class="price-pln">20 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_660')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 660 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">385 грн</div>
+          <div class="price-pln">35 zł</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-tier-title">💼 MEDIUM PACKS</div>
+    <div class="price-grid">
+      <div class="uc-price-card" onclick="handleNav('buy_id_1800')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 1800 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">965 грн</div>
+          <div class="price-pln">80 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_3850')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 3850 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">1 950 грн</div>
+          <div class="price-pln">160 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_8100')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 8100 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">3 850 грн</div>
+          <div class="price-pln">320 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_16200')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 16200 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">7 700 грн</div>
+          <div class="price-pln">630 zł</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-tier-title">👑 ELITE PACKS</div>
+    <div class="price-grid">
+      <div class="uc-price-card" onclick="handleNav('buy_id_24300')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 24300 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">11 600 грн</div>
+          <div class="price-pln">945 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_32400')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 32400 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">15 450 грн</div>
+          <div class="price-pln">1300 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_40500')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 40500 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">19 350 грн</div>
+          <div class="price-pln">1600 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_48600')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 48600 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">23 450 грн</div>
+          <div class="price-pln">1900 zł</div>
+        </div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_id_81000')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 81000 UC</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">38 500 грн</div>
+          <div class="price-pln">3200 zł</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="price-screen" id="entryPriceScreen">
+    <div class="back-btn" onclick="hidePriceScreen()">‹ Назад в меню</div>
+
+    <div class="price-info-card">
+      <div>📱 Инфо по зачислению</div>
+      Пополнение производится только по QR-коду.<br>
+      ⚡ Быстрое зачисление — от 5 до 20 минут.
+    </div>
+
+    <div class="price-tier-title">📦 LITE PACKS</div>
+    <div class="price-grid">
+      <div class="uc-price-card" onclick="handleNav('buy_entry_1800')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 1800 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">930 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_2300')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 2300 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">1 450 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_3850')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 3850 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">1 850 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_4500')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 4500 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">2 300 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_8100')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 8100 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">3 500 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_9500')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 9500 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">4 350 грн</div></div>
+      </div>
+    </div>
+
+    <div class="price-tier-title">💼 MEDIUM PACKS</div>
+    <div class="price-grid">
+      <div class="uc-price-card" onclick="handleNav('buy_entry_16200')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 16200 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">6 900 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_18100')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 18100 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">8 300 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_24300')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 24300 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">10 300 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_26500')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 26500 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">12 100 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_32400')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 32400 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">13 700 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_35500')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 35500 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">15 700 грн</div></div>
+      </div>
+    </div>
+
+    <div class="price-tier-title">👑 ELITE PACKS</div>
+    <div class="price-grid">
+      <div class="uc-price-card" onclick="handleNav('buy_entry_40500')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 40500 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">17 000 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_43500')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 43500 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">19 500 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_52100')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 52100 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">24 100 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_81000')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 81000 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">34 000 грн</div></div>
+      </div>
+      <div class="uc-price-card" onclick="handleNav('buy_entry_86250')">
+        <div class="uc-amount"><span class="uc-icon">💰</span> 86250 UC</div>
+        <div class="uc-cost-box"><div class="price-uah">39 000 грн</div></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-  // Инициализация Telegram WebApp
   const tg = window.Telegram ? window.Telegram.WebApp : null;
 
   if (tg) {
     tg.ready();
     tg.expand();
-    tg.setHeaderColor('#06060f');
-    tg.setBackgroundColor('#06060f');
+    tg.setHeaderColor('#0a0a12');
+    tg.setBackgroundColor('#0a0a12');
   }
 
-  // Функция для открытия ссылок
-  function openLink(url) {
+  function triggerHaptic() {
     if (tg && tg.HapticFeedback) {
       tg.HapticFeedback.impactOccurred('light');
     }
+  }
 
-    if (tg) {
-      if (url.includes('t.me/')) {
-        tg.openTelegramLink(url);
-      } else {
-        tg.openLink(url);
-      }
-    } else {
-      window.open(url, '_blank');
-    }
+  // Переключение состояния выпадающего списка
+  function toggleDropdown(event) {
+    event.stopPropagation();
+    const card = document.getElementById('ucCard');
+    card.classList.toggle('active-dropdown');
+    triggerHaptic();
+  }
+
+  // Переход в прайс по ID
+  function showIdScreen(event) {
+    event.stopPropagation();
+    triggerHaptic();
+    document.getElementById('catList').style.display = 'none';
+    document.getElementById('idPriceScreen').style.display = 'block';
+
+    document.getElementById('topBadge').innerText = '● ПРАЙС ПО ID';
+    document.getElementById('mainTitle').innerText = 'ПРАЙС-ЛИСТ';
+    document.getElementById('subTitle').innerText = 'Цены на пакеты UC по идентификатору';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Переход в прайс по входу
+  function showEntryScreen(event) {
+    event.stopPropagation();
+    triggerHaptic();
+    document.getElementById('catList').style.display = 'none';
+    document.getElementById('entryPriceScreen').style.display = 'block';
+
+    document.getElementById('topBadge').innerText = '● ПРАЙС ПО ВХОДУ';
+    document.getElementById('mainTitle').innerText = 'ПО ВХОДУ / QR';
+    document.getElementById('subTitle').innerText = 'Цены на пакеты UC при авторизации';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Универсальный возврат назад
+  function hidePriceScreen() {
+    triggerHaptic();
+    document.getElementById('idPriceScreen').style.display = 'none';
+    document.getElementById('entryPriceScreen').style.display = 'none';
+    document.getElementById('catList').style.display = 'flex';
+
+    document.getElementById('topBadge').innerText = '● НАВИГАЦИЯ';
+    document.getElementById('mainTitle').innerText = 'КАТАЛОГ';
+    document.getElementById('subTitle').innerText = 'Выберите раздел для просмотра';
+  }
+
+  function handleNav(section) {
+    triggerHaptic();
+    console.log('Navigate to:', section);
+    // Здесь обрабатываются клики по обычным категориям и по выбранным ценникам
   }
 </script>
 </body>
