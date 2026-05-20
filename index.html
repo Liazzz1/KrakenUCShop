@@ -37,7 +37,7 @@
     overflow-x: hidden;
   }
 
-  /* Звездный фон */
+  /* Background stars */
   body::before {
     content: '';
     position: fixed;
@@ -54,7 +54,7 @@
     z-index: 0;
   }
 
-  /* Верхний неоновый свет */
+  /* Top gradient blob */
   body::after {
     content: '';
     position: fixed;
@@ -76,7 +76,7 @@
     padding: 0 0 40px;
   }
 
-  /* Шапка */
+  /* Header */
   .header {
     padding: 28px 20px 20px;
     text-align: center;
@@ -130,13 +130,14 @@
     font-weight: 500;
   }
 
+  /* Decorative line */
   .divider {
     height: 1px;
     margin: 4px 20px 24px;
     background: linear-gradient(90deg, transparent, #7c3aed55, #a855f755, transparent);
   }
 
-  /* Сетка категорий */
+  /* Categories grid */
   .categories {
     padding: 0 16px;
     display: flex;
@@ -144,7 +145,7 @@
     gap: 8px;
   }
 
-  /* Карточки */
+  /* Category card */
   .cat-card {
     display: flex;
     align-items: center;
@@ -187,6 +188,7 @@
     box-shadow: 0 4px 20px var(--clr1, #7c3aed)22;
   }
 
+  /* Left accent bar */
   .cat-card::after {
     content: '';
     position: absolute;
@@ -245,34 +247,6 @@
     text-overflow: ellipsis;
   }
 
-  .cat-badge {
-    flex-shrink: 0;
-    font-family: 'Unbounded', sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 100px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .badge-new {
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-    color: #fff;
-    box-shadow: 0 0 12px #7c3aed88;
-  }
-
-  .badge-hot {
-    background: linear-gradient(135deg, #dc2626, #f59e0b);
-    color: #fff;
-    box-shadow: 0 0 12px #dc262688;
-  }
-
-  .badge-pro {
-    background: linear-gradient(135deg, #f59e0b, #fcd34d);
-    color: #78350f;
-  }
-
   .arrow-icon {
     font-size: 18px;
     color: var(--text3);
@@ -309,7 +283,7 @@
 
   <div class="categories" id="catList">
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.05s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.05s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">💰</div>
       <div class="cat-info">
         <div class="cat-name">Актуальный прайс по ID</div>
@@ -318,7 +292,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.10s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.10s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">🎯</div>
       <div class="cat-info">
         <div class="cat-name">Актуальный прайс по входу</div>
@@ -327,37 +301,34 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.15s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.15s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">⚔️</div>
       <div class="cat-info">
         <div class="cat-name">Грозовой вершитель</div>
         <div class="cat-desc">Ледяной арбитр</div>
       </div>
-      <div class="cat-badge badge-hot">HOT</div>
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.20s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.20s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">💎</div>
       <div class="cat-info">
         <div class="cat-name">Prime и Prime Plus</div>
         <div class="cat-desc">Премиум подписки</div>
       </div>
-      <div class="cat-badge badge-pro">PRO</div>
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.25s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.25s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">🧥</div>
       <div class="cat-info">
         <div class="cat-name">X — Костюм</div>
         <div class="cat-desc">Эксклюзивные скины</div>
       </div>
-      <div class="cat-badge badge-new">NEW</div>
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.30s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.30s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">📈</div>
       <div class="cat-info">
         <div class="cat-name">Популярность</div>
@@ -366,7 +337,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.35s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.35s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">🎁</div>
       <div class="cat-info">
         <div class="cat-name">Награда за покупку</div>
@@ -375,7 +346,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.40s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.40s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">🤝</div>
       <div class="cat-info">
         <div class="cat-name">Сотрудничество</div>
@@ -384,7 +355,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.45s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.45s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">📢</div>
       <div class="cat-info">
         <div class="cat-name">Реклама</div>
@@ -393,7 +364,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.50s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.50s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">⭐</div>
       <div class="cat-info">
         <div class="cat-name">Отзывы</div>
@@ -402,7 +373,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.55s" onclick="openLink('https:https://t.me/KrAkeNn1n')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.55s" onclick="openLink('https://t.me/KrAkeNn1n')">
       <div class="cat-icon-wrap">🏆</div>
       <div class="cat-info">
         <div class="cat-name">Кланы</div>
@@ -419,29 +390,25 @@
   const tg = window.Telegram ? window.Telegram.WebApp : null;
 
   if (tg) {
-    tg.ready(); // Сообщаем Telegram, что приложение загрузилось
-    tg.expand(); // Разворачиваем WebApp на максимум вверх
-    tg.setHeaderColor('#0a0a12'); // Окрашиваем верхнюю панель в цвет фона
-    tg.setBackgroundColor('#0a0a12'); // Окрашиваем нижний фон
+    tg.ready();
+    tg.expand();
+    tg.setHeaderColor('#0a0a12');
+    tg.setBackgroundColor('#0a0a12');
   }
 
   // Функция для открытия ссылок
   function openLink(url) {
-    // Включаем легкую вибрацию при клике (для премиальности)
     if (tg && tg.HapticFeedback) {
       tg.HapticFeedback.impactOccurred('light');
     }
 
     if (tg) {
-      // Если ссылка ведет на Telegram (канал, пост, чат)
       if (url.includes('t.me/')) {
         tg.openTelegramLink(url);
       } else {
-        // Если это обычный внешний сайт (например, Google Документ с прайсом)
         tg.openLink(url);
       }
     } else {
-      // Если тестируешь просто в браузере на ПК — откроется в новой вкладке
       window.open(url, '_blank');
     }
   }
