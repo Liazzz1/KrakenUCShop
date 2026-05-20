@@ -11,16 +11,16 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #070710;
-    --card: rgba(19, 19, 34, 0.65);
-    --card-border: rgba(255, 255, 255, 0.07);
+    --bg: #06060f;
+    --card: rgba(18, 18, 32, 0.6);
+    --card-border: rgba(255, 255, 255, 0.06);
     --purple1: #7c3aed;
     --purple2: #a855f7;
     --purple3: #c084fc;
     --purple4: #e879f9;
     --text: #f1f0f7;
     --text3: #6b6888;
-    --radius: 16px;
+    --radius: 18px;
   }
 
   html, body {
@@ -32,18 +32,20 @@
     position: relative;
   }
 
-  /* Текстура шума на весь экран */
+  /* --- ЖИВОЙ И НЕОДНООБРАЗНЫЙ ЗАДНИЙ ФОН --- */
+
+  /* Процедурная текстура кинематографичного шума на весь экран */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    opacity: 0.015;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 1;
   }
 
-  /* Анимированные туманности */
+  /* Абсолютный контейнер для дрейфующих неоновых туманностей */
   .bg-glow-container {
     position: fixed;
     inset: 0;
@@ -54,39 +56,54 @@
     z-index: 0;
   }
 
+  /* Первая анимированная сфера (Индиго / Фиолетовый) */
   .bg-blob-1 {
     position: absolute;
-    top: -10%;
-    left: -10%;
-    width: 50vw;
-    height: 50vw;
+    top: -15%;
+    left: -15%;
+    width: 65vw;
+    height: 65vw;
     max-width: 600px;
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%);
-    animation: drift-smooth 25s infinite alternate ease-in-out;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 70%);
+    animation: drift-smooth 28s infinite alternate ease-in-out;
   }
 
+  /* Вторая анимированная сфера (Маджента / Розовый) */
   .bg-blob-2 {
     position: absolute;
     bottom: -10%;
-    right: -10%;
-    width: 55vw;
-    height: 55vw;
+    right: -20%;
+    width: 75vw;
+    height: 75vw;
     max-width: 700px;
-    background: radial-gradient(circle, rgba(232, 121, 249, 0.18) 0%, transparent 70%);
-    animation: drift-smooth 30s infinite alternate-reverse ease-in-out;
+    background: radial-gradient(circle, rgba(232, 121, 249, 0.16) 0%, rgba(124, 58, 237, 0.04) 50%, transparent 70%);
+    animation: drift-smooth 34s infinite alternate-reverse ease-in-out;
+  }
+
+  /* Тонкая россыпь мягких звезд на дальнем плане */
+  .bg-stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 15% 25%, rgba(255, 255, 255, 0.15) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 75% 15%, rgba(255, 255, 255, 0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 65%, rgba(192, 132, 252, 0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 85%, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
   }
 
   @keyframes drift-smooth {
-    0% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(30px) scale(1.1); }
-    100% { transform: translateY(-20px) scale(0.95); }
+    0% { transform: translateY(0) scale(1) rotate(0deg); }
+    50% { transform: translateY(40px) scale(1.1) rotate(45deg); }
+    100% { transform: translateY(-20px) scale(0.95) rotate(90deg); }
   }
 
-  /* ГЛАВНОЕ ИЗМЕНЕНИЕ: Контейнер теперь резиновый */
+  /* ------------------------------------- */
+
+  /* Контейнер теперь гибкий и адаптивный */
   .container {
     position: relative;
     z-index: 2;
-    max-width: 1200px; /* Расширяем максимальную ширину для больших экранов */
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     padding: 0 0 40px;
@@ -103,15 +120,15 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(168, 85, 247, 0.15));
-    border: 1px solid rgba(124, 58, 237, 0.3);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(168, 85, 247, 0.12));
+    border: 1px solid rgba(124, 58, 237, 0.25);
     border-radius: 100px;
-    padding: 4px 14px;
+    padding: 5px 16px;
     font-size: 11px;
     font-family: 'Unbounded', sans-serif;
     color: var(--purple3);
     letter-spacing: 0.08em;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
   .header-badge::before {
@@ -132,12 +149,13 @@
     font-family: 'Unbounded', sans-serif;
     font-size: 26px;
     font-weight: 900;
-    background: linear-gradient(135deg, #fff 0%, #c084fc 50%, #e879f9 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #c084fc 50%, #e879f9 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     line-height: 1.2;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
   }
 
   .header p {
@@ -149,35 +167,35 @@
   .divider {
     height: 1px;
     margin: 4px 20px 24px;
-    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.35), rgba(168, 85, 247, 0.35), transparent);
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.3), rgba(168, 85, 247, 0.3), transparent);
   }
 
-  /* ГЛАВНОЕ ИЗМЕНЕНИЕ: Делаем адаптивную сетку через Grid */
+  /* Сетка карточек стала "умной" (Grid вместо одномерного Flex) */
   .categories {
     padding: 0 16px;
     display: grid;
-    grid-template-columns: 1fr; /* По дефолту на мобилках в 1 колонку */
+    grid-template-columns: 1fr; /* 1 колонка на смартфонах */
     gap: 10px;
   }
 
-  /* Адаптивные брейкпоинты для мониторов и планшетов */
-  @media (min-width: 600px) {
+  /* Настройки сетки под разные дисплеи */
+  @media (min-width: 650px) {
     .categories {
-      grid-template-columns: repeat(2, 1fr); /* На планшетах в 2 колонки */
+      grid-template-columns: repeat(2, 1fr); /* 2 колонки на планшетах */
     }
   }
 
-  @media (min-width: 950px) {
+  @media (min-width: 1000px) {
     .categories {
-      grid-template-columns: repeat(3, 1fr); /* На больших ПК в 3 колонки */
+      grid-template-columns: repeat(3, 1fr); /* 3 колонки на экранах ПК */
     }
   }
 
-  /* Category card */
+  /* Обновленная матовая карточка категории */
   .cat-card {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 15px;
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
@@ -185,62 +203,69 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(14px); /* Сильное преломление движущегося фона */
+    -webkit-backdrop-filter: blur(14px);
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   }
 
+  /* Эффект легкой неоновой подсветки при наведении */
   .cat-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, var(--clr1, #7c3aed) 15%, var(--clr2, #a855f7) 5%);
+    background: linear-gradient(135deg, var(--clr1, #7c3aed), var(--clr2, #a855f7));
     opacity: 0;
-    transition: opacity 0.22s;
+    transition: opacity 0.25s;
+    pointer-events: none;
+    z-index: 0;
   }
 
   .cat-card:hover::before {
-    opacity: 1;
+    opacity: 0.05; /* Едва заметный внутренний тон */
   }
 
   .cat-card:active {
     transform: scale(0.97);
-    border-color: rgba(124, 58, 237, 0.4);
+    border-color: rgba(124, 58, 237, 0.35);
   }
 
   .cat-card:hover {
     border-color: rgba(124, 58, 237, 0.25);
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.15);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);
   }
 
+  /* Боковой неоновый маркер */
   .cat-card::after {
     content: '';
     position: absolute;
-    left: 0; top: 16%; bottom: 16%;
-    width: 3px;
+    left: 0; top: 20%; bottom: 20%;
+    width: 3.5px;
     border-radius: 0 4px 4px 0;
     background: linear-gradient(180deg, var(--clr1, #7c3aed), var(--clr2, #a855f7));
     opacity: 0;
     transition: opacity 0.22s;
+    pointer-events: none;
   }
 
-  .cat-card:hover::after {
+  .cat-card:hover::after,
+  .cat-card:active::after {
     opacity: 1;
   }
 
+  /* Иконка-контейнер */
   .cat-icon-wrap {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     font-size: 22px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 30%, rgba(168, 85, 247, 0.1) 20%);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.12) 30%, rgba(168, 85, 247, 0.04) 20%);
     border: 1px solid rgba(124, 58, 237, 0.2);
     position: relative;
     z-index: 1;
@@ -255,11 +280,11 @@
 
   .cat-name {
     font-family: 'Unbounded', sans-serif;
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--text);
     line-height: 1.3;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -271,37 +296,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  /* Плашки уведомлений */
-  .cat-badge {
-    flex-shrink: 0;
-    font-family: 'Unbounded', sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 100px;
-    position: relative;
-    z-index: 1;
-    margin-right: 4px;
-  }
-
-  .badge-new {
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-    color: #fff;
-    box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
-  }
-
-  .badge-hot {
-    background: linear-gradient(135deg, #dc2626, #f59e0b);
-    color: #fff;
-    box-shadow: 0 0 12px rgba(220, 38, 38, 0.5);
-  }
-
-  .badge-pro {
-    background: linear-gradient(135deg, #f59e0b, #fcd34d);
-    color: #78350f;
-    box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
   }
 
   .arrow-icon {
@@ -319,18 +313,19 @@
   }
 
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
   .cat-card {
-    animation: fadeInUp 0.35s ease both;
+    animation: fadeInUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) both;
   }
 </style>
 </head>
 <body>
 
 <div class="bg-glow-container">
+  <div class="bg-stars"></div>
   <div class="bg-blob-1"></div>
   <div class="bg-blob-2"></div>
 </div>
@@ -346,7 +341,7 @@
 
   <div class="categories" id="catList">
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.05s" onclick="handleNav('price-id')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.04s" onclick="openLink('https://t.me/kraken_shop_U_C/176')">
       <div class="cat-icon-wrap">💰</div>
       <div class="cat-info">
         <div class="cat-name">Актуальный прайс по ID</div>
@@ -355,7 +350,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.10s" onclick="handleNav('price-entry')">
+    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.08s" onclick="openLink('https://t.me/kraken_shop_U_C/222')">
       <div class="cat-icon-wrap">🎯</div>
       <div class="cat-info">
         <div class="cat-name">Актуальный прайс по входу</div>
@@ -364,7 +359,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.15s" onclick="handleNav('boss')">
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.12s" onclick="openLink('https://t.me/kraken_shop_U_C/187')">
       <div class="cat-icon-wrap">⚔️</div>
       <div class="cat-info">
         <div class="cat-name">Грозовой вершитель</div>
@@ -373,7 +368,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.20s" onclick="handleNav('prime')">
+    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.16s" onclick="openLink('https://t.me/kraken_shop_U_C/111')">
       <div class="cat-icon-wrap">💎</div>
       <div class="cat-info">
         <div class="cat-name">Prime и Prime Plus</div>
@@ -382,7 +377,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.25s" onclick="handleNav('xsuit')">
+    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.20s" onclick="openLink('https://t.me/kraken_shop_U_C/182')">
       <div class="cat-icon-wrap">🧥</div>
       <div class="cat-info">
         <div class="cat-name">X — Костюм</div>
@@ -391,7 +386,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.30s" onclick="handleNav('popularity')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.24s" onclick="openLink('https://t.me/kraken_shop_U_C/189')">
       <div class="cat-icon-wrap">📈</div>
       <div class="cat-info">
         <div class="cat-name">Популярность</div>
@@ -400,7 +395,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.35s" onclick="handleNav('reward')">
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.28s" onclick="openLink('https://t.me/kraken_shop_U_C/31')">
       <div class="cat-icon-wrap">🎁</div>
       <div class="cat-info">
         <div class="cat-name">Награда за покупку</div>
@@ -409,7 +404,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.40s" onclick="handleNav('collab')">
+    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.32s" onclick="openLink('https://t.me/kraken_shop_U_C/98')">
       <div class="cat-icon-wrap">🤝</div>
       <div class="cat-info">
         <div class="cat-name">Сотрудничество</div>
@@ -418,7 +413,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.45s" onclick="handleNav('ads')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.36s" onclick="openLink('https://t.me/kraken_shop_U_C/112')">
       <div class="cat-icon-wrap">📢</div>
       <div class="cat-info">
         <div class="cat-name">Реклама</div>
@@ -427,7 +422,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.50s" onclick="handleNav('reviews')">
+    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.40s" onclick="openLink('https://t.me/kraken_shop_uc')">
       <div class="cat-icon-wrap">⭐</div>
       <div class="cat-info">
         <div class="cat-name">Отзывы</div>
@@ -436,7 +431,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.55s" onclick="handleNav('clans')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.44s" onclick="openLink('https://t.me/kraken_shop_U_C/185')">
       <div class="cat-icon-wrap">🏆</div>
       <div class="cat-info">
         <div class="cat-name">Кланы</div>
@@ -449,17 +444,31 @@
 </div>
 
 <script>
-  if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.expand();
-    window.Telegram.WebApp.setHeaderColor('#070710');
-    window.Telegram.WebApp.setBackgroundColor('#070710');
+  // Инициализация Telegram WebApp
+  const tg = window.Telegram ? window.Telegram.WebApp : null;
+
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    tg.setHeaderColor('#06060f');
+    tg.setBackgroundColor('#06060f');
   }
 
-  function handleNav(section) {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+  // Функция для открытия ссылок
+  function openLink(url) {
+    if (tg && tg.HapticFeedback) {
+      tg.HapticFeedback.impactOccurred('light');
     }
-    console.log('Navigate to:', section);
+
+    if (tg) {
+      if (url.includes('t.me/')) {
+        tg.openTelegramLink(url);
+      } else {
+        tg.openLink(url);
+      }
+    } else {
+      window.open(url, '_blank');
+    }
   }
 </script>
 </body>
