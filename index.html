@@ -16,11 +16,8 @@
     --bg3: #12121f;
     --card: #101018;
     --card-border: rgba(255, 255, 255, 0.05);
-    --red1: #e11d48;
-    --red2: #be123c;
     --red-accent: #ff2a2a;
     --red-glow: rgba(255, 42, 42, 0.15);
-    --gold: #f59e0b;
     --text: #ffffff;
     --text2: #9ca3af;
     --text3: #4b5563;
@@ -34,10 +31,9 @@
     font-family: 'Mulish', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-    padding-bottom: 90px; /* Отступ под нижний навигационный бар */
+    padding-bottom: 90px;
   }
 
-  /* Размытые фоновые свечения */
   body::before {
     content: '';
     position: fixed;
@@ -45,7 +41,7 @@
     right: -50px;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(255, 42, 42, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--red-glow) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -58,7 +54,6 @@
     padding: 0 16px;
   }
 
-  /* Верхний статус-бар (Шапка) */
   .top-app-bar {
     display: flex;
     align-items: center;
@@ -90,13 +85,10 @@
     font-weight: 900;
     letter-spacing: 0.05em;
   }
-  .brand-logo span {
-    color: var(--red-accent);
-  }
+  .brand-logo span { color: var(--red-accent); }
 
-  /* Промо-Баннер */
   .promo-banner {
-    background: linear-gradient(135deg, #12121f 0%, #090911 100%);
+    background: linear-gradient(135deg, #1f1212 0%, #110909 100%);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
     padding: 20px;
@@ -114,7 +106,7 @@
     font-family: 'Unbounded', sans-serif;
     font-size: 80px;
     font-weight: 900;
-    color: rgba(255, 255, 255, 0.02);
+    color: rgba(255, 255, 255, 0.01);
     pointer-events: none;
   }
 
@@ -134,9 +126,7 @@
     line-height: 1.3;
     margin-bottom: 12px;
   }
-  .banner-title span {
-    color: var(--red-accent);
-  }
+  .banner-title span { color: var(--red-accent); }
 
   .banner-features {
     font-size: 11px;
@@ -159,11 +149,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .btn-banner-action:active {
-    background: rgba(255, 42, 42, 0.2);
-  }
 
-  /* Заголовки блоков */
   .section-title {
     font-family: 'Unbounded', sans-serif;
     font-size: 12px;
@@ -174,7 +160,7 @@
     text-transform: uppercase;
   }
 
-  /* Сетка главных категорий (Каталог) */
+  /* Сетка главных категорий */
   .categories-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -182,10 +168,11 @@
     margin-bottom: 24px;
   }
 
-  .categories-grid .cat-card:first-child {
+  .categories-grid .cat-card-uc {
     grid-column: span 2;
   }
 
+  /* Карточки категорий (grid-style из indexc2) */
   .cat-card {
     background: var(--card);
     border: 1px solid var(--card-border);
@@ -218,10 +205,86 @@
     font-weight: 700;
     color: var(--text);
   }
-  .categories-grid .cat-card:first-child .cat-card-title {
+
+  /* Первая большая карточка UC */
+  .cat-card-uc .cat-card-title {
     color: var(--red-accent);
     font-size: 15px;
   }
+
+  /* Аккордеон внутри UC карточки */
+  .cat-card-uc {
+    min-height: unset;
+    padding: 0;
+  }
+
+  .cat-card-uc-trigger {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    cursor: pointer;
+    justify-content: space-between;
+  }
+
+  .uc-trigger-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .uc-trigger-icon {
+    font-size: 22px;
+  }
+
+  .uc-trigger-text .cat-card-title { margin-bottom: 2px; }
+  .uc-trigger-text .cat-card-desc {
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  .uc-arrow {
+    font-size: 18px;
+    color: var(--text3);
+    transition: transform 0.22s;
+    flex-shrink: 0;
+  }
+
+  .cat-card-uc.open .uc-arrow { transform: rotate(90deg); color: var(--red-accent); }
+
+  .uc-dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+    opacity: 0;
+    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cat-card-uc.open .uc-dropdown {
+    max-height: 160px;
+    opacity: 1;
+    padding-bottom: 12px;
+  }
+
+  .sub-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 10px 14px;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .sub-btn:hover { background: rgba(255, 42, 42, 0.08); border-color: rgba(255, 42, 42, 0.2); }
+  .sub-btn:active { transform: scale(0.98); }
+  .sub-btn-title { font-size: 11.5px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
+  .sub-btn-desc { font-size: 10px; color: var(--text3); }
+  .sub-arrow { font-size: 16px; color: var(--text3); }
 
   .cat-card-desc {
     font-size: 11px;
@@ -244,52 +307,8 @@
     position: absolute;
     bottom: 14px;
     right: 14px;
-    transition: all 0.2s;
-  }
-  .cat-card:hover .cat-arrow-btn, .cat-card.active-dropdown .cat-arrow-btn {
-    color: #fff;
-    background: var(--red-accent);
-    border-color: var(--red-accent);
   }
 
-  /* Контейнер выпадающего меню аккордеона */
-  .dropdown-container {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    margin-top: 0;
-  }
-  .cat-card.active-dropdown .dropdown-container {
-    max-height: 200px;
-    opacity: 1;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .sub-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #14141f;
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 12px 14px;
-    transition: all 0.2s;
-  }
-  .sub-btn:active {
-    background: rgba(255, 42, 42, 0.05);
-    border-color: rgba(255, 42, 42, 0.2);
-  }
-  .sub-btn-title { font-size: 12px; font-weight: 700; color: var(--text); }
-  .sub-btn-desc { font-size: 10px; color: var(--text3); margin-top: 2px; }
-
-  /* Блок преимущества "ПОЧЕМУ МЫ?" */
   .why-us-box {
     background: var(--card);
     border: 1px solid var(--card-border);
@@ -297,7 +316,7 @@
     padding: 18px;
     margin-bottom: 24px;
   }
-  
+
   .why-us-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -305,12 +324,7 @@
     margin-top: 4px;
   }
 
-  .why-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
+  .why-item { display: flex; gap: 10px; align-items: flex-start; }
   .why-icon {
     width: 28px;
     height: 28px;
@@ -323,20 +337,10 @@
     font-size: 13px;
     flex-shrink: 0;
   }
+  .why-texts .why-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .why-texts .why-desc { font-size: 10px; color: var(--text3); line-height: 1.3; }
 
-  .why-texts .why-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 2px;
-  }
-  .why-texts .why-desc {
-    font-size: 10px;
-    color: var(--text3);
-    line-height: 1.3;
-  }
-
-  /* ВНУТРЕННИЕ ЭКРАНЫ ПРАЙСОВ */
+  /* ЭКРАН ПРАЙСОВ */
   .price-screen {
     display: none;
     animation: fadeIn 0.3s ease both;
@@ -367,7 +371,7 @@
     border: 1px solid rgba(255, 42, 42, 0.15);
     border-radius: var(--radius);
     padding: 14px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     font-size: 12px;
     line-height: 1.5;
     color: var(--text2);
@@ -381,17 +385,36 @@
     margin-bottom: 4px;
   }
 
-  .price-tier-title {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text3);
-    letter-spacing: 0.05em;
-    margin: 20px 0 10px;
-    padding-left: 2px;
+  /* Вкладки LITE / MEDIUM / ELITE */
+  .pack-tabs-container {
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
   }
 
-  .price-grid {
+  .pack-tab-btn {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 12px 4px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text2);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .pack-tab-btn.tab-active {
+    background: rgba(255, 42, 42, 0.1);
+    border-color: var(--red-accent);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 42, 42, 0.1);
+  }
+
+  .pack-list-content {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -404,10 +427,9 @@
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
-    padding: 12px 14px;
+    padding: 14px 16px;
     cursor: pointer;
     transition: all 0.2s;
-    gap: 12px;
   }
   .uc-price-card:active {
     transform: scale(0.99);
@@ -423,27 +445,11 @@
     font-weight: 700;
   }
 
-  .uc-cost-box {
-    text-align: right;
-    margin-left: auto;
-  }
-
-  .price-uah { font-size: 13.5px; font-weight: 800; color: #fff; }
+  .uc-cost-box { text-align: right; }
+  .price-uah { font-size: 14px; font-weight: 800; color: #fff; }
   .price-pln { font-size: 10px; color: var(--text3); margin-top: 1px; }
 
-  .buy-pack-btn {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    color: #fff;
-    background: var(--red-accent);
-    border: none;
-    border-radius: 10px;
-    padding: 8px 14px;
-    cursor: pointer;
-  }
-
-  /* НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ */
+  /* НИЖНЯЯ НАВИГАЦИЯ */
   .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -469,25 +475,14 @@
     font-size: 10px;
     font-weight: 600;
     cursor: pointer;
-    transition: color 0.2s;
     flex: 1;
     text-align: center;
   }
 
-  .nav-item.active {
-    color: var(--red-accent);
-  }
+  .nav-item.active { color: var(--red-accent); }
+  .nav-icon { font-size: 20px; }
 
-  .nav-icon {
-    font-size: 20px;
-  }
-
-  /* Центральная кнопка Корзины */
-  .nav-item-cart {
-    position: relative;
-    top: -14px;
-    flex-grow: 0;
-  }
+  .nav-item-cart { position: relative; top: -14px; flex-grow: 0; }
   .cart-circle {
     width: 54px;
     height: 54px;
@@ -538,8 +533,8 @@
   .modal-title { font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; }
   .modal-desc { font-size: 12px; color: var(--text2); margin-bottom: 18px; line-height: 1.4; }
 
-  .id-input-wrapper { position: relative; margin-bottom: 18px; }
-  .id-input {
+  .uid-input-wrapper { margin-bottom: 16px; position: relative; }
+  .uid-field {
     width: 100%;
     background: #12121f;
     border: 1px solid var(--card-border);
@@ -547,13 +542,21 @@
     padding: 14px;
     color: #fff;
     font-family: 'Unbounded', sans-serif;
-    font-size: 16px;
+    font-size: 13px;
     text-align: center;
-    letter-spacing: 2px;
     outline: none;
+    transition: border-color 0.2s;
   }
-  .id-input:focus { border-color: var(--red-accent); }
-  .id-counter { font-size: 10px; color: var(--text3); margin-top: 6px; text-align: right; display: block; }
+  .uid-field:focus { border-color: var(--red-accent); }
+
+  .id-counter {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 6px;
+    text-align: right;
+    display: block;
+    padding-right: 4px;
+  }
 
   .payment-details {
     background: #12121f;
@@ -572,8 +575,7 @@
   .detail-value.price-accent { font-family: 'Unbounded', sans-serif; color: var(--red-accent); font-size: 15px; }
 
   .modal-actions { display: flex; flex-direction: column; gap: 6px; }
-  
-  .btn-submit {
+  .btn-next, .btn-paid {
     font-family: 'Unbounded', sans-serif;
     font-size: 12px;
     font-weight: 700;
@@ -583,23 +585,14 @@
     border-radius: 12px;
     padding: 14px;
     cursor: pointer;
-    opacity: 0.3;
-    pointer-events: none;
+    transition: all 0.2s;
   }
-  .btn-submit.valid { opacity: 1; pointer-events: all; }
-
-  .btn-paid {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: #fff;
-    background: var(--green);
-    border: none;
-    border-radius: 12px;
-    padding: 14px;
-    cursor: pointer;
-  }
+  .btn-next { opacity: 0.4; pointer-events: none; }
+  .btn-next.valid { opacity: 1; pointer-events: all; box-shadow: 0 4px 15px rgba(255,42,42,0.3); }
+  .btn-paid { background: var(--green); }
+  .btn-next:active, .btn-paid:active { transform: scale(0.98); }
   .btn-cancel { font-size: 12px; font-weight: 600; color: var(--text3); background: transparent; border: none; padding: 8px; cursor: pointer; }
+  .btn-cancel:hover { color: var(--text2); }
 </style>
 </head>
 <body>
@@ -612,43 +605,44 @@
     <div class="top-bar-btn">👤</div>
   </div>
 
+  <!-- ГЛАВНЫЙ ЭКРАН -->
   <div id="mainHomeScreen">
-    
     <div class="promo-banner">
       <div class="banner-subtitle">СПЕЦПРЕДЛОЖЕНИЕ</div>
       <div class="banner-title">ПОПОЛНЕНИЕ<br><span>PUBG MOBILE</span></div>
       <div class="banner-features">БЫСТРО • ВЫГОДНО • БЕЗОПАСНО</div>
-      <button class="btn-banner-action" onclick="forceOpenUcDropdown()">Перейти в каталог</button>
+      <button class="btn-banner-action" onclick="document.getElementById('categoriesSection').scrollIntoView({behavior:'smooth'})">Перейти в каталог</button>
     </div>
 
-    <div class="section-title" id="topBadge">Категории</div>
+    <div class="section-title" id="categoriesSection">Категории</div>
+    <div class="categories-grid">
 
-    <div class="categories-grid" id="catList">
-      
-      <div class="cat-card" id="ucCard">
-        <div style="width: 100%;" onclick="toggleDropdown(event)">
-          <div class="cat-header">
-            <div class="cat-card-title">PUBG UC</div>
-            <span style="font-size: 18px;">💰</span>
+      <!-- Пополнение UC — с аккордеоном (по ID / по входу) -->
+      <div class="cat-card cat-card-uc" id="ucCard">
+        <div class="cat-card-uc-trigger" onclick="toggleUcDropdown()">
+          <div class="uc-trigger-left">
+            <span class="uc-trigger-icon">💰</span>
+            <div class="uc-trigger-text">
+              <div class="cat-card-title">Пополнение UC</div>
+              <div class="cat-card-desc">Варианты зачисления на аккаунт</div>
+            </div>
           </div>
-          <div class="cat-card-desc" id="subTitle">Пополнение UC по ID и входу</div>
-          <div class="cat-arrow-btn">›</div>
+          <span class="uc-arrow">›</span>
         </div>
-        
-        <div class="dropdown-container">
-          <div class="sub-btn" onclick="showIdScreen(event)">
+        <div class="uc-dropdown">
+          <div class="sub-btn" onclick="showPriceScreen(event, 'id')">
             <div>
               <div class="sub-btn-title">Актуальный прайс по ID</div>
               <div class="sub-btn-desc">Цены по идентификатору</div>
             </div>
-            <span style="color:var(--text3)">›</span>
+            <span class="sub-arrow">›</span>
           </div>
-          <div class="sub-btn" onclick="showEntryScreen(event)">
+          <div class="sub-btn" onclick="showPriceScreen(event, 'entry')">
             <div>
               <div class="sub-btn-title">Актуальный прайс по входу</div>
               <div class="sub-btn-desc">Цены для входящих заявок</div>
             </div>
-            <span style="color:var(--text3)">›</span>
+            <span class="sub-arrow">›</span>
           </div>
         </div>
       </div>
@@ -663,8 +657,8 @@
 
       <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/111')">
         <div>
-          <div class="cat-header"><div class="cat-card-title">Prime подписки</div><span>💎</span></div>
-          <div class="cat-card-desc">Prime и Prime Plus</div>
+          <div class="cat-header"><div class="cat-card-title">Prime и Prime Plus</div><span>💎</span></div>
+          <div class="cat-card-desc">Премиум подписки</div>
         </div>
         <div class="cat-arrow-btn">›</div>
       </div>
@@ -680,178 +674,146 @@
       <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/189')">
         <div>
           <div class="cat-header"><div class="cat-card-title">Популярность</div><span>📈</span></div>
-          <div class="cat-card-desc">Рейтинги и топ товаров</div>
+          <div class="cat-card-desc">Топ товаров и рейтинги</div>
         </div>
         <div class="cat-arrow-btn">›</div>
       </div>
 
       <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/31')">
         <div>
-          <div class="cat-header"><div class="cat-card-title">Награды</div><span>🎁</span></div>
-          <div class="cat-card-desc">Бонусы за покупку</div>
+          <div class="cat-header"><div class="cat-card-title">Награда за покупку</div><span>🎁</span></div>
+          <div class="cat-card-desc">Бонусы и привилегии</div>
         </div>
         <div class="cat-arrow-btn">›</div>
       </div>
 
       <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/98')">
         <div>
-          <div class="cat-header"><div class="cat-card-title">Партнерам</div><span>🤝</span></div>
-          <div class="cat-card-desc">Сотрудничество</div>
+          <div class="cat-header"><div class="cat-card-title">Сотрудничество</div><span>🤝</span></div>
+          <div class="cat-card-desc">Партнёрские программы</div>
         </div>
         <div class="cat-arrow-btn">›</div>
       </div>
+
+      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/112')">
+        <div>
+          <div class="cat-header"><div class="cat-card-title">Реклама</div><span>📢</span></div>
+          <div class="cat-card-desc">Размещение и продвижение</div>
+        </div>
+        <div class="cat-arrow-btn">›</div>
+      </div>
+
+      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
+        <div>
+          <div class="cat-header"><div class="cat-card-title">Отзывы</div><span>⭐</span></div>
+          <div class="cat-card-desc">Мнения покупателей</div>
+        </div>
+        <div class="cat-arrow-btn">›</div>
+      </div>
+
+      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/185')">
+        <div>
+          <div class="cat-header"><div class="cat-card-title">Кланы</div><span>🏆</span></div>
+          <div class="cat-card-desc">Клановые активности</div>
+        </div>
+        <div class="cat-arrow-btn">›</div>
+      </div>
+
     </div>
 
-    <div class="section-title">Почему мы?</div>
     <div class="why-us-box">
+      <div class="section-title" style="margin-bottom:12px; color:#fff;">Почему выбирают нас?</div>
       <div class="why-us-grid">
         <div class="why-item">
           <div class="why-icon">⚡</div>
-          <div class="why-texts"><div class="why-title">Быстро</div><div class="why-desc">Мгновенное пополнение</div></div>
+          <div class="why-texts"><div class="why-title">Скорость</div><div class="why-desc">Зачисление от 5 до 20 минут</div></div>
         </div>
         <div class="why-item">
           <div class="why-icon">🛡️</div>
-          <div class="why-texts"><div class="why-title">Безопасно</div><div class="why-desc">Гарантия на услуги</div></div>
+          <div class="why-texts"><div class="why-title">Надежность</div><div class="why-desc">100% безопасная покупка</div></div>
         </div>
         <div class="why-item">
-          <div class="why-icon">✔️</div>
-          <div class="why-texts"><div class="why-title">Надежно</div><div class="why-desc">Тысячи отзывов</div></div>
+          <div class="why-icon">💸</div>
+          <div class="why-texts"><div class="why-title">Лучшая цена</div><div class="why-desc">Самый выгодный курс</div></div>
         </div>
         <div class="why-item">
-          <div class="why-icon">🎧</div>
-          <div class="why-texts"><div class="why-title">Поддержка</div><div class="why-desc">24/7 на связи</div></div>
+          <div class="why-icon">🤝</div>
+          <div class="why-texts"><div class="why-title">Поддержка</div><div class="why-desc">Всегда на связи с вами</div></div>
         </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="price-screen" id="idPriceScreen">
-    <div class="back-btn" onclick="hidePriceScreen()">‹ Назад в меню</div>
-    <h2 class="section-title" id="mainTitle">Прайс по ID</h2>
-
-    <div class="price-tier-title">📦 LITE PACKS</div>
-    <div class="price-grid">
-      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_60', this)">
-        <div class="uc-amount">💰 60 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">40 грн</div><div class="price-pln">5 zł</div></div>
-        <button class="buy-pack-btn">Купить</button>
-      </div>
-      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_325', this)">
-        <div class="uc-amount">💰 325 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">195 грн</div><div class="price-pln">20 zł</div></div>
-        <button class="buy-pack-btn">Купить</button>
-      </div>
-      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_660', this)">
-        <div class="uc-amount">💰 660 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">385 грн</div><div class="price-pln">35 zł</div></div>
-        <button class="buy-pack-btn">Купить</button>
-      </div>
-    </div>
-
-    <div class="price-tier-title">💼 MEDIUM PACKS</div>
-    <div class="price-grid">
-      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_1800', this)">
-        <div class="uc-amount">💰 1800 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">965 грн</div><div class="price-pln">80 zł</div></div>
-        <button class="buy-pack-btn">Купить</button>
-      </div>
-      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_3850', this)">
-        <div class="uc-amount">💰 3850 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">1 950 грн</div><div class="price-pln">160 zł</div></div>
-        <button class="buy-pack-btn">Купить</button>
-      </div>
-      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_8100', this)">
-        <div class="uc-amount">💰 8100 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">3 850 грн</div><div class="price-pln">320 zł</div></div>
-        <button class="buy-pack-btn">Купить</button>
-      </div>
-    </div>
-
-    <div class="price-tier-title">👑 ELITE PACKS</div>
-    <div class="price-grid">
-      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_24300', this)">
-        <div class="uc-amount">💰 24300 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">11 600 грн</div><div class="price-pln">945 zł</div></div>
-        <button class="buy-pack-btn">Купить</button>
-      </div>
-      <div class="uc-price-card" onclick="openIdModal(event, 'buy_id_40500', this)">
-        <div class="uc-amount">💰 40500 UC</div>
-        <div class="uc-cost-box"><div class="price-uah">19 350 грн</div><div class="price-pln">1600 zł</div></div>
-        <button class="buy-pack-btn">Купить</button>
       </div>
     </div>
   </div>
 
-  <div class="price-screen" id="entryPriceScreen">
+  <!-- ЭКРАН ПРАЙСОВ -->
+  <div class="price-screen" id="priceScreen">
     <div class="back-btn" onclick="hidePriceScreen()">‹ Назад в меню</div>
-    <h2 class="section-title">По входу / QR</h2>
-    
-    <div class="price-info-card">
-      <div class="info-title">📱 Инфо по зачислению</div>
-      Пополнение производится только по QR-коду.<br>⚡ Быстрое зачисление — от 5 до 20 минут.</div>
+    <h2 class="section-title" id="priceScreenTitle">Загрузка...</h2>
 
-    <div class="price-tier-title">📦 LITE PACKS</div>
-    <div class="price-grid">
-      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_1800', this)"><div class="uc-amount">💰 1800 UC</div><div class="uc-cost-box"><div class="price-uah">930 грн</div></div><button class="buy-pack-btn">Купить</button></div>
-      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_3850', this)"><div class="uc-amount">💰 3850 UC</div><div class="uc-cost-box"><div class="price-uah">1850 грн</div></div><button class="buy-pack-btn">Купить</button></div>
-      <div class="uc-price-card" onclick="openEntryModal(event, 'buy_entry_8100', this)"><div class="uc-amount">💰 8100 UC</div><div class="uc-cost-box"><div class="price-uah">3500 грн</div></div><button class="buy-pack-btn">Купить</button></div>
+    <div class="price-info-card" id="priceInfoCard">
+      <div class="info-title" id="infoCardTitle"></div>
+      <span id="infoCardText"></span>
     </div>
+
+    <div class="pack-tabs-container" id="packTabs">
+      <div class="pack-tab-btn tab-active" id="tabLite" onclick="switchPackCategory('lite')">📦 LITE</div>
+      <div class="pack-tab-btn" id="tabMedium" onclick="switchPackCategory('medium')">💼 MEDIUM</div>
+      <div class="pack-tab-btn" id="tabElite" onclick="switchPackCategory('elite')">👑 ELITE</div>
+    </div>
+
+    <div class="pack-list-content" id="packListContainer"></div>
   </div>
 
 </div>
 
+<!-- НИЖНЯЯ НАВИГАЦИЯ -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="switchTab('home')">
-    <div class="nav-icon">🏠</div>
-    <div>Главная</div>
+    <div class="nav-icon">🏠</div><div>Главная</div>
   </div>
   <div class="nav-item" onclick="switchTab('catalog')">
-    <div class="nav-icon">📅</div>
-    <div>Каталог</div>
+    <div class="nav-icon">📅</div><div>Каталог</div>
   </div>
   <div class="nav-item nav-item-cart" onclick="triggerHaptic()">
     <div class="cart-circle">🛒</div>
   </div>
   <div class="nav-item" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
-    <div class="nav-icon">⭐</div>
-    <div>Отзывы</div>
+    <div class="nav-icon">⭐</div><div>Отзывы</div>
   </div>
   <div class="nav-item" onclick="triggerHaptic()">
-    <div class="nav-icon">👤</div>
-    <div>Профиль</div>
+    <div class="nav-icon">👤</div><div>Профиль</div>
   </div>
 </div>
 
-<div class="modal-overlay" id="idModalOverlay" onclick="closeIdModal()">
+<!-- МОДАЛЬНОЕ ОКНО -->
+<div class="modal-overlay" id="idModalOverlay">
   <div class="modal-content" onclick="event.stopPropagation()">
-    
+
+    <!-- Шаг 1: Ввод UID (только для прайса по ID) -->
     <div class="modal-step step-active" id="modalStepId">
       <div class="modal-title">Ввод ID игрока</div>
       <div class="modal-desc">Для продолжения покупки введите ваш уникальный 10-значный числовой ID.</div>
-      
-      <div class="id-input-wrapper">
-        <input 
-          type="text" 
-          id="playerUidInput" 
-          class="id-input" 
-          placeholder="0123456789" 
+      <div class="uid-input-wrapper">
+        <input
+          type="text"
+          class="uid-field"
+          id="playerUidInput"
+          placeholder="0123456789"
           maxlength="10"
           oninput="validatePlayerId(this)"
         >
         <span class="id-counter" id="idLengthCounter">0 / 10</span>
       </div>
-
       <div class="modal-actions">
-        <button class="btn-submit" id="btnSubmitOrder" onclick="goToPaymentStep()">Подтвердить</button>
-        <button class="btn-cancel" onclick="closeIdModal()">Отмена</button>
+        <button class="btn-next" id="btnSubmitOrder" onclick="goToPaymentStep()">Подтвердить</button>
+        <button class="btn-cancel" onclick="closeModal()">Отмена</button>
       </div>
     </div>
 
+    <!-- Шаг 2: Реквизиты оплаты -->
     <div class="modal-step" id="modalStepPayment">
       <div class="modal-title">Оплата заказа</div>
       <div class="modal-desc">Переведите точную сумму по указанным реквизитам:</div>
-      
+
       <div class="payment-details">
         <div class="detail-item">
           <span class="detail-label">Название банка</span>
@@ -869,7 +831,7 @@
 
       <div class="modal-actions">
         <button class="btn-paid" onclick="submitFinalOrder()">Я оплатил</button>
-        <button class="btn-cancel" onclick="closeIdModal()">Отмена</button>
+        <button class="btn-cancel" onclick="closeModal()">Отмена</button>
       </div>
     </div>
 
@@ -878,13 +840,66 @@
 
 <script>
   const tg = window.Telegram ? window.Telegram.WebApp : null;
-  
-  let currentSelectedPackId = null; 
-  let currentSelectedPriceText = ""; 
-  let isEntryMode = false; 
-  
+
   const BANK_NAME = "Sense Bank";
   const CARD_NUMBER = "4028 0820 1619 2153";
+
+  let currentSelectedPackId = null;
+  let currentSelectedPriceText = "";
+  let isEntryMode = false; // false = по ID (нужен UID), true = по входу/QR (без UID)
+
+  // ========== ПОЛНЫЕ ДАННЫЕ ПРАЙСОВ ИЗ index.html ==========
+  const PRODUCTS_DATA = {
+    // Прайс по ID
+    id: {
+      lite: [
+        { id: "buy_id_60",   name: "💰 60 UC",   uah: "40 грн",     pln: "5 zł" },
+        { id: "buy_id_325",  name: "💰 325 UC",  uah: "195 грн",    pln: "20 zł" },
+        { id: "buy_id_660",  name: "💰 660 UC",  uah: "385 грн",    pln: "35 zł" }
+      ],
+      medium: [
+        { id: "buy_id_1800",  name: "💰 1800 UC",  uah: "965 грн",    pln: "80 zł" },
+        { id: "buy_id_3850",  name: "💰 3850 UC",  uah: "1 950 грн",  pln: "160 zł" },
+        { id: "buy_id_8100",  name: "💰 8100 UC",  uah: "3 850 грн",  pln: "320 zł" },
+        { id: "buy_id_16200", name: "💰 16200 UC", uah: "7 700 грн",  pln: "630 zł" }
+      ],
+      elite: [
+        { id: "buy_id_24300", name: "💰 24300 UC", uah: "11 600 грн", pln: "945 zł" },
+        { id: "buy_id_32400", name: "💰 32400 UC", uah: "15 450 грн", pln: "1300 zł" },
+        { id: "buy_id_40500", name: "💰 40500 UC", uah: "19 350 грн", pln: "1600 zł" },
+        { id: "buy_id_48600", name: "💰 48600 UC", uah: "23 450 грн", pln: "1900 zł" },
+        { id: "buy_id_81000", name: "💰 81000 UC", uah: "38 500 грн", pln: "3200 zł" }
+      ]
+    },
+    // Прайс по входу / QR
+    entry: {
+      lite: [
+        { id: "buy_entry_1800", name: "💰 1800 UC", uah: "930 грн",   pln: "" },
+        { id: "buy_entry_2300", name: "💰 2300 UC", uah: "1450 грн",  pln: "" },
+        { id: "buy_entry_3850", name: "💰 3850 UC", uah: "1850 грн",  pln: "" },
+        { id: "buy_entry_4500", name: "💰 4500 UC", uah: "2300 грн",  pln: "" },
+        { id: "buy_entry_8100", name: "💰 8100 UC", uah: "3500 грн",  pln: "" },
+        { id: "buy_entry_9500", name: "💰 9500 UC", uah: "4350 грн",  pln: "" }
+      ],
+      medium: [
+        { id: "buy_entry_16200", name: "💰 16200 UC", uah: "6900 грн",  pln: "" },
+        { id: "buy_entry_18100", name: "💰 18100 UC", uah: "8300 грн",  pln: "" },
+        { id: "buy_entry_24300", name: "💰 24300 UC", uah: "10300 грн", pln: "" },
+        { id: "buy_entry_26500", name: "💰 26500 UC", uah: "12100 грн", pln: "" },
+        { id: "buy_entry_32400", name: "💰 32400 UC", uah: "13700 грн", pln: "" },
+        { id: "buy_entry_35500", name: "💰 35500 UC", uah: "15700 грн", pln: "" }
+      ],
+      elite: [
+        { id: "buy_entry_40500", name: "💰 40500 UC", uah: "17000 грн", pln: "" },
+        { id: "buy_entry_43500", name: "💰 43500 UC", uah: "19500 грн", pln: "" },
+        { id: "buy_entry_52100", name: "💰 52100 UC", uah: "24100 грн", pln: "" },
+        { id: "buy_entry_81000", name: "💰 81000 UC", uah: "34000 грн", pln: "" },
+        { id: "buy_entry_86250", name: "💰 86250 UC", uah: "39000 грн", pln: "" }
+      ]
+    }
+  };
+
+  let currentCategory = ""; // 'id' или 'entry'
 
   if (tg) {
     tg.ready();
@@ -894,136 +909,156 @@
   }
 
   function triggerHaptic(type = 'light') {
-    if (tg && tg.HapticFeedback) {
-      tg.HapticFeedback.impactOccurred(type);
-    }
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred(type);
   }
 
   function handleTelegramLink(url) {
     triggerHaptic();
-    if (tg && tg.openTelegramLink) {
-      tg.openTelegramLink(url);
-    } else {
-      window.open(url, '_blank');
-    }
+    if (tg && tg.openTelegramLink) tg.openTelegramLink(url);
+    else window.open(url, '_blank');
   }
 
-  function toggleDropdown(event) {
-    event.stopPropagation();
-    const card = document.getElementById('ucCard');
-    card.classList.toggle('active-dropdown');
+  // Аккордеон UC карточки
+  function toggleUcDropdown() {
     triggerHaptic();
+    document.getElementById('ucCard').classList.toggle('open');
   }
 
-  function forceOpenUcDropdown() {
+  function forceOpenPriceScreen() {
     switchTab('home');
-    const card = document.getElementById('ucCard');
-    card.classList.add('active-dropdown');
-    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    triggerHaptic();
+    showPriceScreen(null, 'entry');
   }
 
   function switchTab(tab) {
     triggerHaptic();
-    const items = document.querySelectorAll('.nav-item');
-    items.forEach(i => i.classList.remove('active'));
-    
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     if (tab === 'home') {
       document.querySelector('.nav-item:nth-child(1)').classList.add('active');
       hidePriceScreen();
     } else if (tab === 'catalog') {
       document.querySelector('.nav-item:nth-child(2)').classList.add('active');
-      showIdScreen(event);
+      showPriceScreen(null, 'entry');
     }
   }
 
-  function showIdScreen(event) {
-    if(event) event.stopPropagation();
+  function showPriceScreen(event, category) {
+    if (event) event.stopPropagation();
     triggerHaptic();
-    document.getElementById('mainHomeScreen').style.display = 'none';
-    document.getElementById('entryPriceScreen').style.display = 'none';
-    document.getElementById('idPriceScreen').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 
-  function showEntryScreen(event) {
-    event.stopPropagation();
-    triggerHaptic();
+    currentCategory = category;
+    isEntryMode = (category === 'entry');
+
     document.getElementById('mainHomeScreen').style.display = 'none';
-    document.getElementById('idPriceScreen').style.display = 'none';
-    document.getElementById('entryPriceScreen').style.display = 'block';
+    document.getElementById('priceScreen').style.display = 'block';
+
+    const titleEl    = document.getElementById('priceScreenTitle');
+    const infoTitle  = document.getElementById('infoCardTitle');
+    const infoText   = document.getElementById('infoCardText');
+    const packTabs   = document.getElementById('packTabs');
+
+    if (category === 'id') {
+      titleEl.innerText = "Прайс по ID";
+      infoTitle.innerText = "🆔 Пополнение по идентификатору";
+      infoText.innerText = "Укажите ваш 10-значный игровой ID. Зачисление: 1–10 минут.";
+      packTabs.style.display = "grid";
+      switchPackCategory('lite');
+    } else if (category === 'entry') {
+      titleEl.innerText = "По входу / QR";
+      infoTitle.innerText = "📱 Инфо по зачислению";
+      infoText.innerHTML = "Пополнение производится только по QR-коду.<br>⚡ Быстрое зачисление — от 5 до 20 минут.";
+      packTabs.style.display = "grid";
+      switchPackCategory('lite');
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function hidePriceScreen() {
-    document.getElementById('idPriceScreen').style.display = 'none';
-    document.getElementById('entryPriceScreen').style.display = 'none';
+    document.getElementById('priceScreen').style.display = 'none';
     document.getElementById('mainHomeScreen').style.display = 'block';
   }
 
-  function parsePriceText(cardElement) {
-    const uahText = cardElement.querySelector('.price-uah') ? cardElement.querySelector('.price-uah').innerText : '';
-    const plnText = cardElement.querySelector('.price-pln') ? ` (${cardElement.querySelector('.price-pln').innerText})` : '';
-    return uahText + plnText;
+  function switchPackCategory(subCat) {
+    triggerHaptic();
+    document.querySelectorAll('.pack-tab-btn').forEach(b => b.classList.remove('tab-active'));
+
+    const tabMap = { lite: 'tabLite', medium: 'tabMedium', elite: 'tabElite' };
+    document.getElementById(tabMap[subCat]).classList.add('tab-active');
+
+    const data = PRODUCTS_DATA[currentCategory];
+    if (data && data[subCat]) {
+      renderProductList(data[subCat]);
+    }
   }
 
-  function openIdModal(event, packId, cardElement) {
-    event.stopPropagation();
+  function renderProductList(products) {
+    const container = document.getElementById('packListContainer');
+    container.innerHTML = "";
+    products.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'uc-price-card';
+      card.onclick = () => openPackModal(prod.id, card);
+      card.innerHTML = `
+        <div class="uc-amount">${prod.name}</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">${prod.uah}</div>
+          ${prod.pln ? `<div class="price-pln">${prod.pln}</div>` : ''}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function openPackModal(packId, cardElement) {
     triggerHaptic();
     currentSelectedPackId = packId;
-    currentSelectedPriceText = parsePriceText(cardElement);
-    isEntryMode = false;
 
-    const input = document.getElementById('playerUidInput');
-    input.value = '';
+    const uahEl = cardElement.querySelector('.price-uah');
+    const plnEl = cardElement.querySelector('.price-pln');
+    currentSelectedPriceText = (uahEl ? uahEl.innerText : '') + (plnEl ? ` (${plnEl.innerText})` : '');
+
+    const inputEl = document.getElementById('playerUidInput');
+    inputEl.value = '';
     document.getElementById('idLengthCounter').innerText = '0 / 10';
     document.getElementById('btnSubmitOrder').classList.remove('valid');
-    
-    document.getElementById('modalStepPayment').classList.remove('step-active');
-    document.getElementById('modalStepId').classList.add('step-active');
-    
-    document.getElementById('idModalOverlay').classList.add('active');
-    setTimeout(() => input.focus(), 100);
-  }
 
-  function openEntryModal(event, packId, cardElement) {
-    event.stopPropagation();
-    triggerHaptic();
-    currentSelectedPackId = packId;
-    currentSelectedPriceText = parsePriceText(cardElement);
-    isEntryMode = true;
+    if (isEntryMode) {
+      // По входу/QR — сразу показываем реквизиты без ввода UID
+      document.getElementById('payBankName').innerText = BANK_NAME;
+      document.getElementById('payCardNumber').innerText = CARD_NUMBER;
+      document.getElementById('payProductCost').innerText = currentSelectedPriceText;
+      document.getElementById('modalStepId').classList.remove('step-active');
+      document.getElementById('modalStepPayment').classList.add('step-active');
+    } else {
+      // По ID — сначала вводим UID
+      document.getElementById('modalStepPayment').classList.remove('step-active');
+      document.getElementById('modalStepId').classList.add('step-active');
+      setTimeout(() => inputEl.focus(), 100);
+    }
 
-    document.getElementById('payBankName').innerText = BANK_NAME;
-    document.getElementById('payCardNumber').innerText = CARD_NUMBER;
-    document.getElementById('payProductCost').innerText = currentSelectedPriceText;
-
-    document.getElementById('modalStepId').classList.remove('step-active');
-    document.getElementById('modalStepPayment').classList.add('step-active');
-    
     document.getElementById('idModalOverlay').classList.add('active');
   }
 
-  document.getElementById('idModalOverlay').addEventListener('click', closeIdModal);
+  document.getElementById('idModalOverlay').addEventListener('click', closeModal);
 
-  function closeIdModal() {
+  function closeModal() {
     triggerHaptic();
     document.getElementById('idModalOverlay').classList.remove('active');
     currentSelectedPackId = null;
   }
 
   function validatePlayerId(input) {
-    input.value = input.value.replace(/\D/g, ''); 
+    input.value = input.value.replace(/\D/g, '');
     const len = input.value.length;
     document.getElementById('idLengthCounter').innerText = `${len} / 10`;
-    
-    const submitBtn = document.getElementById('btnSubmitOrder');
+    const btn = document.getElementById('btnSubmitOrder');
     if (len === 10) {
-      if (!submitBtn.classList.contains('valid')) {
-        if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      if (!btn.classList.contains('valid') && tg && tg.HapticFeedback) {
+        tg.HapticFeedback.notificationOccurred('success');
       }
-      submitBtn.classList.add('valid');
+      btn.classList.add('valid');
     } else {
-      submitBtn.classList.remove('valid');
+      btn.classList.remove('valid');
     }
   }
 
@@ -1032,7 +1067,6 @@
     if (userId.length !== 10) return;
 
     triggerHaptic();
-
     document.getElementById('payBankName').innerText = BANK_NAME;
     document.getElementById('payCardNumber').innerText = CARD_NUMBER;
     document.getElementById('payProductCost').innerText = currentSelectedPriceText;
@@ -1042,29 +1076,21 @@
   }
 
   function submitFinalOrder() {
-    if (tg && tg.HapticFeedback) {
-      tg.HapticFeedback.notificationOccurred('success');
-    }
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
     let actionString = "";
     if (isEntryMode) {
-      console.log(`Заявка создана! ID товара: ${currentSelectedPackId}, Способ: По входу/QR, Статус: Оплачено`);
       actionString = `${currentSelectedPackId}_status_paid`;
+      console.log(`Заявка: ${currentSelectedPackId}, Способ: По входу/QR, Статус: Оплачено`);
     } else {
       const userId = document.getElementById('playerUidInput').value;
-      console.log(`Заявка создана! ID товара: ${currentSelectedPackId}, UID игрока: ${userId}, Статус: Оплачено`);
       actionString = `${currentSelectedPackId}_uid_${userId}_status_paid`;
+      console.log(`Заявка: ${currentSelectedPackId}, UID: ${userId}, Статус: Оплачено`);
     }
-    
-    document.getElementById('idModalOverlay').classList.remove('active');
-    handleNav(actionString);
-  }
 
-  function handleNav(section) {
-    triggerHaptic();
-    console.log('Navigate or action triggered:', section);
-    if(tg && tg.sendData) {
-      tg.sendData(section);
+    document.getElementById('idModalOverlay').classList.remove('active');
+    if (tg && tg.sendData) {
+      tg.sendData(actionString);
     }
   }
 </script>
