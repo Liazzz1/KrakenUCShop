@@ -11,21 +11,15 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0a0a12;
-    --bg2: #10101e;
-    --bg3: #16162a;
-    --card: #13132280;
-    --card-border: #ffffff0f;
+    --bg: #070710;
+    --card: rgba(19, 19, 34, 0.65);
+    --card-border: rgba(255, 255, 255, 0.07);
     --purple1: #7c3aed;
     --purple2: #a855f7;
     --purple3: #c084fc;
     --purple4: #e879f9;
-    --accent: #6d28d9;
-    --gold: #f59e0b;
     --text: #f1f0f7;
-    --text2: #9d9ab8;
     --text3: #6b6888;
-    --glow: 0 0 30px #7c3aed55;
     --radius: 16px;
   }
 
@@ -35,50 +29,72 @@
     font-family: 'Mulish', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
   }
 
-  /* Background stars */
+  /* Текстура шума на весь экран */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 20% 30%, #ffffff22 0%, transparent 100%),
-      radial-gradient(1px 1px at 80% 10%, #ffffff1a 0%, transparent 100%),
-      radial-gradient(1.5px 1.5px at 50% 60%, #a855f722 0%, transparent 100%),
-      radial-gradient(1px 1px at 10% 80%, #ffffff18 0%, transparent 100%),
-      radial-gradient(2px 2px at 90% 70%, #7c3aed22 0%, transparent 100%),
-      radial-gradient(1px 1px at 35% 90%, #ffffff15 0%, transparent 100%),
-      radial-gradient(1px 1px at 70% 40%, #c084fc1a 0%, transparent 100%);
+    opacity: 0.015;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
   }
 
-  /* Top gradient blob */
-  body::after {
-    content: '';
+  /* Анимированные туманности */
+  .bg-glow-container {
     position: fixed;
-    top: -120px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(circle, #7c3aed44 0%, #a855f722 40%, transparent 70%);
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     pointer-events: none;
     z-index: 0;
   }
 
+  .bg-blob-1 {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    max-width: 600px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%);
+    animation: drift-smooth 25s infinite alternate ease-in-out;
+  }
+
+  .bg-blob-2 {
+    position: absolute;
+    bottom: -10%;
+    right: -10%;
+    width: 55vw;
+    height: 55vw;
+    max-width: 700px;
+    background: radial-gradient(circle, rgba(232, 121, 249, 0.18) 0%, transparent 70%);
+    animation: drift-smooth 30s infinite alternate-reverse ease-in-out;
+  }
+
+  @keyframes drift-smooth {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(30px) scale(1.1); }
+    100% { transform: translateY(-20px) scale(0.95); }
+  }
+
+  /* ГЛАВНОЕ ИЗМЕНЕНИЕ: Контейнер теперь резиновый */
   .container {
     position: relative;
-    z-index: 1;
-    max-width: 480px;
+    z-index: 2;
+    max-width: 1200px; /* Расширяем максимальную ширину для больших экранов */
+    width: 100%;
     margin: 0 auto;
     padding: 0 0 40px;
   }
 
   /* Header */
   .header {
-    padding: 28px 20px 20px;
+    padding: 35px 20px 20px;
     text-align: center;
     position: relative;
   }
@@ -87,8 +103,8 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: linear-gradient(135deg, #7c3aed22, #a855f722);
-    border: 1px solid #7c3aed44;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(168, 85, 247, 0.15));
+    border: 1px solid rgba(124, 58, 237, 0.3);
     border-radius: 100px;
     padding: 4px 14px;
     font-size: 11px;
@@ -114,7 +130,7 @@
 
   .header h1 {
     font-family: 'Unbounded', sans-serif;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 900;
     background: linear-gradient(135deg, #fff 0%, #c084fc 50%, #e879f9 100%);
     -webkit-background-clip: text;
@@ -130,19 +146,31 @@
     font-weight: 500;
   }
 
-  /* Decorative line */
   .divider {
     height: 1px;
     margin: 4px 20px 24px;
-    background: linear-gradient(90deg, transparent, #7c3aed55, #a855f755, transparent);
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.35), rgba(168, 85, 247, 0.35), transparent);
   }
 
-  /* Categories grid */
+  /* ГЛАВНОЕ ИЗМЕНЕНИЕ: Делаем адаптивную сетку через Grid */
   .categories {
     padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: 1fr; /* По дефолту на мобилках в 1 колонку */
+    gap: 10px;
+  }
+
+  /* Адаптивные брейкпоинты для мониторов и планшетов */
+  @media (min-width: 600px) {
+    .categories {
+      grid-template-columns: repeat(2, 1fr); /* На планшетах в 2 колонки */
+    }
+  }
+
+  @media (min-width: 950px) {
+    .categories {
+      grid-template-columns: repeat(3, 1fr); /* На больших ПК в 3 колонки */
+    }
   }
 
   /* Category card */
@@ -153,42 +181,41 @@
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
-    padding: 14px 16px;
+    padding: 16px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     text-decoration: none;
     color: inherit;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   .cat-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, var(--clr1, #7c3aed)15, var(--clr2, #a855f7)05);
+    background: linear-gradient(135deg, var(--clr1, #7c3aed) 15%, var(--clr2, #a855f7) 5%);
     opacity: 0;
     transition: opacity 0.22s;
   }
 
-  .cat-card:active::before,
   .cat-card:hover::before {
     opacity: 1;
   }
 
   .cat-card:active {
     transform: scale(0.97);
-    border-color: var(--clr1, #7c3aed)55;
+    border-color: rgba(124, 58, 237, 0.4);
   }
 
   .cat-card:hover {
-    border-color: var(--clr1, #7c3aed)44;
-    box-shadow: 0 4px 20px var(--clr1, #7c3aed)22;
+    border-color: rgba(124, 58, 237, 0.25);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.15);
   }
 
-  /* Left accent bar */
   .cat-card::after {
     content: '';
     position: absolute;
@@ -200,8 +227,7 @@
     transition: opacity 0.22s;
   }
 
-  .cat-card:hover::after,
-  .cat-card:active::after {
+  .cat-card:hover::after {
     opacity: 1;
   }
 
@@ -214,8 +240,8 @@
     justify-content: center;
     flex-shrink: 0;
     font-size: 22px;
-    background: linear-gradient(135deg, var(--clr1, #7c3aed)30, var(--clr2, #a855f7)20);
-    border: 1px solid var(--clr1, #7c3aed)30;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 30%, rgba(168, 85, 247, 0.1) 20%);
+    border: 1px solid rgba(124, 58, 237, 0.2);
     position: relative;
     z-index: 1;
   }
@@ -247,6 +273,37 @@
     text-overflow: ellipsis;
   }
 
+  /* Плашки уведомлений */
+  .cat-badge {
+    flex-shrink: 0;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 100px;
+    position: relative;
+    z-index: 1;
+    margin-right: 4px;
+  }
+
+  .badge-new {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
+  }
+
+  .badge-hot {
+    background: linear-gradient(135deg, #dc2626, #f59e0b);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.5);
+  }
+
+  .badge-pro {
+    background: linear-gradient(135deg, #f59e0b, #fcd34d);
+    color: #78350f;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+  }
+
   .arrow-icon {
     font-size: 18px;
     color: var(--text3);
@@ -272,6 +329,12 @@
 </style>
 </head>
 <body>
+
+<div class="bg-glow-container">
+  <div class="bg-blob-1"></div>
+  <div class="bg-blob-2"></div>
+</div>
+
 <div class="container">
 
   <div class="header">
@@ -283,7 +346,7 @@
 
   <div class="categories" id="catList">
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.05s" onclick="openLink('https://t.me/kraken_shop_U_C/176')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.05s" onclick="handleNav('price-id')">
       <div class="cat-icon-wrap">💰</div>
       <div class="cat-info">
         <div class="cat-name">Актуальный прайс по ID</div>
@@ -292,7 +355,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.10s" onclick="openLink('https://t.me/kraken_shop_U_C/222')">
+    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.10s" onclick="handleNav('price-entry')">
       <div class="cat-icon-wrap">🎯</div>
       <div class="cat-info">
         <div class="cat-name">Актуальный прайс по входу</div>
@@ -301,7 +364,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.15s" onclick="openLink('https://t.me/kraken_shop_U_C/187')">
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.15s" onclick="handleNav('boss')">
       <div class="cat-icon-wrap">⚔️</div>
       <div class="cat-info">
         <div class="cat-name">Грозовой вершитель</div>
@@ -310,7 +373,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.20s" onclick="openLink('https://t.me/kraken_shop_U_C/111')">
+    <div class="cat-card" style="--clr1:#9333ea;--clr2:#e879f9;animation-delay:0.20s" onclick="handleNav('prime')">
       <div class="cat-icon-wrap">💎</div>
       <div class="cat-info">
         <div class="cat-name">Prime и Prime Plus</div>
@@ -319,7 +382,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.25s" onclick="openLink('https://t.me/kraken_shop_U_C/182')">
+    <div class="cat-card" style="--clr1:#7e22ce;--clr2:#a21caf;animation-delay:0.25s" onclick="handleNav('xsuit')">
       <div class="cat-icon-wrap">🧥</div>
       <div class="cat-info">
         <div class="cat-name">X — Костюм</div>
@@ -328,7 +391,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.30s" onclick="openLink('https://t.me/kraken_shop_U_C/189')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#c026d3;animation-delay:0.30s" onclick="handleNav('popularity')">
       <div class="cat-icon-wrap">📈</div>
       <div class="cat-info">
         <div class="cat-name">Популярность</div>
@@ -337,7 +400,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.35s" onclick="openLink('https://t.me/kraken_shop_U_C/31')">
+    <div class="cat-card" style="--clr1:#6d28d9;--clr2:#7c3aed;animation-delay:0.35s" onclick="handleNav('reward')">
       <div class="cat-icon-wrap">🎁</div>
       <div class="cat-info">
         <div class="cat-name">Награда за покупку</div>
@@ -346,7 +409,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.40s" onclick="openLink('https://t.me/kraken_shop_U_C/98')">
+    <div class="cat-card" style="--clr1:#5b21b6;--clr2:#8b5cf6;animation-delay:0.40s" onclick="handleNav('collab')">
       <div class="cat-icon-wrap">🤝</div>
       <div class="cat-info">
         <div class="cat-name">Сотрудничество</div>
@@ -355,7 +418,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.45s" onclick="openLink('https://t.me/kraken_shop_U_C/112')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#a855f7;animation-delay:0.45s" onclick="handleNav('ads')">
       <div class="cat-icon-wrap">📢</div>
       <div class="cat-info">
         <div class="cat-name">Реклама</div>
@@ -364,7 +427,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.50s" onclick="openLink('https://t.me/kraken_shop_uc')">
+    <div class="cat-card" style="--clr1:#8b5cf6;--clr2:#c084fc;animation-delay:0.50s" onclick="handleNav('reviews')">
       <div class="cat-icon-wrap">⭐</div>
       <div class="cat-info">
         <div class="cat-name">Отзывы</div>
@@ -373,7 +436,7 @@
       <span class="arrow-icon">›</span>
     </div>
 
-    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.55s" onclick="openLink('https://t.me/kraken_shop_U_C/185')">
+    <div class="cat-card" style="--clr1:#7c3aed;--clr2:#e879f9;animation-delay:0.55s" onclick="handleNav('clans')">
       <div class="cat-icon-wrap">🏆</div>
       <div class="cat-info">
         <div class="cat-name">Кланы</div>
@@ -386,31 +449,17 @@
 </div>
 
 <script>
-  // Инициализация Telegram WebApp
-  const tg = window.Telegram ? window.Telegram.WebApp : null;
-
-  if (tg) {
-    tg.ready();
-    tg.expand();
-    tg.setHeaderColor('#0a0a12');
-    tg.setBackgroundColor('#0a0a12');
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.expand();
+    window.Telegram.WebApp.setHeaderColor('#070710');
+    window.Telegram.WebApp.setBackgroundColor('#070710');
   }
 
-  // Функция для открытия ссылок
-  function openLink(url) {
-    if (tg && tg.HapticFeedback) {
-      tg.HapticFeedback.impactOccurred('light');
+  function handleNav(section) {
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
-
-    if (tg) {
-      if (url.includes('t.me/')) {
-        tg.openTelegramLink(url);
-      } else {
-        tg.openLink(url);
-      }
-    } else {
-      window.open(url, '_blank');
-    }
+    console.log('Navigate to:', section);
   }
 </script>
 </body>
