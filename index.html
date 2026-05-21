@@ -166,6 +166,112 @@
     text-transform: uppercase;
   }
 
+
+  /* ========== БОКОВОЕ МЕНЮ ========== */
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .sidebar-overlay.open { opacity: 1; pointer-events: all; }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: #0d0d14;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    z-index: 201;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 24px 0;
+    overflow-y: auto;
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .sidebar-header {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar-logo {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+  .sidebar-logo span { color: var(--red-accent); }
+
+  .sidebar-close {
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--text2);
+  }
+
+  .sidebar-section-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 20px 20px 8px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+    text-decoration: none;
+  }
+  .sidebar-item:active { background: rgba(255,255,255,0.04); }
+
+  .sidebar-item-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .icon-blue { background: rgba(34,158,217,0.12); }
+  .icon-green { background: rgba(16,185,129,0.12); }
+  .icon-purple { background: rgba(139,92,246,0.12); }
+
+  .sidebar-item-info { display: flex; flex-direction: column; gap: 2px; }
+  .sidebar-item-name { font-size: 13px; font-weight: 700; color: #fff; }
+  .sidebar-item-desc { font-size: 10px; color: var(--text3); }
+
+  .sidebar-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.05);
+    margin: 8px 20px;
+  }
+
   /* ========== ГЛАВНАЯ СЕТКА КАТЕГОРИЙ ========== */
   .main-categories-grid {
     display: grid;
@@ -706,11 +812,49 @@
 </head>
 <body>
 
+<!-- БОКОВОЕ МЕНЮ -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">🐙 KRAKEN<span>.</span></div>
+    <div class="sidebar-close" onclick="closeSidebar()">✕</div>
+  </div>
+
+  <div class="sidebar-section-label">Менеджеры</div>
+
+  <div class="sidebar-item" onclick="handleTelegramLink('https://t.me/KrAkeNn1n')">
+    <div class="sidebar-item-icon icon-blue">👤</div>
+    <div class="sidebar-item-info">
+      <div class="sidebar-item-name">Менеджер 1</div>
+      <div class="sidebar-item-desc">@KrAkeNn1n</div>
+    </div>
+  </div>
+
+  <div class="sidebar-item" onclick="handleTelegramLink('https://t.me/shktasya')">
+    <div class="sidebar-item-icon icon-blue">👤</div>
+    <div class="sidebar-item-info">
+      <div class="sidebar-item-name">Менеджер 2</div>
+      <div class="sidebar-item-desc">@shktasya</div>
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Техническая поддержка</div>
+
+  <div class="sidebar-item" onclick="handleTelegramLink('https://t.me/liazrobo')">
+    <div class="sidebar-item-icon icon-green">🛠</div>
+    <div class="sidebar-item-info">
+      <div class="sidebar-item-name">Тех. поддержка</div>
+      <div class="sidebar-item-desc">@liazrobo</div>
+    </div>
+  </div>
+</div>
+
 <div class="container">
 
   <!-- Топ-бар (без кнопки профиля) -->
   <div class="top-app-bar">
-    <div class="top-bar-btn">☰</div>
+    <div class="top-bar-btn" onclick="openSidebar()">☰</div>
     <div class="brand-logo">🐙 KRAKEN<span>.</span></div>
     <div style="width:40px"></div>
   </div>
@@ -1125,6 +1269,16 @@
     tg.setBackgroundColor('#08080c');
   }
 
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('open');
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+  }
+
   function triggerHaptic(type = 'light') {
     if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred(type);
   }
@@ -1481,7 +1635,7 @@
   // ========== ОТПРАВКА ЗАКАЗА НАПРЯМУЮ В TELEGRAM API ==========
   async function sendOrderToBot(data) {
     const BOT_TOKEN = '8601701792:AAFt5mgc4eyxYya1_xSzmDWWi2FJ621JyI0';
-    const ADMIN_ID  = '853187215';
+    const ADMIN_IDS = ['853187215', '401742776', '7184797012'];
 
     const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
     const buyerName = user ? (user.username ? '@' + user.username : user.first_name) : 'неизвестен';
@@ -1518,12 +1672,14 @@
       `✅ Оплата получена — обрабатываем заказ.\nМы свяжемся с вами в ближайшее время!`;
 
     try {
-      // Отправляем уведомление админу
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: ADMIN_ID, text: adminText })
-      });
+      // Отправляем уведомление всем админам
+      for (const adminId of ADMIN_IDS) {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: adminId, text: adminText })
+        });
+      }
 
       // Отправляем подтверждение клиенту
       if (buyerId && buyerId !== '—') {
