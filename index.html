@@ -1315,7 +1315,22 @@
     });
 
     document.getElementById('idModalOverlay').classList.remove('active');
-    if (tg && tg.sendData) tg.sendData(payload);
+
+    // DEBUG
+    if (!window.Telegram || !window.Telegram.WebApp) {
+      alert('❌ Telegram WebApp недоступен — открой через кнопку бота в чате!');
+      return;
+    }
+    if (!tg) {
+      alert('❌ tg = null');
+      return;
+    }
+    if (!tg.sendData) {
+      alert('❌ tg.sendData недоступен. initData: ' + (tg.initData || 'пусто'));
+      return;
+    }
+    alert('✅ Отправляю данные боту...');
+    tg.sendData(payload);
   }
 
   // ========== TELEGRAM STARS ==========
@@ -1475,7 +1490,13 @@
     });
 
     document.getElementById('starsModalOverlay').classList.remove('active');
-    if (tg && tg.sendData) tg.sendData(payload);
+
+    if (!window.Telegram || !window.Telegram.WebApp || !tg || !tg.sendData) {
+      alert('❌ Telegram WebApp недоступен — открой через кнопку бота в чате!');
+      return;
+    }
+    alert('✅ Отправляю данные боту...');
+    tg.sendData(payload);
   }
 </script>
 </body>
