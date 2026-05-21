@@ -2227,29 +2227,21 @@
         });
       }
 
-      // Отправляем подтверждение клиенту
+      // Подтверждение клиенту отправляет БОТ через handle_notify_client
+      // (фронтенд не дублирует сообщение клиенту)
+
+      saveOrderToHistory(data);
+      // Отправляем __NOTIFY_CLIENT__ боту через личку клиента.
+      // Бот получит сообщение, сохранит pending и попросит квитанцию.
       if (buyerId && buyerId !== '—') {
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: buyerId, text: clientText })
+          body: JSON.stringify({
+            chat_id: buyerId,
+            text: `__NOTIFY_CLIENT__:${buyerId}:${data.order_id}`
+          })
         });
-      }
-
-      saveOrderToHistory(data);
-      // Уведомляем всех админов напрямую
-      // Бот сам напишет клиенту и сохранит pending через __NOTIFY_CLIENT__
-      if (buyerId && buyerId !== '—') {
-        for (const adminId of ADMIN_IDS) {
-          fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: adminId,
-              text: `__NOTIFY_CLIENT__:${buyerId}:${data.order_id}`
-            })
-          });
-        }
       }
       tg && tg.showAlert('✅ Заказ принят! Бот отправит вам запрос на квитанцию.');
     } catch (e) {
