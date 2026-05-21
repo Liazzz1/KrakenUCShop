@@ -1315,22 +1315,7 @@
     });
 
     document.getElementById('idModalOverlay').classList.remove('active');
-
-    // DEBUG
-    if (!window.Telegram || !window.Telegram.WebApp) {
-      alert('❌ Telegram WebApp недоступен — открой через кнопку бота в чате!');
-      return;
-    }
-    if (!tg) {
-      alert('❌ tg = null');
-      return;
-    }
-    if (!tg.sendData) {
-      alert('❌ tg.sendData недоступен. initData: ' + (tg.initData || 'пусто'));
-      return;
-    }
-    alert('✅ Отправляю данные боту...');
-    tg.sendData(payload);
+    sendOrderToBot(JSON.parse(payload));
   }
 
   // ========== TELEGRAM STARS ==========
@@ -1490,13 +1475,69 @@
     });
 
     document.getElementById('starsModalOverlay').classList.remove('active');
+    sendOrderToBot(JSON.parse(payload));
+  }
 
-    if (!window.Telegram || !window.Telegram.WebApp || !tg || !tg.sendData) {
-      alert('❌ Telegram WebApp недоступен — открой через кнопку бота в чате!');
-      return;
+  // ========== ОТПРАВКА ЗАКАЗА НАПРЯМУЮ В TELEGRAM API ==========
+  async function sendOrderToBot(data) {
+    const BOT_TOKEN = '8601701792:AAFt5mgc4eyxYya1_xSzmDWWi2FJ621JyI0';
+    const ADMIN_ID  = '853187215';
+
+    const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+    const buyerName = user ? (user.username ? '@' + user.username : user.first_name) : 'неизвестен';
+    const buyerId   = user ? user.id : '—';
+
+    let extra = '';
+    if (data.type === 'PUBG UC') {
+      extra = `🎮 Метод: ${data.method || '—'}\n` + (data.uid ? `🆔 Game ID: ${data.uid}\n` : '');
+    } else if (data.type === 'Telegram Stars') {
+      extra = `📲 TG Username: ${data.username || '—'}\n`;
     }
-    alert('✅ Отправляю данные боту...');
-    tg.sendData(payload);
+
+    const adminText =
+      `🔔 НОВЫЙ ЗАКАЗ\n` +
+      `${'─'.repeat(28)}\n` +
+      `🔑 № Заказа: ${data.order_id}\n` +
+      `📦 Тип: ${data.type}\n` +
+      `🛍 Товар: ${data.item}\n` +
+      extra +
+      `💰 Сумма: ${data.price}\n` +
+      `👤 Покупатель: ${buyerName} (${buyerId})\n` +
+      `${'─'.repeat(28)}\n` +
+      `✅ Статус: Ожидает выполнения`;
+
+    const clientText =
+      `🧾 ВАШ ЗАКАЗ ПРИНЯТ\n` +
+      `${'─'.repeat(28)}\n` +
+      `🔑 № Заказа: ${data.order_id}\n` +
+      `📦 Тип: ${data.type}\n` +
+      `🛍 Товар: ${data.item}\n` +
+      extra +
+      `💰 Сумма: ${data.price}\n` +
+      `${'─'.repeat(28)}\n` +
+      `✅ Оплата получена — обрабатываем заказ.\nМы свяжемся с вами в ближайшее время!`;
+
+    try {
+      // Отправляем уведомление админу
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: ADMIN_ID, text: adminText })
+      });
+
+      // Отправляем подтверждение клиенту
+      if (buyerId && buyerId !== '—') {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: buyerId, text: clientText })
+        });
+      }
+
+      tg && tg.showAlert('✅ Заказ принят! Мы свяжемся с вами в ближайшее время.');
+    } catch (e) {
+      tg && tg.showAlert('⚠️ Ошибка отправки заказа: ' + e.message);
+    }
   }
 </script>
 </body>
