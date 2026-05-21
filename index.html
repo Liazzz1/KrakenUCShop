@@ -2199,31 +2199,22 @@
       }
 
       saveOrderToHistory(data);
-      // Регистрируем ожидание квитанции: СНАЧАЛА pending, потом сообщение
+      saveOrderToHistory(data);
+      // Уведомляем всех админов напрямую
+      // Бот сам напишет клиенту и сохранит pending через __NOTIFY_CLIENT__
       if (buyerId && buyerId !== '—') {
-        // Шаг 1: служебное — бот сохраняет order_id ДО того как клиент увидит запрос
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: buyerId,
-            text: `__PENDING_RECEIPT__:${data.order_id}`
-          })
-        });
-        // Пауза 1 сек — бот успевает обработать и сохранить pending
-        await new Promise(r => setTimeout(r, 1000));
-        // Шаг 2: видимое сообщение клиенту с просьбой прислать квитанцию
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: buyerId,
-            text: `✅ Заказ <b>№${data.order_id}</b> принят!\n\nОтправьте сюда <b>скриншот квитанции об оплате</b> для подтверждения.`,
-            parse_mode: 'HTML'
-          })
-        });
+        for (const adminId of ADMIN_IDS) {
+          fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: adminId,
+              text: `__NOTIFY_CLIENT__:${buyerId}:${data.order_id}`
+            })
+          });
+        }
       }
-      tg && tg.showAlert('✅ Заказ принят! Отправьте квитанцию об оплате боту.');
+      tg && tg.showAlert('✅ Заказ принят! Бот отправит вам запрос на квитанцию.');
     } catch (e) {
       tg && tg.showAlert('⚠️ Ошибка отправки заказа: ' + e.message);
     }
