@@ -18,6 +18,12 @@
     --card-border: rgba(255, 255, 255, 0.05);
     --red-accent: #ff2a2a;
     --red-glow: rgba(255, 42, 42, 0.15);
+    --blue-accent: #229ED9;
+    --blue-glow: rgba(34, 158, 217, 0.15);
+    --purple-accent: #8B5CF6;
+    --purple-glow: rgba(139, 92, 246, 0.15);
+    --gold-accent: #F59E0B;
+    --gold-glow: rgba(245, 158, 11, 0.15);
     --text: #ffffff;
     --text2: #9ca3af;
     --text3: #4b5563;
@@ -160,113 +166,101 @@
     text-transform: uppercase;
   }
 
-  /* Сетка главных категорий */
-  .categories-grid {
+  /* ========== ГЛАВНАЯ СЕТКА КАТЕГОРИЙ ========== */
+  .main-categories-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 24px;
   }
 
-  .categories-grid .cat-card-uc {
+  /* Карточка PUBG — на всю ширину */
+  .main-cat-card-pubg {
     grid-column: span 2;
   }
 
-  /* Карточки категорий (grid-style из indexc2) */
-  .cat-card {
+  /* Базовая карточка главной категории */
+  .main-cat-card {
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 110px;
-    position: relative;
+    overflow: hidden;
     cursor: pointer;
     transition: all 0.2s ease;
+    position: relative;
   }
 
-  .cat-card:active {
-    transform: scale(0.98);
-    border-color: rgba(255, 42, 42, 0.3);
-  }
+  .main-cat-card:active { transform: scale(0.98); }
 
-  .cat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-  }
-
-  .cat-card-title {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  /* Первая большая карточка UC */
-  .cat-card-uc .cat-card-title {
-    color: var(--red-accent);
-    font-size: 15px;
-  }
-
-  /* Аккордеон внутри UC карточки */
-  .cat-card-uc {
-    min-height: unset;
-    padding: 0;
-  }
-
-  .cat-card-uc-trigger {
+  /* --- PUBG плитка --- */
+  .pubg-card-trigger {
     display: flex;
     align-items: center;
     gap: 14px;
     padding: 16px;
     cursor: pointer;
     justify-content: space-between;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.22s;
+  }
+  .main-cat-card.open .pubg-card-trigger {
+    border-bottom-color: var(--card-border);
   }
 
-  .uc-trigger-left {
+  .pubg-trigger-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
-
-  .uc-trigger-icon {
-    font-size: 22px;
+  .pubg-trigger-icon { font-size: 24px; }
+  .pubg-trigger-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--red-accent);
+    display: block;
+    margin-bottom: 2px;
   }
+  .pubg-trigger-desc { font-size: 11px; color: var(--text2); }
 
-  .uc-trigger-text .cat-card-title { margin-bottom: 2px; }
-  .uc-trigger-text .cat-card-desc {
-    font-size: 11px;
-    color: var(--text2);
-  }
-
-  .uc-arrow {
-    font-size: 18px;
+  .pubg-arrow {
+    font-size: 20px;
     color: var(--text3);
     transition: transform 0.22s;
     flex-shrink: 0;
   }
+  .main-cat-card.open .pubg-arrow { transform: rotate(90deg); color: var(--red-accent); }
 
-  .cat-card-uc.open .uc-arrow { transform: rotate(90deg); color: var(--red-accent); }
-
-  .uc-dropdown {
+  /* Дропдаун PUBG с вложенными подкатегориями */
+  .pubg-dropdown {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+    transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
     opacity: 0;
-    padding: 0 12px;
+  }
+  .main-cat-card.open .pubg-dropdown {
+    max-height: 600px;
+    opacity: 1;
+  }
+
+  .pubg-dropdown-inner {
+    padding: 10px 12px 14px;
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
 
-  .cat-card-uc.open .uc-dropdown {
-    max-height: 160px;
-    opacity: 1;
-    padding-bottom: 12px;
+  /* Секции прайсов внутри PUBG */
+  .pubg-section-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 6px;
+    margin-bottom: 4px;
+    padding-left: 4px;
   }
 
   .sub-btn {
@@ -286,14 +280,65 @@
   .sub-btn-desc { font-size: 10px; color: var(--text3); }
   .sub-arrow { font-size: 16px; color: var(--text3); }
 
-  .cat-card-desc {
-    font-size: 11px;
-    color: var(--text2);
-    line-height: 1.4;
-    margin-top: 4px;
+  /* --- Telegram Stars плитка --- */
+  .tg-stars-card {
+    border-color: rgba(34, 158, 217, 0.15);
+    background: linear-gradient(145deg, #101018 0%, #0d0f18 100%);
+  }
+  .tg-stars-card:active { border-color: rgba(34, 158, 217, 0.3); }
+
+  /* --- NFT плитка --- */
+  .nft-card {
+    border-color: rgba(139, 92, 246, 0.15);
+    background: linear-gradient(145deg, #101018 0%, #0e0d18 100%);
+  }
+  .nft-card:active { border-color: rgba(139, 92, 246, 0.3); }
+
+  /* --- Отзывы плитка --- */
+  .reviews-card {
+    border-color: rgba(245, 158, 11, 0.15);
+    background: linear-gradient(145deg, #101018 0%, #110e08 100%);
+  }
+  .reviews-card:active { border-color: rgba(245, 158, 11, 0.3); }
+
+  /* Внутренность маленьких плиток */
+  .small-card-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 130px;
   }
 
-  .cat-arrow-btn {
+  .small-card-top {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .small-card-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .small-card-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .tg-stars-card .small-card-title { color: var(--blue-accent); }
+  .nft-card .small-card-title { color: var(--purple-accent); }
+  .reviews-card .small-card-title { color: var(--gold-accent); }
+
+  .small-card-desc {
+    font-size: 10px;
+    color: var(--text2);
+    line-height: 1.4;
+  }
+
+  .small-card-arrow {
     width: 26px;
     height: 26px;
     background: rgba(255, 255, 255, 0.03);
@@ -304,11 +349,42 @@
     justify-content: center;
     color: var(--text2);
     font-size: 14px;
+    align-self: flex-end;
+  }
+  .tg-stars-card .small-card-arrow { border-color: rgba(34, 158, 217, 0.2); }
+  .nft-card .small-card-arrow { border-color: rgba(139, 92, 246, 0.2); }
+  .reviews-card .small-card-arrow { border-color: rgba(245, 158, 11, 0.2); }
+
+  /* Декоративный глоу на маленьких карточках */
+  .tg-stars-card::after {
+    content: '★';
     position: absolute;
-    bottom: 14px;
-    right: 14px;
+    right: -6px;
+    bottom: -14px;
+    font-size: 70px;
+    color: rgba(34, 158, 217, 0.04);
+    pointer-events: none;
+  }
+  .nft-card::after {
+    content: '◆';
+    position: absolute;
+    right: -4px;
+    bottom: -14px;
+    font-size: 70px;
+    color: rgba(139, 92, 246, 0.04);
+    pointer-events: none;
+  }
+  .reviews-card::after {
+    content: '⭐';
+    position: absolute;
+    right: -4px;
+    bottom: -14px;
+    font-size: 60px;
+    color: rgba(245, 158, 11, 0.04);
+    pointer-events: none;
   }
 
+  /* Why us */
   .why-us-box {
     background: var(--card);
     border: 1px solid var(--card-border);
@@ -340,7 +416,7 @@
   .why-texts .why-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 2px; }
   .why-texts .why-desc { font-size: 10px; color: var(--text3); line-height: 1.3; }
 
-  /* ЭКРАН ПРАЙСОВ */
+  /* ========== ЭКРАН ПРАЙСОВ ========== */
   .price-screen {
     display: none;
     animation: fadeIn 0.3s ease both;
@@ -385,7 +461,6 @@
     margin-bottom: 4px;
   }
 
-  /* Вкладки LITE / MEDIUM / ELITE */
   .pack-tabs-container {
     display: none;
     grid-template-columns: repeat(3, 1fr);
@@ -449,7 +524,7 @@
   .price-uah { font-size: 14px; font-weight: 800; color: #fff; }
   .price-pln { font-size: 10px; color: var(--text3); margin-top: 1px; }
 
-  /* НИЖНЯЯ НАВИГАЦИЯ */
+  /* ========== НИЖНЯЯ НАВИГАЦИЯ (4 пункта, без профиля) ========== */
   .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -496,7 +571,7 @@
     box-shadow: 0 4px 15px rgba(255, 42, 42, 0.3);
   }
 
-  /* МОДАЛЬНОЕ ОКНО */
+  /* ========== МОДАЛЬНОЕ ОКНО ========== */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -593,16 +668,51 @@
   .btn-next:active, .btn-paid:active { transform: scale(0.98); }
   .btn-cancel { font-size: 12px; font-weight: 600; color: var(--text3); background: transparent; border: none; padding: 8px; cursor: pointer; }
   .btn-cancel:hover { color: var(--text2); }
+
+  /* Stars tabs — синий акцент */
+  .pack-tab-btn.stars-tab.tab-active {
+    background: rgba(34, 158, 217, 0.12);
+    border-color: var(--blue-accent);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(34, 158, 217, 0.15);
+  }
+
+  /* Stars price card */
+  .stars-price-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .stars-price-card:active {
+    transform: scale(0.99);
+    border-color: rgba(34, 158, 217, 0.3);
+  }
+  .stars-amount {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue-accent);
+  }
 </style>
 </head>
 <body>
 
 <div class="container">
 
+  <!-- Топ-бар (без кнопки профиля) -->
   <div class="top-app-bar">
     <div class="top-bar-btn">☰</div>
     <div class="brand-logo">🐙 KRAKEN<span>.</span></div>
-    <div class="top-bar-btn">👤</div>
+    <div style="width:40px"></div>
   </div>
 
   <!-- ГЛАВНЫЙ ЭКРАН -->
@@ -615,108 +725,134 @@
     </div>
 
     <div class="section-title" id="categoriesSection">Категории</div>
-    <div class="categories-grid">
+    <div class="main-categories-grid">
 
-      <!-- Пополнение UC — с аккордеоном (по ID / по входу) -->
-      <div class="cat-card cat-card-uc" id="ucCard">
-        <div class="cat-card-uc-trigger" onclick="toggleUcDropdown()">
-          <div class="uc-trigger-left">
-            <span class="uc-trigger-icon">💰</span>
-            <div class="uc-trigger-text">
-              <div class="cat-card-title">Пополнение UC</div>
-              <div class="cat-card-desc">Варианты зачисления на аккаунт</div>
-            </div>
-          </div>
-          <span class="uc-arrow">›</span>
-        </div>
-        <div class="uc-dropdown">
-          <div class="sub-btn" onclick="showPriceScreen(event, 'id')">
+      <!-- ===== PUBG плитка (большая, на всю ширину, с аккордеоном) ===== -->
+      <div class="main-cat-card main-cat-card-pubg" id="pubgCard">
+        <div class="pubg-card-trigger" onclick="togglePubgDropdown()">
+          <div class="pubg-trigger-left">
+            <span class="pubg-trigger-icon">💰</span>
             <div>
-              <div class="sub-btn-title">Актуальный прайс по ID</div>
-              <div class="sub-btn-desc">Цены по идентификатору</div>
+              <span class="pubg-trigger-label">PUBG UC</span>
+              <span class="pubg-trigger-desc">Пополнение UC по ID и входу</span>
             </div>
-            <span class="sub-arrow">›</span>
           </div>
-          <div class="sub-btn" onclick="showPriceScreen(event, 'entry')">
+          <span class="pubg-arrow">›</span>
+        </div>
+        <div class="pubg-dropdown">
+          <div class="pubg-dropdown-inner">
+
+            <div class="pubg-section-label">Пополнение UC</div>
+            <div class="sub-btn" onclick="showPriceScreen(event, 'id')">
+              <div>
+                <div class="sub-btn-title">Актуальный прайс по ID</div>
+                <div class="sub-btn-desc">Цены по идентификатору</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+            <div class="sub-btn" onclick="showPriceScreen(event, 'entry')">
+              <div>
+                <div class="sub-btn-title">Актуальный прайс по входу</div>
+                <div class="sub-btn-desc">Цены для входящих заявок</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+
+            <div class="pubg-section-label">Эксклюзивы</div>
+            <div class="sub-btn" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/187')">
+              <div>
+                <div class="sub-btn-title">⚔️ Грозовой вершитель</div>
+                <div class="sub-btn-desc">Ледяной арбитр</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+            <div class="sub-btn" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/111')">
+              <div>
+                <div class="sub-btn-title">💎 Prime и Prime Plus</div>
+                <div class="sub-btn-desc">Премиум подписки</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+            <div class="sub-btn" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/182')">
+              <div>
+                <div class="sub-btn-title">🧥 X — Костюм</div>
+                <div class="sub-btn-desc">Эксклюзивные скины</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+            <div class="sub-btn" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/185')">
+              <div>
+                <div class="sub-btn-title">🏆 Кланы</div>
+                <div class="sub-btn-desc">Клановые активности</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+
+            <div class="pubg-section-label">Прочее</div>
+            <div class="sub-btn" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/189')">
+              <div>
+                <div class="sub-btn-title">📈 Популярность</div>
+                <div class="sub-btn-desc">Топ товаров и рейтинги</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+            <div class="sub-btn" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/31')">
+              <div>
+                <div class="sub-btn-title">🎁 Награда за покупку</div>
+                <div class="sub-btn-desc">Бонусы и привилегии</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+            <div class="sub-btn" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/98')">
+              <div>
+                <div class="sub-btn-title">🤝 Сотрудничество</div>
+                <div class="sub-btn-desc">Партнёрские программы</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+            <div class="sub-btn" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/112')">
+              <div>
+                <div class="sub-btn-title">📢 Реклама</div>
+                <div class="sub-btn-desc">Размещение и продвижение</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Telegram Stars + NFT объединённая плитка ===== -->
+      <div class="main-cat-card main-cat-card-pubg" style="background: linear-gradient(135deg, #0d0f18 0%, #0e0d18 100%); border-color: rgba(34,158,217,0.12);">
+        <div style="padding: 16px 18px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 0; width: 100%;">
+            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; cursor: pointer; padding-right: 16px;" onclick="showStarsScreen()">
+              <span style="font-size: 22px;">⭐</span>
+              <span style="font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; color: var(--blue-accent);">Telegram Stars</span>
+              <span style="font-size: 10px; color: var(--text2);">Premium, Stars, Подарки</span>
+            </div>
+            <div style="width: 1px; height: 40px; background: rgba(255,255,255,0.06); flex-shrink:0;"></div>
+            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; cursor: pointer; padding-left: 16px;" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
+              <span style="font-size: 22px;">◆</span>
+              <span style="font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; color: var(--purple-accent);">NFT</span>
+              <span style="font-size: 10px; color: var(--text2);">Токены и коллекции</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Отзывы плитка (на всю ширину) ===== -->
+      <div class="main-cat-card reviews-card main-cat-card-pubg" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
+        <div class="small-card-body" style="min-height:80px; flex-direction:row; align-items:center; justify-content:space-between; padding: 14px 18px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:26px;">💬</span>
             <div>
-              <div class="sub-btn-title">Актуальный прайс по входу</div>
-              <div class="sub-btn-desc">Цены для входящих заявок</div>
+              <div class="small-card-title" style="font-size:14px;">Отзывы</div>
+              <div class="small-card-desc">Отзывы наших клиентов</div>
             </div>
-            <span class="sub-arrow">›</span>
           </div>
+          <div class="small-card-arrow" style="border-color: rgba(245,158,11,0.2);">›</div>
         </div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/187')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">Грозовой вершитель</div><span>⚔️</span></div>
-          <div class="cat-card-desc">Ледяной арбитр</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/111')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">Prime и Prime Plus</div><span>💎</span></div>
-          <div class="cat-card-desc">Премиум подписки</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/182')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">X — Костюм</div><span>🧥</span></div>
-          <div class="cat-card-desc">Эксклюзивные скины</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/189')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">Популярность</div><span>📈</span></div>
-          <div class="cat-card-desc">Топ товаров и рейтинги</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/31')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">Награда за покупку</div><span>🎁</span></div>
-          <div class="cat-card-desc">Бонусы и привилегии</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/98')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">Сотрудничество</div><span>🤝</span></div>
-          <div class="cat-card-desc">Партнёрские программы</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/112')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">Реклама</div><span>📢</span></div>
-          <div class="cat-card-desc">Размещение и продвижение</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">Отзывы</div><span>⭐</span></div>
-          <div class="cat-card-desc">Мнения покупателей</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
-      </div>
-
-      <div class="cat-card" onclick="handleTelegramLink('https://t.me/kraken_shop_U_C/185')">
-        <div>
-          <div class="cat-header"><div class="cat-card-title">Кланы</div><span>🏆</span></div>
-          <div class="cat-card-desc">Клановые активности</div>
-        </div>
-        <div class="cat-arrow-btn">›</div>
       </div>
 
     </div>
@@ -763,24 +899,37 @@
     <div class="pack-list-content" id="packListContainer"></div>
   </div>
 
+  <!-- ЭКРАН TELEGRAM STARS -->
+  <div class="price-screen" id="starsScreen">
+    <div class="back-btn" onclick="hideStarsScreen()">‹ Назад в меню</div>
+    <h2 class="section-title" style="color:#229ED9;">⭐ Telegram Stars</h2>
+
+    <div class="price-info-card" style="background: rgba(34,158,217,0.04); border-color: rgba(34,158,217,0.2);">
+      <div class="info-title" style="color: var(--blue-accent);">⭐ Пополнение Telegram Stars</div>
+      <span>Укажите ваш Telegram username или ссылку на аккаунт. Зачисление: 5–20 минут.</span>
+    </div>
+
+    <div class="pack-tabs-container" id="starsTabs" style="display:grid;">
+      <div class="pack-tab-btn tab-active stars-tab" id="starsTabSmall" onclick="switchStarsCategory('small')">📦 Малые</div>
+      <div class="pack-tab-btn stars-tab" id="starsTabMedium" onclick="switchStarsCategory('medium')">💼 Средние</div>
+      <div class="pack-tab-btn stars-tab" id="starsTabLarge" onclick="switchStarsCategory('large')">👑 Крупные</div>
+    </div>
+
+    <div class="pack-list-content" id="starsListContainer"></div>
+  </div>
+
 </div>
 
-<!-- НИЖНЯЯ НАВИГАЦИЯ -->
+<!-- НИЖНЯЯ НАВИГАЦИЯ (4 пункта, без профиля) -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="switchTab('home')">
     <div class="nav-icon">🏠</div><div>Главная</div>
-  </div>
-  <div class="nav-item" onclick="switchTab('catalog')">
-    <div class="nav-icon">📅</div><div>Каталог</div>
   </div>
   <div class="nav-item nav-item-cart" onclick="triggerHaptic()">
     <div class="cart-circle">🛒</div>
   </div>
   <div class="nav-item" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
     <div class="nav-icon">⭐</div><div>Отзывы</div>
-  </div>
-  <div class="nav-item" onclick="triggerHaptic()">
-    <div class="nav-icon">👤</div><div>Профиль</div>
   </div>
 </div>
 
@@ -838,6 +987,38 @@
   </div>
 </div>
 
+<!-- МОДАЛЬНОЕ ОКНО TELEGRAM STARS -->
+<div class="modal-overlay" id="starsModalOverlay">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-title" style="color: var(--blue-accent);">⭐ Покупка Stars</div>
+    <div class="modal-desc">Переведите точную сумму по реквизитам и укажите ваш Telegram username в комментарии.</div>
+
+    <div class="payment-details" style="border-color: rgba(34,158,217,0.15);">
+      <div class="detail-item">
+        <span class="detail-label">Название банка</span>
+        <span class="detail-value" id="starsPayBankName">Sense Bank</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Номер карты</span>
+        <span class="detail-value" style="letter-spacing: 1px;" id="starsPayCardNumber">4028 0820 1619 2153</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Количество Stars</span>
+        <span class="detail-value" style="color: var(--blue-accent); font-family:'Unbounded',sans-serif;" id="starsPayAmount"></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Сумма к оплате</span>
+        <span class="detail-value price-accent" style="color: var(--blue-accent);" id="starsPayCost"></span>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-paid" style="background: var(--blue-accent);" onclick="submitStarsOrder()">Я оплатил</button>
+      <button class="btn-cancel" onclick="closeStarsModal()">Отмена</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const tg = window.Telegram ? window.Telegram.WebApp : null;
 
@@ -846,11 +1027,9 @@
 
   let currentSelectedPackId = null;
   let currentSelectedPriceText = "";
-  let isEntryMode = false; // false = по ID (нужен UID), true = по входу/QR (без UID)
+  let isEntryMode = false;
 
-  // ========== ПОЛНЫЕ ДАННЫЕ ПРАЙСОВ ИЗ index.html ==========
   const PRODUCTS_DATA = {
-    // Прайс по ID
     id: {
       lite: [
         { id: "buy_id_60",   name: "💰 60 UC",   uah: "40 грн",     pln: "5 zł" },
@@ -871,7 +1050,6 @@
         { id: "buy_id_81000", name: "💰 81000 UC", uah: "38 500 грн", pln: "3200 zł" }
       ]
     },
-    // Прайс по входу / QR
     entry: {
       lite: [
         { id: "buy_entry_1800", name: "💰 1800 UC", uah: "930 грн",   pln: "" },
@@ -899,7 +1077,7 @@
     }
   };
 
-  let currentCategory = ""; // 'id' или 'entry'
+  let currentCategory = "";
 
   if (tg) {
     tg.ready();
@@ -918,15 +1096,9 @@
     else window.open(url, '_blank');
   }
 
-  // Аккордеон UC карточки
-  function toggleUcDropdown() {
+  function togglePubgDropdown() {
     triggerHaptic();
-    document.getElementById('ucCard').classList.toggle('open');
-  }
-
-  function forceOpenPriceScreen() {
-    switchTab('home');
-    showPriceScreen(null, 'entry');
+    document.getElementById('pubgCard').classList.toggle('open');
   }
 
   function switchTab(tab) {
@@ -1023,14 +1195,12 @@
     document.getElementById('btnSubmitOrder').classList.remove('valid');
 
     if (isEntryMode) {
-      // По входу/QR — сразу показываем реквизиты без ввода UID
       document.getElementById('payBankName').innerText = BANK_NAME;
       document.getElementById('payCardNumber').innerText = CARD_NUMBER;
       document.getElementById('payProductCost').innerText = currentSelectedPriceText;
       document.getElementById('modalStepId').classList.remove('step-active');
       document.getElementById('modalStepPayment').classList.add('step-active');
     } else {
-      // По ID — сначала вводим UID
       document.getElementById('modalStepPayment').classList.remove('step-active');
       document.getElementById('modalStepId').classList.add('step-active');
       setTimeout(() => inputEl.focus(), 100);
@@ -1081,17 +1251,117 @@
     let actionString = "";
     if (isEntryMode) {
       actionString = `${currentSelectedPackId}_status_paid`;
-      console.log(`Заявка: ${currentSelectedPackId}, Способ: По входу/QR, Статус: Оплачено`);
     } else {
       const userId = document.getElementById('playerUidInput').value;
       actionString = `${currentSelectedPackId}_uid_${userId}_status_paid`;
-      console.log(`Заявка: ${currentSelectedPackId}, UID: ${userId}, Статус: Оплачено`);
     }
 
     document.getElementById('idModalOverlay').classList.remove('active');
     if (tg && tg.sendData) {
       tg.sendData(actionString);
     }
+  }
+
+  // ========== TELEGRAM STARS ==========
+  const STARS_DATA = {
+    small: [
+      { id: "stars_13",  name: "⭐ 13 Stars",   uah: "15 грн" },
+      { id: "stars_26",  name: "⭐ 26 Stars",   uah: "30 грн" },
+      { id: "stars_50",  name: "⭐ 50 Stars",   uah: "45 грн" },
+      { id: "stars_100", name: "⭐ 100 Stars",  uah: "80 грн" },
+      { id: "stars_150", name: "⭐ 150 Stars",  uah: "120 грн" },
+      { id: "stars_200", name: "⭐ 200 Stars",  uah: "160 грн" }
+    ],
+    medium: [
+      { id: "stars_250", name: "⭐ 250 Stars",  uah: "195 грн" },
+      { id: "stars_300", name: "⭐ 300 Stars",  uah: "235 грн" },
+      { id: "stars_350", name: "⭐ 350 Stars",  uah: "275 грн" },
+      { id: "stars_400", name: "⭐ 400 Stars",  uah: "315 грн" },
+      { id: "stars_450", name: "⭐ 450 Stars",  uah: "350 грн" },
+      { id: "stars_500", name: "⭐ 500 Stars",  uah: "390 грн" },
+      { id: "stars_600", name: "⭐ 600 Stars",  uah: "465 грн" }
+    ],
+    large: [
+      { id: "stars_700",  name: "⭐ 700 Stars",  uah: "545 грн" },
+      { id: "stars_800",  name: "⭐ 800 Stars",  uah: "610 грн" },
+      { id: "stars_900",  name: "⭐ 900 Stars",  uah: "685 грн" },
+      { id: "stars_1000", name: "⭐ 1000 Stars", uah: "760 грн" },
+      { id: "stars_1200", name: "⭐ 1200 Stars", uah: "920 грн" },
+      { id: "stars_1500", name: "⭐ 1500 Stars", uah: "1120 грн" }
+    ]
+  };
+
+  let currentStarsCategory = 'small';
+  let currentStarsPackId = null;
+  let currentStarsPriceText = "";
+  let currentStarsAmountText = "";
+
+  function showStarsScreen() {
+    triggerHaptic();
+    document.getElementById('mainHomeScreen').style.display = 'none';
+    document.getElementById('starsScreen').style.display = 'block';
+    switchStarsCategory('small');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function hideStarsScreen() {
+    triggerHaptic();
+    document.getElementById('starsScreen').style.display = 'none';
+    document.getElementById('mainHomeScreen').style.display = 'block';
+  }
+
+  function switchStarsCategory(cat) {
+    triggerHaptic();
+    currentStarsCategory = cat;
+    document.querySelectorAll('.stars-tab').forEach(b => b.classList.remove('tab-active'));
+    const tabMap = { small: 'starsTabSmall', medium: 'starsTabMedium', large: 'starsTabLarge' };
+    document.getElementById(tabMap[cat]).classList.add('tab-active');
+    renderStarsList(STARS_DATA[cat]);
+  }
+
+  function renderStarsList(products) {
+    const container = document.getElementById('starsListContainer');
+    container.innerHTML = "";
+    products.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'stars-price-card';
+      card.onclick = () => openStarsModal(prod);
+      card.innerHTML = `
+        <div class="stars-amount">${prod.name}</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">${prod.uah}</div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function openStarsModal(prod) {
+    triggerHaptic();
+    currentStarsPackId = prod.id;
+    currentStarsPriceText = prod.uah;
+    currentStarsAmountText = prod.name;
+
+    document.getElementById('starsPayBankName').innerText = BANK_NAME;
+    document.getElementById('starsPayCardNumber').innerText = CARD_NUMBER;
+    document.getElementById('starsPayAmount').innerText = prod.name;
+    document.getElementById('starsPayCost').innerText = prod.uah;
+
+    document.getElementById('starsModalOverlay').classList.add('active');
+  }
+
+  document.getElementById('starsModalOverlay').addEventListener('click', closeStarsModal);
+
+  function closeStarsModal() {
+    triggerHaptic();
+    document.getElementById('starsModalOverlay').classList.remove('active');
+  }
+
+  function submitStarsOrder() {
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    const actionString = `${currentStarsPackId}_status_paid`;
+    document.getElementById('starsModalOverlay').classList.remove('active');
+    if (tg && tg.sendData) tg.sendData(actionString);
   }
 </script>
 </body>
