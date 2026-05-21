@@ -2098,9 +2098,8 @@
     document.getElementById('starsOrderId').innerText = orderId;
     document.getElementById('starsDisplayUsername').innerText = username;
     document.getElementById('starsPayAmount').innerText = currentStarsAmountText;
-    document.getElementById('starsPayBankName').innerText = BANK_NAME;
-    document.getElementById('starsPayCardNumber').innerText = CARD_NUMBER;
     document.getElementById('starsPayCost').innerText = currentStarsPriceText;
+    // Банк сбрасывается в resetStarsBank, карта покажется после выбора
 
     document.getElementById('starsStepUsername').classList.remove('step-active');
     document.getElementById('starsStepPayment').classList.add('step-active');
@@ -2200,15 +2199,26 @@
       }
 
       saveOrderToHistory(data);
-      // Отправляем клиенту сообщение с просьбой прислать квитанцию
+      // Регистрируем ожидание квитанции в боте
       if (buyerId && buyerId !== '—') {
+        // Сохраняем pending через специальный endpoint бота
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: buyerId,
-            text: `📎 Заказ <b>№${data.order_id}</b> принят!\n\nПожалуйста, отправьте сюда <b>скриншот или квитанцию об оплате</b> — это ускорит обработку вашего заказа.`,
+            text: `📎 Заказ <b>№${data.order_id}</b> принят!\n\nДля завершения оформления отправьте сюда <b>скриншот квитанции об оплате</b>.\n\n🔑 Ваш номер заказа: <code>${data.order_id}</code>`,
             parse_mode: 'HTML'
+          })
+        });
+        // Также уведомляем бота о pending заказе через специальное сообщение
+        // Бот получит это сообщение и сохранит order_id для этого user_id
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: buyerId,
+            text: `__PENDING_RECEIPT__:${data.order_id}`,
           })
         });
       }
