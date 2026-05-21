@@ -2200,7 +2200,19 @@
       }
 
       saveOrderToHistory(data);
-      tg && tg.showAlert('✅ Заказ принят! Мы свяжемся с вами в ближайшее время.');
+      // Отправляем клиенту сообщение с просьбой прислать квитанцию
+      if (buyerId && buyerId !== '—') {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: buyerId,
+            text: `📎 Заказ <b>№${data.order_id}</b> принят!\n\nПожалуйста, отправьте сюда <b>скриншот или квитанцию об оплате</b> — это ускорит обработку вашего заказа.`,
+            parse_mode: 'HTML'
+          })
+        });
+      }
+      tg && tg.showAlert('✅ Заказ принят! Отправьте квитанцию об оплате боту.');
     } catch (e) {
       tg && tg.showAlert('⚠️ Ошибка отправки заказа: ' + e.message);
     }
