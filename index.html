@@ -965,6 +965,10 @@
 
       <div class="payment-details">
         <div class="detail-item">
+          <span class="detail-label">№ Заказа</span>
+          <span class="detail-value" style="color: var(--red-accent); font-size:12px; letter-spacing:1px;" id="ucOrderId"></span>
+        </div>
+        <div class="detail-item">
           <span class="detail-label">Название банка</span>
           <span class="detail-value" id="payBankName">Sense Bank</span>
         </div>
@@ -990,32 +994,66 @@
 <!-- МОДАЛЬНОЕ ОКНО TELEGRAM STARS -->
 <div class="modal-overlay" id="starsModalOverlay">
   <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-title" style="color: var(--blue-accent);">⭐ Покупка Stars</div>
-    <div class="modal-desc">Переведите точную сумму по реквизитам и укажите ваш Telegram username в комментарии.</div>
 
-    <div class="payment-details" style="border-color: rgba(34,158,217,0.15);">
-      <div class="detail-item">
-        <span class="detail-label">Название банка</span>
-        <span class="detail-value" id="starsPayBankName">Sense Bank</span>
+    <!-- Шаг 1: Ввод username -->
+    <div class="modal-step step-active" id="starsStepUsername">
+      <div class="modal-title" style="color: var(--blue-accent);">⭐ Покупка Stars</div>
+      <div class="modal-desc">Введите ваш Telegram username для зачисления Stars.</div>
+      <div class="uid-input-wrapper">
+        <input
+          type="text"
+          class="uid-field"
+          id="starsUsernameInput"
+          placeholder="@username"
+          oninput="validateStarsUsername(this)"
+          style="border-color: rgba(34,158,217,0.3);"
+        >
+        <span class="id-counter" id="starsUsernameFeedback" style="color: var(--text3);">Введите username с @</span>
       </div>
-      <div class="detail-item">
-        <span class="detail-label">Номер карты</span>
-        <span class="detail-value" style="letter-spacing: 1px;" id="starsPayCardNumber">4028 0820 1619 2153</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Количество Stars</span>
-        <span class="detail-value" style="color: var(--blue-accent); font-family:'Unbounded',sans-serif;" id="starsPayAmount"></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Сумма к оплате</span>
-        <span class="detail-value price-accent" style="color: var(--blue-accent);" id="starsPayCost"></span>
+      <div class="modal-actions">
+        <button class="btn-next" id="btnStarsNext" onclick="goToStarsPaymentStep()" style="background: var(--blue-accent);">Продолжить</button>
+        <button class="btn-cancel" onclick="closeStarsModal()">Отмена</button>
       </div>
     </div>
 
-    <div class="modal-actions">
-      <button class="btn-paid" style="background: var(--blue-accent);" onclick="submitStarsOrder()">Я оплатил</button>
-      <button class="btn-cancel" onclick="closeStarsModal()">Отмена</button>
+    <!-- Шаг 2: Реквизиты оплаты -->
+    <div class="modal-step" id="starsStepPayment">
+      <div class="modal-title" style="color: var(--blue-accent);">⭐ Оплата заказа</div>
+      <div class="modal-desc">Переведите точную сумму на карту.</div>
+
+      <div class="payment-details" style="border-color: rgba(34,158,217,0.15);">
+        <div class="detail-item">
+          <span class="detail-label">№ Заказа</span>
+          <span class="detail-value" style="color: var(--blue-accent); font-size:12px; letter-spacing:1px;" id="starsOrderId"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Telegram username</span>
+          <span class="detail-value" style="color: var(--blue-accent);" id="starsDisplayUsername"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Товар</span>
+          <span class="detail-value" style="color: var(--blue-accent); font-family:'Unbounded',sans-serif; font-size:12px;" id="starsPayAmount"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Название банка</span>
+          <span class="detail-value" id="starsPayBankName">Sense Bank</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Номер карты</span>
+          <span class="detail-value" style="letter-spacing: 1px;" id="starsPayCardNumber">4028 0820 1619 2153</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Сумма к оплате</span>
+          <span class="detail-value" style="font-family:'Unbounded',sans-serif; color: var(--blue-accent); font-size:15px;" id="starsPayCost"></span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-paid" style="background: var(--blue-accent);" onclick="submitStarsOrder()">Я оплатил</button>
+        <button class="btn-cancel" onclick="closeStarsModal()">Отмена</button>
+      </div>
     </div>
+
   </div>
 </div>
 
@@ -1027,6 +1065,7 @@
 
   let currentSelectedPackId = null;
   let currentSelectedPriceText = "";
+  let currentSelectedPackName = "";
   let isEntryMode = false;
 
   const PRODUCTS_DATA = {
@@ -1181,18 +1220,31 @@
     });
   }
 
+  function generateOrderId() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let id = 'ORD-';
+    for (let i = 0; i < 8; i++) id += chars[Math.floor(Math.random() * chars.length)];
+    return id;
+  }
+
   function openPackModal(packId, cardElement) {
     triggerHaptic();
     currentSelectedPackId = packId;
 
     const uahEl = cardElement.querySelector('.price-uah');
     const plnEl = cardElement.querySelector('.price-pln');
+    const amountEl = cardElement.querySelector('.uc-amount');
     currentSelectedPriceText = (uahEl ? uahEl.innerText : '') + (plnEl ? ` (${plnEl.innerText})` : '');
+    currentSelectedPackName = amountEl ? amountEl.innerText : packId;
 
     const inputEl = document.getElementById('playerUidInput');
     inputEl.value = '';
     document.getElementById('idLengthCounter').innerText = '0 / 10';
     document.getElementById('btnSubmitOrder').classList.remove('valid');
+
+    const orderId = generateOrderId();
+    document.getElementById('ucOrderId').innerText = orderId;
+    window._currentUcOrderId = orderId;
 
     if (isEntryMode) {
       document.getElementById('payBankName').innerText = BANK_NAME;
@@ -1248,18 +1300,22 @@
   function submitFinalOrder() {
     if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
-    let actionString = "";
-    if (isEntryMode) {
-      actionString = `${currentSelectedPackId}_status_paid`;
-    } else {
-      const userId = document.getElementById('playerUidInput').value;
-      actionString = `${currentSelectedPackId}_uid_${userId}_status_paid`;
-    }
+    const orderId = window._currentUcOrderId || generateOrderId();
+    const type = isEntryMode ? 'По входу/QR' : 'По ID';
+    const uid = isEntryMode ? '' : document.getElementById('playerUidInput').value;
+
+    const payload = JSON.stringify({
+      order_id: orderId,
+      type: 'PUBG UC',
+      method: type,
+      item: currentSelectedPackName || currentSelectedPackId,
+      price: currentSelectedPriceText,
+      uid: uid || null,
+      status: 'paid'
+    });
 
     document.getElementById('idModalOverlay').classList.remove('active');
-    if (tg && tg.sendData) {
-      tg.sendData(actionString);
-    }
+    if (tg && tg.sendData) tg.sendData(payload);
   }
 
   // ========== TELEGRAM STARS ==========
@@ -1342,12 +1398,58 @@
     currentStarsPriceText = prod.uah;
     currentStarsAmountText = prod.name;
 
-    document.getElementById('starsPayBankName').innerText = BANK_NAME;
-    document.getElementById('starsPayCardNumber').innerText = CARD_NUMBER;
-    document.getElementById('starsPayAmount').innerText = prod.name;
-    document.getElementById('starsPayCost').innerText = prod.uah;
+    // Сброс к шагу 1 — ввод username
+    document.getElementById('starsUsernameInput').value = '';
+    document.getElementById('starsUsernameFeedback').innerText = 'Введите username с @';
+    document.getElementById('starsUsernameFeedback').style.color = 'var(--text3)';
+    document.getElementById('btnStarsNext').classList.remove('valid');
+    document.getElementById('starsStepPayment').classList.remove('step-active');
+    document.getElementById('starsStepUsername').classList.add('step-active');
 
     document.getElementById('starsModalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('starsUsernameInput').focus(), 100);
+  }
+
+  function validateStarsUsername(input) {
+    let val = input.value.trim();
+    // Автоматически добавить @ если забыл
+    if (val.length > 0 && val[0] !== '@') {
+      input.value = '@' + val;
+      val = input.value;
+    }
+    const btn = document.getElementById('btnStarsNext');
+    const feedback = document.getElementById('starsUsernameFeedback');
+    // username: @ + минимум 5 символов, только буквы/цифры/подчёркивание
+    const valid = /^@[a-zA-Z0-9_]{4,}$/.test(val);
+    if (valid) {
+      btn.classList.add('valid');
+      feedback.innerText = '✓ Username принят';
+      feedback.style.color = 'var(--green)';
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    } else {
+      btn.classList.remove('valid');
+      feedback.innerText = val.length > 1 ? 'Минимум 5 символов, только a-z 0-9 _' : 'Введите username с @';
+      feedback.style.color = val.length > 1 ? '#f87171' : 'var(--text3)';
+    }
+  }
+
+  function goToStarsPaymentStep() {
+    const username = document.getElementById('starsUsernameInput').value.trim();
+    if (!/^@[a-zA-Z0-9_]{4,}$/.test(username)) return;
+    triggerHaptic();
+
+    const orderId = generateOrderId();
+    window._currentStarsOrderId = orderId;
+
+    document.getElementById('starsOrderId').innerText = orderId;
+    document.getElementById('starsDisplayUsername').innerText = username;
+    document.getElementById('starsPayAmount').innerText = currentStarsAmountText;
+    document.getElementById('starsPayBankName').innerText = BANK_NAME;
+    document.getElementById('starsPayCardNumber').innerText = CARD_NUMBER;
+    document.getElementById('starsPayCost').innerText = currentStarsPriceText;
+
+    document.getElementById('starsStepUsername').classList.remove('step-active');
+    document.getElementById('starsStepPayment').classList.add('step-active');
   }
 
   document.getElementById('starsModalOverlay').addEventListener('click', closeStarsModal);
@@ -1359,9 +1461,21 @@
 
   function submitStarsOrder() {
     if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-    const actionString = `${currentStarsPackId}_status_paid`;
+
+    const orderId = window._currentStarsOrderId || generateOrderId();
+    const username = document.getElementById('starsUsernameInput').value.trim();
+
+    const payload = JSON.stringify({
+      order_id: orderId,
+      type: 'Telegram Stars',
+      item: currentStarsAmountText,
+      price: currentStarsPriceText,
+      username: username,
+      status: 'paid'
+    });
+
     document.getElementById('starsModalOverlay').classList.remove('active');
-    if (tg && tg.sendData) tg.sendData(actionString);
+    if (tg && tg.sendData) tg.sendData(payload);
   }
 </script>
 </body>
