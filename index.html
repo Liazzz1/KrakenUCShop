@@ -677,6 +677,104 @@
     box-shadow: 0 4px 15px rgba(255, 42, 42, 0.3);
   }
 
+
+  /* ========== МОДАЛЬНОЕ ОКНО ОТЗЫВОВ ========== */
+  .reviews-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4,4,6,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    padding: 0;
+  }
+  .reviews-modal-overlay.active { opacity: 1; pointer-events: all; }
+
+  .reviews-modal-sheet {
+    background: #0d0d14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-bottom: none;
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 480px;
+    padding: 12px 20px 36px;
+    transform: translateY(100%);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reviews-modal-overlay.active .reviews-modal-sheet { transform: translateY(0); }
+
+  .reviews-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+
+  .reviews-sheet-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .reviews-sheet-desc {
+    font-size: 12px;
+    color: var(--text2);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .reviews-choice-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .reviews-choice-btn:active { transform: scale(0.98); }
+  .reviews-choice-btn.gold { border-color: rgba(245,158,11,0.2); }
+  .reviews-choice-btn.gold:active { background: rgba(245,158,11,0.06); }
+  .reviews-choice-btn.purple { border-color: rgba(139,92,246,0.2); }
+  .reviews-choice-btn.purple:active { background: rgba(139,92,246,0.06); }
+
+  .reviews-choice-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .reviews-choice-icon.gold-bg { background: rgba(245,158,11,0.12); }
+  .reviews-choice-icon.purple-bg { background: rgba(139,92,246,0.12); }
+
+  .reviews-choice-info { display: flex; flex-direction: column; gap: 3px; text-align: left; }
+  .reviews-choice-name {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .reviews-choice-name.gold { color: var(--gold-accent); }
+  .reviews-choice-name.purple { color: var(--purple-accent); }
+  .reviews-choice-sub { font-size: 10px; color: var(--text3); }
+
+  .reviews-choice-arrow { margin-left: auto; font-size: 18px; color: var(--text3); }
+
   /* ========== МОДАЛЬНОЕ ОКНО ========== */
   .modal-overlay {
     position: fixed;
@@ -986,7 +1084,7 @@
       </div>
 
       <!-- ===== Отзывы плитка (на всю ширину) ===== -->
-      <div class="main-cat-card reviews-card main-cat-card-pubg" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
+      <div class="main-cat-card reviews-card main-cat-card-pubg" onclick="openReviewsModal()">
         <div class="small-card-body" style="min-height:80px; flex-direction:row; align-items:center; justify-content:space-between; padding: 14px 18px;">
           <div style="display:flex; align-items:center; gap:12px;">
             <span style="font-size:26px;">💬</span>
@@ -1072,8 +1170,35 @@
   <div class="nav-item nav-item-cart" onclick="triggerHaptic()">
     <div class="cart-circle">🛒</div>
   </div>
-  <div class="nav-item" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
+  <div class="nav-item" onclick="openReviewsModal()">
     <div class="nav-icon">⭐</div><div>Отзывы</div>
+  </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО ОТЗЫВОВ -->
+<div class="reviews-modal-overlay" id="reviewsModalOverlay" onclick="closeReviewsModal()">
+  <div class="reviews-modal-sheet" onclick="event.stopPropagation()">
+    <div class="reviews-sheet-handle"></div>
+    <div class="reviews-sheet-title">💬 Отзывы</div>
+    <div class="reviews-sheet-desc">Выберите какие отзывы хотите посмотреть</div>
+
+    <div class="reviews-choice-btn gold" onclick="handleTelegramLink('https://t.me/kraken_shop_uc'); closeReviewsModal();">
+      <div class="reviews-choice-icon gold-bg">⭐</div>
+      <div class="reviews-choice-info">
+        <div class="reviews-choice-name gold">Kraken UC Shop</div>
+        <div class="reviews-choice-sub">Отзывы о покупке UC и Stars</div>
+      </div>
+      <div class="reviews-choice-arrow">›</div>
+    </div>
+
+    <div class="reviews-choice-btn purple" onclick="handleTelegramLink('https://t.me/kraken_1nft'); closeReviewsModal();">
+      <div class="reviews-choice-icon purple-bg">◆</div>
+      <div class="reviews-choice-info">
+        <div class="reviews-choice-name purple">Kraken NFT</div>
+        <div class="reviews-choice-sub">Отзывы о покупке NFT</div>
+      </div>
+      <div class="reviews-choice-arrow">›</div>
+    </div>
   </div>
 </div>
 
@@ -1267,6 +1392,16 @@
     tg.expand();
     tg.setHeaderColor('#08080c');
     tg.setBackgroundColor('#08080c');
+  }
+
+  function openReviewsModal() {
+    triggerHaptic();
+    document.getElementById('reviewsModalOverlay').classList.add('active');
+  }
+
+  function closeReviewsModal() {
+    triggerHaptic();
+    document.getElementById('reviewsModalOverlay').classList.remove('active');
   }
 
   function openSidebar() {
