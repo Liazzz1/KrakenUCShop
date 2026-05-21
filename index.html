@@ -2178,71 +2178,51 @@
     sendOrderToBot(JSON.parse(payload));
   }
 
-  // ========== ОТПРАВКА ЗАКАЗА НАПРЯМУЮ В TELEGRAM API ==========
+  // ========== ОТПРАВКА ЗАКАЗА НА BACKEND (Railway) ==========
+  // Токен бота здесь не хранится — всё делает сервер.
+  // Замени URL на свой Railway-домен после деплоя.
+  const BACKEND_URL = 'https://YOUR-APP.railway.app/order';
+  // API_SECRET должен совпадать с переменной API_SECRET на Railway.
+  // Вставь сюда то же значение, что задал в Railway → Variables.
+  const API_SECRET  = 'REPLACE_WITH_YOUR_API_SECRET';
+
+  async function signBody(bodyStr) {
+    const enc  = new TextEncoder();
+    const key  = await crypto.subtle.importKey(
+      'raw', enc.encode(API_SECRET), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+    );
+    const sig  = await crypto.subtle.sign('HMAC', key, enc.encode(bodyStr));
+    return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
   async function sendOrderToBot(data) {
-    const BOT_TOKEN = '8601701792:AAFt5mgc4eyxYya1_xSzmDWWi2FJ621JyI0';
-    const ADMIN_IDS = ['853187215', '401742776', '7184797012'];
-
-    const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+    const user      = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
     const buyerName = user ? (user.username ? '@' + user.username : user.first_name) : 'неизвестен';
-    const buyerId   = user ? user.id : '—';
+    const buyerId   = user ? user.id : null;
 
-    let extra = '';
-    if (data.type === 'PUBG UC') {
-      extra = `🎮 Метод: ${data.method || '—'}\n` + (data.uid ? `🆔 Game ID: ${data.uid}\n` : '');
-    } else if (data.type === 'Telegram Stars') {
-      extra = `📲 TG Username: ${data.username || '—'}\n`;
-    }
-
-    const adminText =
-      `🔔 НОВЫЙ ЗАКАЗ\n` +
-      `${'─'.repeat(28)}\n` +
-      `🔑 № Заказа: ${data.order_id}\n` +
-      `📦 Тип: ${data.type}\n` +
-      `🛍 Товар: ${data.item}\n` +
-      extra +
-      `💰 Сумма: ${data.price}\n` +
-      `👤 Покупатель: ${buyerName} (${buyerId})\n` +
-      `${'─'.repeat(28)}\n` +
-      `✅ Статус: Ожидает выполнения`;
-
-    const clientText =
-      `🧾 ВАШ ЗАКАЗ ПРИНЯТ\n` +
-      `${'─'.repeat(28)}\n` +
-      `🔑 № Заказа: ${data.order_id}\n` +
-      `📦 Тип: ${data.type}\n` +
-      `🛍 Товар: ${data.item}\n` +
-      extra +
-      `💰 Сумма: ${data.price}\n` +
-      `${'─'.repeat(28)}\n` +
-      `✅ Оплата получена — обрабатываем заказ.\nМы свяжемся с вами в ближайшее время!`;
+    const payload = JSON.stringify({
+      ...data,
+      buyer_id:   buyerId,
+      buyer_name: buyerName
+    });
 
     try {
-      // Отправляем уведомление всем админам
-      for (const adminId of ADMIN_IDS) {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: adminId, text: adminText })
-        });
-      }
+      const signature = await signBody(payload);
+      const resp = await fetch(BACKEND_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Signature': signature
+        },
+        body: payload
+      });
 
-      // Подтверждение клиенту отправляет БОТ через handle_notify_client
-      // (фронтенд не дублирует сообщение клиенту)
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.error || resp.status);
+      }
 
       saveOrderToHistory(data);
-      // Отправляем __NOTIFY_CLIENT__ боту через личку клиента.
-      // Бот получит сообщение, сохранит pending и попросит квитанцию.
-      if (buyerId && buyerId !== '—') {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: buyerId,
-            text: `__NOTIFY_CLIENT__:${buyerId}:${data.order_id}`
-          })
-        });
-      }
       tg && tg.showAlert('✅ Заказ принят! Бот отправит вам запрос на квитанцию.');
     } catch (e) {
       tg && tg.showAlert('⚠️ Ошибка отправки заказа: ' + e.message);
