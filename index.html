@@ -1128,7 +1128,7 @@
           <div class="pubg-trigger-left">
             <span class="pubg-trigger-icon">💰</span>
             <div>
-              <span class="pubg-trigger-label">PUBG UC</span>
+              <span class="pubg-trigger-label">PUBG</span>
               <span class="pubg-trigger-desc">Пополнение UC по ID и входу</span>
             </div>
           </div>
@@ -1217,22 +1217,49 @@
         </div>
       </div>
 
-      <!-- ===== Telegram Stars + NFT объединённая плитка ===== -->
-      <div class="main-cat-card main-cat-card-pubg" style="background: linear-gradient(135deg, #0d0f18 0%, #0e0d18 100%); border-color: rgba(34,158,217,0.12);">
-        <div style="padding: 16px 18px; display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 0; width: 100%;">
-            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; cursor: pointer; padding-right: 16px;" onclick="showStarsScreen()">
-              <span style="font-size: 22px;">⭐</span>
-              <span style="font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; color: var(--blue-accent);">Telegram Stars</span>
-              <span style="font-size: 10px; color: var(--text2);">Premium, Stars, Подарки</span>
-            </div>
-            <div style="width: 1px; height: 40px; background: rgba(255,255,255,0.06); flex-shrink:0;"></div>
-            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; cursor: pointer; padding-left: 16px;" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')">
-              <span style="font-size: 22px;">◆</span>
-              <span style="font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; color: var(--purple-accent);">NFT</span>
-              <span style="font-size: 10px; color: var(--text2);">Токены и коллекции</span>
+      <!-- ===== Telegram плитка (аккордеон, как PUBG) ===== -->
+      <div class="main-cat-card main-cat-card-pubg" id="telegramCard" style="border-color: rgba(34,158,217,0.15); background: linear-gradient(135deg, #0d0f18 0%, #0b0d16 100%);">
+        <div class="pubg-card-trigger" onclick="toggleTelegramDropdown()" style="border-bottom-color: transparent;">
+          <div class="pubg-trigger-left">
+            <span class="pubg-trigger-icon">✈️</span>
+            <div>
+              <span class="pubg-trigger-label" style="color: var(--blue-accent);">Telegram</span>
+              <span class="pubg-trigger-desc">Stars, Premium</span>
             </div>
           </div>
+          <span class="pubg-arrow" id="telegramArrow" style="color: var(--text3);">›</span>
+        </div>
+        <div class="pubg-dropdown" id="telegramDropdown">
+          <div class="pubg-dropdown-inner">
+            <div class="sub-btn" onclick="showStarsScreen()" style="border-color: rgba(34,158,217,0.1);">
+              <div>
+                <div class="sub-btn-title">⭐ Telegram Stars</div>
+                <div class="sub-btn-desc">Звёзды для подарков и платежей</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+            <div class="sub-btn" onclick="showPremiumScreen()" style="border-color: rgba(34,158,217,0.1);">
+              <div>
+                <div class="sub-btn-title">💎 Telegram Premium</div>
+                <div class="sub-btn-desc">Подписка на 3, 6 или 12 месяцев</div>
+              </div>
+              <span class="sub-arrow">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== NFT плитка (отдельная, на всю ширину) ===== -->
+      <div class="main-cat-card main-cat-card-pubg nft-card" onclick="handleTelegramLink('https://t.me/Kraken_NFT1/95')" style="cursor:pointer;">
+        <div class="small-card-body" style="min-height:80px; flex-direction:row; align-items:center; justify-content:space-between; padding: 14px 18px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:26px;">◆</span>
+            <div>
+              <div class="small-card-title" style="font-size:14px;">NFT</div>
+              <div class="small-card-desc">NFT на заказ</div>
+            </div>
+          </div>
+          <div class="small-card-arrow" style="border-color: rgba(139,92,246,0.2);">›</div>
         </div>
       </div>
 
@@ -1311,6 +1338,19 @@
     </div>
 
     <div class="pack-list-content" id="starsListContainer"></div>
+  </div>
+
+  <!-- ЭКРАН TELEGRAM PREMIUM -->
+  <div class="price-screen" id="premiumScreen">
+    <div class="back-btn" onclick="hidePremiumScreen()">‹ Назад в меню</div>
+    <h2 class="section-title" style="color:#229ED9;">💎 Telegram Premium</h2>
+
+    <div class="price-info-card" style="background: rgba(34,158,217,0.04); border-color: rgba(34,158,217,0.2);">
+      <div class="info-title" style="color: var(--blue-accent);">💎 Покупка Telegram Premium</div>
+      <span>Укажите ваш Telegram username. Подписка будет активирована в течение 5–20 минут.</span>
+    </div>
+
+    <div class="pack-list-content" id="premiumListContainer"></div>
   </div>
 
 </div>
@@ -1536,6 +1576,84 @@
   </div>
 </div>
 
+<!-- МОДАЛЬНОЕ ОКНО TELEGRAM PREMIUM -->
+<div class="modal-overlay" id="premiumModalOverlay">
+  <div class="modal-content" onclick="event.stopPropagation()">
+
+    <!-- Шаг 1: Ввод username -->
+    <div class="modal-step step-active" id="premiumStepUsername">
+      <div class="modal-title" style="color: var(--blue-accent);">💎 Покупка Premium</div>
+      <div class="modal-desc">Введите ваш Telegram username для активации Premium.</div>
+      <div class="uid-input-wrapper">
+        <input
+          type="text"
+          class="uid-field"
+          id="premiumUsernameInput"
+          placeholder="@username"
+          oninput="validatePremiumUsername(this)"
+          style="border-color: rgba(34,158,217,0.3);"
+        >
+        <span class="id-counter" id="premiumUsernameFeedback" style="color: var(--text3);">Введите username с @</span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-next" id="btnPremiumNext" onclick="goToPremiumPaymentStep()" style="background: var(--blue-accent);">Продолжить</button>
+        <button class="btn-cancel" onclick="closePremiumModal()">Отмена</button>
+      </div>
+    </div>
+
+    <!-- Шаг 2: Оплата -->
+    <div class="modal-step" id="premiumStepPayment">
+      <div class="modal-title" style="color: var(--blue-accent);">💳 Оплата Premium</div>
+      <div class="modal-desc">Переведите точную сумму по указанным реквизитам:</div>
+
+      <div class="payment-details" style="border-color: rgba(34,158,217,0.15);">
+        <div class="detail-item">
+          <span class="detail-label">№ Заказа</span>
+          <span class="detail-value" style="color: var(--blue-accent); font-size:12px; letter-spacing:1px;" id="premiumOrderId"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Username</span>
+          <span class="detail-value" style="color: #fff;" id="premiumDisplayUsername"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Подписка</span>
+          <span class="detail-value" style="color: var(--blue-accent); font-family:'Unbounded',sans-serif; font-size:12px;" id="premiumPayAmount"></span>
+        </div>
+      </div>
+
+      <div class="bank-select-label">Выберите банк для оплаты</div>
+      <div class="bank-grid" id="premiumBankGrid">
+        <div class="bank-btn" data-bank="mono" onclick="selectBank('mono','premium')"><span class="bank-btn-emoji">🖤</span>Mono Bank</div>
+        <div class="bank-btn" data-bank="myraif" onclick="selectBank('myraif','premium')"><span class="bank-btn-emoji">💚</span>MyRaif</div>
+        <div class="bank-btn" data-bank="sense" onclick="selectBank('sense','premium')"><span class="bank-btn-emoji">🧡</span>Sense Bank</div>
+        <div class="bank-btn" data-bank="pumb" onclick="selectBank('pumb','premium')"><span class="bank-btn-emoji">💜</span>PUMB</div>
+      </div>
+      <div class="bank-error" id="premiumBankError">⚠️ Выберите банк для оплаты</div>
+
+      <div class="payment-details" id="premiumBankDetails" style="display:none; border-color: rgba(34,158,217,0.15);">
+        <div class="detail-item">
+          <span class="detail-label">Название банка</span>
+          <span class="detail-value" id="premiumPayBankName"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Номер карты</span>
+          <span class="detail-value" style="letter-spacing: 1px;" id="premiumPayCardNumber"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Сумма к оплате</span>
+          <span class="detail-value" style="font-family:'Unbounded',sans-serif; color: var(--blue-accent); font-size:15px;" id="premiumPayCost"></span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-paid" style="background: var(--blue-accent);" onclick="submitPremiumOrder()">Я оплатил</button>
+        <button class="btn-cancel" onclick="closePremiumModal()">Отмена</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
   const tg = window.Telegram ? window.Telegram.WebApp : null;
 
@@ -1655,6 +1773,15 @@
       document.getElementById('payCardNumber').innerText = card;
       document.getElementById('ucBankDetails').style.display = 'block';
       document.getElementById('ucBankError').classList.remove('show');
+    } else if (context === 'premium') {
+      selectedPremiumBankId = bankId;
+      document.querySelectorAll('#premiumBankGrid .bank-btn').forEach(b => {
+        b.classList.toggle('selected', b.dataset.bank === bankId);
+      });
+      document.getElementById('premiumPayBankName').innerText = name;
+      document.getElementById('premiumPayCardNumber').innerText = card;
+      document.getElementById('premiumBankDetails').style.display = 'block';
+      document.getElementById('premiumBankError').classList.remove('show');
     } else {
       selectedStarsBankId = bankId;
       document.querySelectorAll('#starsBankGrid .bank-btn').forEach(b => {
@@ -2175,6 +2302,171 @@
     });
 
     document.getElementById('starsModalOverlay').classList.remove('active');
+    sendOrderToBot(JSON.parse(payload));
+  }
+
+  // ========== TELEGRAM АККОРДЕОН ==========
+  let telegramDropdownOpen = false;
+  function toggleTelegramDropdown() {
+    triggerHaptic();
+    telegramDropdownOpen = !telegramDropdownOpen;
+    const card = document.getElementById('telegramCard');
+    const dropdown = document.getElementById('telegramDropdown');
+    const arrow = document.getElementById('telegramArrow');
+    if (telegramDropdownOpen) {
+      card.classList.add('open');
+      dropdown.style.maxHeight = '300px';
+      dropdown.style.opacity = '1';
+      arrow.style.transform = 'rotate(90deg)';
+      arrow.style.color = 'var(--blue-accent)';
+      // border trigger
+      card.querySelector('.pubg-card-trigger').style.borderBottomColor = 'var(--card-border)';
+    } else {
+      card.classList.remove('open');
+      dropdown.style.maxHeight = '0';
+      dropdown.style.opacity = '0';
+      arrow.style.transform = 'rotate(0deg)';
+      arrow.style.color = 'var(--text3)';
+      card.querySelector('.pubg-card-trigger').style.borderBottomColor = 'transparent';
+    }
+  }
+
+  // ========== TELEGRAM PREMIUM ==========
+  const PREMIUM_DATA = [
+    { id: "premium_3m",  name: "💎 3 месяца",  uah: "600 грн" },
+    { id: "premium_6m",  name: "💎 6 месяцев", uah: "800 грн" },
+    { id: "premium_12m", name: "💎 12 месяцев", uah: "1400 грн" }
+  ];
+
+  let currentPremiumPackId = null;
+  let currentPremiumPriceText = "";
+  let currentPremiumAmountText = "";
+  let selectedPremiumBankId = null;
+
+  function showPremiumScreen() {
+    triggerHaptic();
+    document.getElementById('mainHomeScreen').style.display = 'none';
+    document.getElementById('premiumScreen').style.display = 'block';
+    renderPremiumList();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function hidePremiumScreen() {
+    triggerHaptic();
+    document.getElementById('premiumScreen').style.display = 'none';
+    document.getElementById('mainHomeScreen').style.display = 'block';
+  }
+
+  function renderPremiumList() {
+    const container = document.getElementById('premiumListContainer');
+    container.innerHTML = "";
+    PREMIUM_DATA.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'stars-price-card';
+      card.style.borderColor = 'rgba(34,158,217,0.15)';
+      card.onclick = () => openPremiumModal(prod);
+      card.innerHTML = `
+        <div class="stars-amount" style="color: var(--blue-accent);">${prod.name}</div>
+        <div class="uc-cost-box">
+          <div class="price-uah">${prod.uah}</div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function openPremiumModal(prod) {
+    triggerHaptic();
+    currentPremiumPackId = prod.id;
+    currentPremiumPriceText = prod.uah;
+    currentPremiumAmountText = prod.name;
+
+    document.getElementById('premiumUsernameInput').value = '';
+    document.getElementById('premiumUsernameFeedback').innerText = 'Введите username с @';
+    document.getElementById('premiumUsernameFeedback').style.color = 'var(--text3)';
+    document.getElementById('btnPremiumNext').classList.remove('valid');
+    document.getElementById('premiumStepPayment').classList.remove('step-active');
+    document.getElementById('premiumStepUsername').classList.add('step-active');
+
+    document.getElementById('premiumModalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('premiumUsernameInput').focus(), 100);
+  }
+
+  document.getElementById('premiumModalOverlay').addEventListener('click', closePremiumModal);
+
+  function closePremiumModal() {
+    triggerHaptic();
+    document.getElementById('premiumModalOverlay').classList.remove('active');
+  }
+
+  function validatePremiumUsername(input) {
+    let val = input.value.trim();
+    if (val.length > 0 && val[0] !== '@') {
+      input.value = '@' + val;
+      val = input.value;
+    }
+    const btn = document.getElementById('btnPremiumNext');
+    const feedback = document.getElementById('premiumUsernameFeedback');
+    const valid = /^@[a-zA-Z0-9_]{4,}$/.test(val);
+    if (valid) {
+      btn.classList.add('valid');
+      feedback.innerText = '✓ Username принят';
+      feedback.style.color = 'var(--green)';
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    } else {
+      btn.classList.remove('valid');
+      feedback.innerText = val.length > 1 ? 'Минимум 5 символов, только a-z 0-9 _' : 'Введите username с @';
+      feedback.style.color = val.length > 1 ? '#f87171' : 'var(--text3)';
+    }
+  }
+
+  function goToPremiumPaymentStep() {
+    const username = document.getElementById('premiumUsernameInput').value.trim();
+    if (!/^@[a-zA-Z0-9_]{4,}$/.test(username)) return;
+    triggerHaptic();
+
+    const orderId = generateOrderId();
+    window._currentPremiumOrderId = orderId;
+
+    document.getElementById('premiumOrderId').innerText = orderId;
+    document.getElementById('premiumDisplayUsername').innerText = username;
+    document.getElementById('premiumPayAmount').innerText = currentPremiumAmountText;
+    document.getElementById('premiumPayCost').innerText = currentPremiumPriceText;
+
+    document.getElementById('premiumStepUsername').classList.remove('step-active');
+    document.getElementById('premiumStepPayment').classList.add('step-active');
+
+    // reset bank
+    selectedPremiumBankId = null;
+    document.querySelectorAll('#premiumBankGrid .bank-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('premiumBankDetails').style.display = 'none';
+    document.getElementById('premiumBankError').classList.remove('show');
+  }
+
+  function submitPremiumOrder() {
+    if (!selectedPremiumBankId) {
+      document.getElementById('premiumBankError').classList.add('show');
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+      return;
+    }
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+    const orderId = window._currentPremiumOrderId || generateOrderId();
+    const username = document.getElementById('premiumUsernameInput').value.trim();
+    const { name: bankName, card: cardNum } = getCardForBank(selectedPremiumBankId);
+
+    const payload = JSON.stringify({
+      order_id: orderId,
+      type: 'Telegram Premium',
+      item: currentPremiumAmountText,
+      price: currentPremiumPriceText,
+      username: username,
+      bank: bankName,
+      card: cardNum,
+      status: 'paid'
+    });
+
+    document.getElementById('premiumModalOverlay').classList.remove('active');
     sendOrderToBot(JSON.parse(payload));
   }
 
