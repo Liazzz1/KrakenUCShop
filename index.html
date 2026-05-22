@@ -1250,13 +1250,13 @@
       </div>
 
       <!-- ===== NFT плитка (отдельная, на всю ширину) ===== -->
-      <div class="main-cat-card main-cat-card-pubg nft-card" onclick="handleTelegramLink('https://t.me/Kraken_NFT1/95')" style="cursor:pointer;">
+      <div class="main-cat-card main-cat-card-pubg nft-card" onclick="handleTelegramLink('https://t.me/kraken_shop_uc')" style="cursor:pointer;">
         <div class="small-card-body" style="min-height:80px; flex-direction:row; align-items:center; justify-content:space-between; padding: 14px 18px;">
           <div style="display:flex; align-items:center; gap:12px;">
             <span style="font-size:26px;">◆</span>
             <div>
               <div class="small-card-title" style="font-size:14px;">NFT</div>
-              <div class="small-card-desc">NFT на заказ</div>
+              <div class="small-card-desc">Токены и коллекции</div>
             </div>
           </div>
           <div class="small-card-arrow" style="border-color: rgba(139,92,246,0.2);">›</div>
@@ -1657,42 +1657,31 @@
 <script>
   const tg = window.Telegram ? window.Telegram.WebApp : null;
 
-  // ========== БАНКИ И КАРТЫ ==========
+  // ========== БАНКИ ==========
+  // Номера карт хранятся ТОЛЬКО на сервере — бэкенд отдаёт реквизиты
+  // через /card после верификации initData.
   const BANKS = [
-    {
-      id: 'mono',
-      name: 'Mono Bank',
-      cards: ['4441 1110 3877 4935', '4441 1110 2281 0828', '4874 0700 2469 8423'],
-      color: '#1a1a2e', accent: '#000000', emoji: '🖤'
-    },
-    {
-      id: 'myraif',
-      name: 'MyRaif',
-      cards: ['4149 5110 2786 0675'],
-      color: '#0a2a0a', accent: '#2e7d32', emoji: '💚'
-    },
-    {
-      id: 'sense',
-      name: 'Sense Bank',
-      cards: ['4028 0820 1619 2153'],
-      color: '#1a0a00', accent: '#e65100', emoji: '🧡'
-    },
-    {
-      id: 'pumb',
-      name: 'PUMB',
-      cards: ['5355 2800 4692 2306'],
-      color: '#0a001a', accent: '#6a1b9a', emoji: '💜'
-    }
+    { id: 'mono',   name: 'Mono Bank',  emoji: '🖤' },
+    { id: 'myraif', name: 'MyRaif',     emoji: '💚' },
+    { id: 'sense',  name: 'Sense Bank', emoji: '🧡' },
+    { id: 'pumb',   name: 'PUMB',       emoji: '💜' }
   ];
 
-  function getCardForBank(bankId) {
-    const bank = BANKS.find(b => b.id === bankId);
-    if (!bank) return { name: '', card: '' };
-    // Mono — рандомная карта
-    const card = bank.id === 'mono'
-      ? bank.cards[Math.floor(Math.random() * bank.cards.length)]
-      : bank.cards[0];
-    return { name: bank.name, card };
+  // Кэш: { bankId -> { name, card } } — заполняется ответом /card
+  let resolvedBankData = {};
+
+  async function getCardForBank(bankId) {
+    if (resolvedBankData[bankId]) return resolvedBankData[bankId];
+    const initData = tg ? tg.initData : '';
+    const resp = await fetch(BACKEND_URL.replace('/order', '/card'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bank_id: bankId, init_data: initData })
+    });
+    if (!resp.ok) throw new Error('Не удалось получить реквизиты');
+    const data = await resp.json();
+    resolvedBankData[bankId] = { name: data.name, card: data.card };
+    return resolvedBankData[bankId];
   }
 
   // Текущий выбранный банк (по умолчанию пусто — пользователь выбирает)
@@ -1762,37 +1751,47 @@
 
   let selectedStarsBankId = null;
 
-  function selectBank(bankId, context) {
-    const { name, card } = getCardForBank(bankId);
+  async function selectBank(bankId, context) {
+    triggerHaptic('light');
+    // Показываем спиннер пока грузим реквизиты с сервера
+    const loadingCard = (detailsId) => {
+      const el = document.getElementById(detailsId);
+      if (el) { el.style.display = 'block'; }
+    };
+
+    let cardNumEl, bankNameEl, detailsEl, errorEl, gridId;
     if (context === 'uc') {
       selectedBankId = bankId;
-      document.querySelectorAll('#ucBankGrid .bank-btn').forEach(b => {
-        b.classList.toggle('selected', b.dataset.bank === bankId);
-      });
-      document.getElementById('payBankName').innerText = name;
-      document.getElementById('payCardNumber').innerText = card;
-      document.getElementById('ucBankDetails').style.display = 'block';
-      document.getElementById('ucBankError').classList.remove('show');
+      gridId = '#ucBankGrid'; cardNumEl = 'payCardNumber'; bankNameEl = 'payBankName';
+      detailsEl = 'ucBankDetails'; errorEl = 'ucBankError';
     } else if (context === 'premium') {
       selectedPremiumBankId = bankId;
-      document.querySelectorAll('#premiumBankGrid .bank-btn').forEach(b => {
-        b.classList.toggle('selected', b.dataset.bank === bankId);
-      });
-      document.getElementById('premiumPayBankName').innerText = name;
-      document.getElementById('premiumPayCardNumber').innerText = card;
-      document.getElementById('premiumBankDetails').style.display = 'block';
-      document.getElementById('premiumBankError').classList.remove('show');
+      gridId = '#premiumBankGrid'; cardNumEl = 'premiumPayCardNumber'; bankNameEl = 'premiumPayBankName';
+      detailsEl = 'premiumBankDetails'; errorEl = 'premiumBankError';
     } else {
       selectedStarsBankId = bankId;
-      document.querySelectorAll('#starsBankGrid .bank-btn').forEach(b => {
-        b.classList.toggle('selected', b.dataset.bank === bankId);
-      });
-      document.getElementById('starsPayBankName').innerText = name;
-      document.getElementById('starsPayCardNumber').innerText = card;
-      document.getElementById('starsBankDetails').style.display = 'block';
-      document.getElementById('starsBankError').classList.remove('show');
+      gridId = '#starsBankGrid'; cardNumEl = 'starsPayCardNumber'; bankNameEl = 'starsPayBankName';
+      detailsEl = 'starsBankDetails'; errorEl = 'starsBankError';
     }
-    triggerHaptic('light');
+
+    document.querySelectorAll(gridId + ' .bank-btn').forEach(b => {
+      b.classList.toggle('selected', b.dataset.bank === bankId);
+    });
+    document.getElementById(errorEl).classList.remove('show');
+    document.getElementById(cardNumEl).innerText = '⏳ Загрузка...';
+    document.getElementById(detailsEl).style.display = 'block';
+
+    try {
+      const { name, card } = await getCardForBank(bankId);
+      document.getElementById(bankNameEl).innerText = name;
+      document.getElementById(cardNumEl).innerText = card;
+    } catch(e) {
+      document.getElementById(cardNumEl).innerText = '⚠️ Ошибка загрузки';
+      // сбрасываем выбор чтобы нельзя было отправить без карты
+      if (context === 'uc') selectedBankId = null;
+      else if (context === 'premium') selectedPremiumBankId = null;
+      else selectedStarsBankId = null;
+    }
   }
 
   // При открытии Stars шага оплаты — сброс банка
@@ -2119,7 +2118,7 @@
     const orderId = window._currentUcOrderId || generateOrderId();
     const type = isEntryMode ? 'По входу/QR' : 'По ID';
     const uid = isEntryMode ? '' : document.getElementById('playerUidInput').value;
-    const { name: bankName, card: cardNum } = getCardForBank(selectedBankId);
+    const { name: bankName, card: cardNum } = resolvedBankData[selectedBankId] || { name: '', card: '' };
 
     const payload = JSON.stringify({
       order_id: orderId,
@@ -2288,7 +2287,7 @@
 
     const orderId = window._currentStarsOrderId || generateOrderId();
     const username = document.getElementById('starsUsernameInput').value.trim();
-    const { name: bankName, card: cardNum } = getCardForBank(selectedStarsBankId);
+    const { name: bankName, card: cardNum } = resolvedBankData[selectedStarsBankId] || { name: '', card: '' };
 
     const payload = JSON.stringify({
       order_id: orderId,
@@ -2453,7 +2452,7 @@
 
     const orderId = window._currentPremiumOrderId || generateOrderId();
     const username = document.getElementById('premiumUsernameInput').value.trim();
-    const { name: bankName, card: cardNum } = getCardForBank(selectedPremiumBankId);
+    const { name: bankName, card: cardNum } = resolvedBankData[selectedPremiumBankId] || { name: '', card: '' };
 
     const payload = JSON.stringify({
       order_id: orderId,
@@ -2470,42 +2469,24 @@
     sendOrderToBot(JSON.parse(payload));
   }
 
-  // ========== ОТПРАВКА ЗАКАЗА НА BACKEND (Railway) ==========
-  // Токен бота здесь не хранится — всё делает сервер.
-  // Замени URL на свой Railway-домен после деплоя.
+  // ========== ОТПРАВКА ЗАКАЗА НА BACKEND ==========
+  // Замени на свой Railway-домен (без /order в конце)
   const BACKEND_URL = 'https://krakenbotcode-production.up.railway.app/order';
-  // API_SECRET должен совпадать с переменной API_SECRET на Railway.
-  // Вставь сюда то же значение, что задал в Railway → Variables.
-  const API_SECRET  = 'xK9#mP2$qL7vR4nY';
 
-  async function signBody(bodyStr) {
-    const enc  = new TextEncoder();
-    const key  = await crypto.subtle.importKey(
-      'raw', enc.encode(API_SECRET), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-    );
-    const sig  = await crypto.subtle.sign('HMAC', key, enc.encode(bodyStr));
-    return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
+  // API_SECRET УДАЛЁН с фронтенда — подпись бессмысленна когда секрет виден всем.
+  // Вместо неё бэкенд верифицирует подлинность запроса через initData от Telegram.
 
   async function sendOrderToBot(data) {
-    const user      = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
-    const buyerName = user ? (user.username ? '@' + user.username : user.first_name) : 'неизвестен';
-    const buyerId   = user ? user.id : null;
+    // initData — строка, подписанная Telegram. Бэкенд верифицирует её по алгоритму
+    // Telegram (HMAC-SHA256 с bot token). Подделать без токена бота невозможно.
+    const initData = tg ? tg.initData : '';
 
-    const payload = JSON.stringify({
-      ...data,
-      buyer_id:   buyerId,
-      buyer_name: buyerName
-    });
+    const payload = JSON.stringify({ ...data, init_data: initData });
 
     try {
-      const signature = await signBody(payload);
       const resp = await fetch(BACKEND_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Signature': signature
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: payload
       });
 
