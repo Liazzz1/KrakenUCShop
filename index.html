@@ -52,6 +52,14 @@
     z-index: 0;
   }
 
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
   .container {
     position: relative;
     z-index: 1;
@@ -94,14 +102,20 @@
   .brand-logo span { color: var(--red-accent); }
 
   .promo-banner {
-    background: linear-gradient(135deg, #1f1212 0%, #110909 100%);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
+    background: rgba(255, 42, 42, 0.07);
+    border: 1px solid rgba(255, 42, 42, 0.18);
+    border-radius: 20px;
     padding: 20px;
     position: relative;
     overflow: hidden;
     margin-bottom: 24px;
-    box-shadow: inset 0 0 20px rgba(255, 42, 42, 0.05);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    box-shadow:
+      0 1px 0 rgba(255,42,42,0.12) inset,
+      0 -1px 0 rgba(0,0,0,0.25) inset,
+      0 4px 30px rgba(255,42,42,0.1),
+      0 1px 3px rgba(0,0,0,0.5);
   }
 
   .promo-banner::after {
@@ -272,6 +286,8 @@
     margin: 8px 20px;
   }
 
+  /* ========== LIQUID GLASS CARDS ========== */
+
   /* ========== ГЛАВНАЯ СЕТКА КАТЕГОРИЙ ========== */
   .main-categories-grid {
     display: grid;
@@ -287,16 +303,44 @@
 
   /* Базовая карточка главной категории */
   .main-cat-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 20px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.08) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset,
+      0 4px 24px rgba(0,0,0,0.35),
+      0 1px 3px rgba(0,0,0,0.4);
   }
 
-  .main-cat-card:active { transform: scale(0.98); }
+  /* Верхний блик — имитация стекла */
+  .main-cat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.07) 0%,
+      rgba(255,255,255,0.00) 100%);
+    border-radius: 20px 20px 0 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .main-cat-card:active {
+    transform: scale(0.975);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.1) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset,
+      0 2px 12px rgba(0,0,0,0.4);
+  }
 
   /* --- PUBG плитка --- */
   .pubg-card-trigger {
@@ -308,9 +352,11 @@
     justify-content: space-between;
     border-bottom: 1px solid transparent;
     transition: border-color 0.22s;
+    position: relative;
+    z-index: 2;
   }
   .main-cat-card.open .pubg-card-trigger {
-    border-bottom-color: var(--card-border);
+    border-bottom-color: rgba(255,255,255,0.06);
   }
 
   .pubg-trigger-left {
@@ -373,39 +419,68 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
     padding: 10px 14px;
-    transition: all 0.15s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 1px 4px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
   }
-  .sub-btn:hover { background: rgba(255, 42, 42, 0.08); border-color: rgba(255, 42, 42, 0.2); }
-  .sub-btn:active { transform: scale(0.98); }
+  .sub-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+    border-radius: 14px 14px 0 0;
+    pointer-events: none;
+  }
+  .sub-btn:hover { background: rgba(255, 42, 42, 0.07); border-color: rgba(255, 42, 42, 0.2); box-shadow: 0 1px 0 rgba(255,42,42,0.1) inset, 0 1px 8px rgba(255,42,42,0.08); }
+  .sub-btn:active { transform: scale(0.98); background: rgba(255,42,42,0.1); }
   .sub-btn-title { font-size: 11.5px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
   .sub-btn-desc { font-size: 10px; color: var(--text3); }
   .sub-arrow { font-size: 16px; color: var(--text3); }
 
   /* --- Telegram Stars плитка --- */
   .tg-stars-card {
-    border-color: rgba(34, 158, 217, 0.15);
-    background: linear-gradient(145deg, #101018 0%, #0d0f18 100%);
+    border-color: rgba(34, 158, 217, 0.22);
+    background: rgba(34, 158, 217, 0.06);
+    box-shadow:
+      0 1px 0 rgba(34,158,217,0.15) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset,
+      0 4px 24px rgba(34,158,217,0.08),
+      0 1px 3px rgba(0,0,0,0.4);
   }
-  .tg-stars-card:active { border-color: rgba(34, 158, 217, 0.3); }
+  .tg-stars-card:active { border-color: rgba(34, 158, 217, 0.4); }
 
   /* --- NFT плитка --- */
   .nft-card {
-    border-color: rgba(139, 92, 246, 0.15);
-    background: linear-gradient(145deg, #101018 0%, #0e0d18 100%);
+    border-color: rgba(139, 92, 246, 0.22);
+    background: rgba(139, 92, 246, 0.06);
+    box-shadow:
+      0 1px 0 rgba(139,92,246,0.15) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset,
+      0 4px 24px rgba(139,92,246,0.08),
+      0 1px 3px rgba(0,0,0,0.4);
   }
-  .nft-card:active { border-color: rgba(139, 92, 246, 0.3); }
+  .nft-card:active { border-color: rgba(139, 92, 246, 0.4); }
 
   /* --- Отзывы плитка --- */
   .reviews-card {
-    border-color: rgba(245, 158, 11, 0.15);
-    background: linear-gradient(145deg, #101018 0%, #110e08 100%);
+    border-color: rgba(245, 158, 11, 0.22);
+    background: rgba(245, 158, 11, 0.05);
+    box-shadow:
+      0 1px 0 rgba(245,158,11,0.12) inset,
+      0 -1px 0 rgba(0,0,0,0.3) inset,
+      0 4px 24px rgba(245,158,11,0.07),
+      0 1px 3px rgba(0,0,0,0.4);
   }
-  .reviews-card:active { border-color: rgba(245, 158, 11, 0.3); }
+  .reviews-card:active { border-color: rgba(245, 158, 11, 0.4); }
 
   /* Внутренность маленьких плиток */
   .small-card-body {
@@ -461,42 +536,73 @@
   .nft-card .small-card-arrow { border-color: rgba(139, 92, 246, 0.2); }
   .reviews-card .small-card-arrow { border-color: rgba(245, 158, 11, 0.2); }
 
-  /* Декоративный глоу на маленьких карточках */
-  .tg-stars-card::after {
-    content: '★';
-    position: absolute;
-    right: -6px;
-    bottom: -14px;
-    font-size: 70px;
-    color: rgba(34, 158, 217, 0.04);
-    pointer-events: none;
+  /* Liquid shimmer animation */
+  @keyframes liquidShimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
   }
-  .nft-card::after {
-    content: '◆';
+
+  .main-cat-card:not(.open)::after {
+    content: '';
     position: absolute;
-    right: -4px;
-    bottom: -14px;
-    font-size: 70px;
-    color: rgba(139, 92, 246, 0.04);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255,255,255,0.025) 50%,
+      transparent 60%
+    );
+    background-size: 200% 100%;
+    animation: liquidShimmer 5s ease-in-out infinite;
     pointer-events: none;
+    border-radius: inherit;
+    z-index: 2;
   }
+
+  /* Но у tg-stars, nft, reviews — переопределим ::after обратно на декоратор */
+  .tg-stars-card::after,
+  .nft-card::after,
   .reviews-card::after {
-    content: '⭐';
+    background: none;
+    animation: none;
+  }
+
+  .tg-stars-card::after { content: '★'; position: absolute; right: -6px; bottom: -14px; font-size: 70px; color: rgba(34,158,217,0.07); pointer-events: none; z-index: 0; }
+  .nft-card::after { content: '◆'; position: absolute; right: -4px; bottom: -14px; font-size: 70px; color: rgba(139,92,246,0.07); pointer-events: none; z-index: 0; }
+  .reviews-card::after { content: '⭐'; position: absolute; right: -4px; bottom: -14px; font-size: 60px; color: rgba(245,158,11,0.07); pointer-events: none; z-index: 0; }
+
+  /* Shimmer on these full-row cards via before */
+  .tg-stars-card::before,
+  .nft-card::before,
+  .reviews-card::before {
+    content: '';
     position: absolute;
-    right: -4px;
-    bottom: -14px;
-    font-size: 60px;
-    color: rgba(245, 158, 11, 0.04);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255,255,255,0.03) 50%,
+      transparent 60%
+    );
+    background-size: 200% 100%;
+    animation: liquidShimmer 6s ease-in-out infinite;
     pointer-events: none;
+    border-radius: inherit;
+    z-index: 2;
   }
 
   /* Why us */
   .why-us-box {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 20px;
     padding: 18px;
     margin-bottom: 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.07) inset,
+      0 4px 20px rgba(0,0,0,0.3);
   }
 
   .why-us-grid {
@@ -1063,6 +1169,8 @@
 </head>
 <body>
 
+<canvas id="bg-canvas"></canvas>
+
 <!-- БОКОВОЕ МЕНЮ -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 <div class="sidebar" id="sidebar">
@@ -1218,7 +1326,7 @@
       </div>
 
       <!-- ===== Telegram плитка (аккордеон, как PUBG) ===== -->
-      <div class="main-cat-card main-cat-card-pubg" id="telegramCard" style="border-color: rgba(34,158,217,0.15); background: linear-gradient(135deg, #0d0f18 0%, #0b0d16 100%);">
+      <div class="main-cat-card main-cat-card-pubg" id="telegramCard" style="border-color: rgba(34,158,217,0.22); background: rgba(34,158,217,0.05); box-shadow: 0 1px 0 rgba(34,158,217,0.12) inset, 0 -1px 0 rgba(0,0,0,0.3) inset, 0 4px 24px rgba(34,158,217,0.07), 0 1px 3px rgba(0,0,0,0.4);">
         <div class="pubg-card-trigger" onclick="toggleTelegramDropdown()" style="border-bottom-color: transparent;">
           <div class="pubg-trigger-left">
             <span class="pubg-trigger-icon">✈️</span>
@@ -2468,6 +2576,108 @@
     document.getElementById('premiumModalOverlay').classList.remove('active');
     sendOrderToBot(JSON.parse(payload));
   }
+
+  // ========== ФОНОВАЯ АНИМАЦИЯ ==========
+  (function() {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [], lines = [];
+    const COUNT = 55;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+
+    function createParticle() {
+      return {
+        x: rand(0, W),
+        y: rand(0, H),
+        r: rand(0.6, 2.2),
+        vx: rand(-0.18, 0.18),
+        vy: rand(-0.22, 0.1),
+        alpha: rand(0.15, 0.55),
+        color: Math.random() < 0.55
+          ? `rgba(255,42,42,`
+          : Math.random() < 0.6
+            ? `rgba(34,158,217,`
+            : `rgba(139,92,246,`
+      };
+    }
+
+    function init() {
+      particles = Array.from({ length: COUNT }, createParticle);
+    }
+
+    function drawParticle(p) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+    }
+
+    function drawLines() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            const alpha = (1 - dist / 100) * 0.08;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,42,42,${alpha})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function drawGlow() {
+      // Subtle animated radial glows
+      const t = Date.now() / 4000;
+      const gx = W * (0.75 + 0.15 * Math.sin(t));
+      const gy = H * (0.12 + 0.08 * Math.cos(t * 1.3));
+      const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, 220);
+      grad.addColorStop(0, 'rgba(255,42,42,0.07)');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      const bx = W * (0.1 + 0.1 * Math.sin(t * 0.7 + 1));
+      const by = H * (0.6 + 0.12 * Math.cos(t * 0.9));
+      const grad2 = ctx.createRadialGradient(bx, by, 0, bx, by, 180);
+      grad2.addColorStop(0, 'rgba(34,158,217,0.06)');
+      grad2.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad2;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      drawGlow();
+      drawLines();
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10;
+        if (p.y > H + 10) p.y = -10;
+        drawParticle(p);
+      });
+      requestAnimationFrame(tick);
+    }
+
+    resize();
+    init();
+    tick();
+    window.addEventListener('resize', () => { resize(); });
+  })();
 
   // ========== ОТПРАВКА ЗАКАЗА НА BACKEND ==========
   // Замени на свой Railway-домен (без /order в конце)
