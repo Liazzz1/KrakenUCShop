@@ -58,6 +58,7 @@
     width: 100%; height: 100%;
     z-index: 0;
     pointer-events: none;
+    will-change: contents;
   }
 
   .container {
@@ -109,8 +110,6 @@
     position: relative;
     overflow: hidden;
     margin-bottom: 24px;
-    backdrop-filter: blur(20px) saturate(1.6);
-    -webkit-backdrop-filter: blur(20px) saturate(1.6);
     box-shadow:
       0 1px 0 rgba(255,42,42,0.12) inset,
       0 -1px 0 rgba(0,0,0,0.25) inset,
@@ -323,10 +322,8 @@
     border-radius: 22px;
     overflow: visible;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
     position: relative;
-    backdrop-filter: blur(28px) saturate(2) brightness(1.08);
-    -webkit-backdrop-filter: blur(28px) saturate(2) brightness(1.08);
     box-shadow:
       0 1px 0 rgba(255,255,255,0.14) inset,
       0 -1px 0 rgba(0,0,0,0.22) inset,
@@ -371,8 +368,6 @@
 
   .main-cat-card:active {
     transform: scale(0.977);
-    backdrop-filter: blur(28px) saturate(2.2) brightness(1.12);
-    -webkit-backdrop-filter: blur(28px) saturate(2.2) brightness(1.12);
     box-shadow:
       0 1px 0 rgba(255,255,255,0.18) inset,
       0 -1px 0 rgba(0,0,0,0.22) inset,
@@ -632,8 +627,6 @@
     border-radius: 20px;
     padding: 18px;
     margin-bottom: 24px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     box-shadow:
       0 1px 0 rgba(255,255,255,0.07) inset,
       0 4px 20px rgba(0,0,0,0.3);
@@ -2604,12 +2597,19 @@
     sendOrderToBot(JSON.parse(payload));
   }
 
-  // ========== ФОНОВАЯ АНИМАЦИЯ ==========
+  // ========== ФОНОВАЯ АНИМАЦИЯ (оптимизированная) ==========
   (function() {
     const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let W, H, particles = [], lines = [];
-    const COUNT = 55;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    let W, H, particles = [];
+    // Меньше частиц → меньше пар для линий (O(n²))
+    const COUNT = 32;
+    const DIST_SQ = 90 * 90; // избегаем Math.sqrt — сравниваем квадраты
+    const DIST = 90;
+
+    // Glow рисуем раз в N кадров — он медленно движется, разницы не видно
+    let glowFrame = 0;
+    let cachedGlowX1, cachedGlowY1, cachedGlowX2, cachedGlowY2;
 
     function resize() {
       W = canvas.width = window.innerWidth;
@@ -2619,18 +2619,16 @@
     function rand(min, max) { return Math.random() * (max - min) + min; }
 
     function createParticle() {
+      const r = Math.random();
       return {
         x: rand(0, W),
         y: rand(0, H),
-        r: rand(0.6, 2.2),
-        vx: rand(-0.18, 0.18),
-        vy: rand(-0.22, 0.1),
-        alpha: rand(0.15, 0.55),
-        color: Math.random() < 0.55
-          ? `rgba(255,42,42,`
-          : Math.random() < 0.6
-            ? `rgba(34,158,217,`
-            : `rgba(139,92,246,`
+        r: rand(0.8, 2.0),
+        vx: rand(-0.15, 0.15),
+        vy: rand(-0.18, 0.08),
+        alpha: rand(0.18, 0.50),
+        // Предварительно собираем строку цвета целиком — не конкатенируем в каждом кадре
+        colorBase: r < 0.55 ? '255,42,42' : r < 0.85 ? '34,158,217' : '139,92,246'
       };
     }
 
@@ -2638,72 +2636,91 @@
       particles = Array.from({ length: COUNT }, createParticle);
     }
 
-    function drawParticle(p) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + p.alpha + ')';
-      ctx.fill();
-    }
-
-    function drawLines() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            const alpha = (1 - dist / 100) * 0.08;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(255,42,42,${alpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
     function drawGlow() {
-      // Subtle animated radial glows
       const t = Date.now() / 4000;
-      const gx = W * (0.75 + 0.15 * Math.sin(t));
-      const gy = H * (0.12 + 0.08 * Math.cos(t * 1.3));
-      const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, 220);
+      // Обновляем координаты глоу только раз в 6 кадров
+      if (glowFrame % 6 === 0) {
+        cachedGlowX1 = W * (0.75 + 0.15 * Math.sin(t));
+        cachedGlowY1 = H * (0.12 + 0.08 * Math.cos(t * 1.3));
+        cachedGlowX2 = W * (0.1 + 0.1 * Math.sin(t * 0.7 + 1));
+        cachedGlowY2 = H * (0.6 + 0.12 * Math.cos(t * 0.9));
+      }
+
+      const grad = ctx.createRadialGradient(cachedGlowX1, cachedGlowY1, 0, cachedGlowX1, cachedGlowY1, 200);
       grad.addColorStop(0, 'rgba(255,42,42,0.07)');
       grad.addColorStop(1, 'transparent');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
 
-      const bx = W * (0.1 + 0.1 * Math.sin(t * 0.7 + 1));
-      const by = H * (0.6 + 0.12 * Math.cos(t * 0.9));
-      const grad2 = ctx.createRadialGradient(bx, by, 0, bx, by, 180);
+      const grad2 = ctx.createRadialGradient(cachedGlowX2, cachedGlowY2, 0, cachedGlowX2, cachedGlowY2, 160);
       grad2.addColorStop(0, 'rgba(34,158,217,0.06)');
       grad2.addColorStop(1, 'transparent');
       ctx.fillStyle = grad2;
       ctx.fillRect(0, 0, W, H);
     }
 
+    function drawLines() {
+      // Батчим все линии одного цвета в один path — резко снижает число ctx.stroke()
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dSq = dx * dx + dy * dy;
+          if (dSq < DIST_SQ) {
+            const alpha = (1 - Math.sqrt(dSq) / DIST) * 0.07;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+          }
+        }
+      }
+      ctx.strokeStyle = 'rgba(255,42,42,0.07)';
+      ctx.stroke(); // один вызов на все линии
+    }
+
     function tick() {
+      if (document.hidden) return;
       ctx.clearRect(0, 0, W, H);
       drawGlow();
       drawLines();
-      particles.forEach(p => {
+
+      // Рисуем частицы батчами по цвету — 3 вызова fill вместо COUNT
+      const byColor = {};
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < -10) p.x = W + 10;
-        if (p.x > W + 10) p.x = -10;
+        else if (p.x > W + 10) p.x = -10;
         if (p.y < -10) p.y = H + 10;
-        if (p.y > H + 10) p.y = -10;
-        drawParticle(p);
-      });
+        else if (p.y > H + 10) p.y = -10;
+        if (!byColor[p.colorBase]) byColor[p.colorBase] = [];
+        byColor[p.colorBase].push(p);
+      }
+      for (const [color, pts] of Object.entries(byColor)) {
+        ctx.beginPath();
+        for (const p of pts) {
+          ctx.moveTo(p.x + p.r, p.y);
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        }
+        ctx.fillStyle = `rgba(${color},${pts[0].alpha})`;
+        ctx.fill();
+      }
+
+      glowFrame++;
       requestAnimationFrame(tick);
     }
 
     resize();
     init();
     tick();
-    window.addEventListener('resize', () => { resize(); });
+    window.addEventListener('resize', resize);
+
+    // Пауза анимации когда вкладка/приложение скрыто — экономит батарею
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) tick();
+    });
   })();
 
   // ========== ОТПРАВКА ЗАКАЗА НА BACKEND ==========
