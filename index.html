@@ -1598,7 +1598,7 @@
       <div class="bank-grid" id="ucBankGrid">
         <div class="bank-btn" data-bank="mono" onclick="selectBank('mono','uc')"><span class="bank-btn-emoji">🖤</span>Mono Bank</div>
         <div class="bank-btn" data-bank="myraif" onclick="selectBank('myraif','uc')"><span class="bank-btn-emoji">💚</span>MyRaif</div>
-        <div class="bank-btn" data-bank="sense" onclick="selectBank('sense','uc')"><span class="bank-btn-emoji">🧡</span>Sense Bank</div>
+        <div class="bank-btn" data-bank="abank" onclick="selectBank('abank','uc')"><span class="bank-btn-emoji">🔵</span>A-Bank</div>
         <div class="bank-btn" data-bank="pumb" onclick="selectBank('pumb','uc')"><span class="bank-btn-emoji">💜</span>PUMB</div>
       </div>
       <div class="bank-error" id="ucBankError">⚠️ Выберите банк для оплаты</div>
@@ -1675,7 +1675,7 @@
       <div class="bank-grid" id="starsBankGrid">
         <div class="bank-btn" data-bank="mono" onclick="selectBank('mono','stars')"><span class="bank-btn-emoji">🖤</span>Mono Bank</div>
         <div class="bank-btn" data-bank="myraif" onclick="selectBank('myraif','stars')"><span class="bank-btn-emoji">💚</span>MyRaif</div>
-        <div class="bank-btn" data-bank="sense" onclick="selectBank('sense','stars')"><span class="bank-btn-emoji">🧡</span>Sense Bank</div>
+        <div class="bank-btn" data-bank="abank" onclick="selectBank('abank','stars')"><span class="bank-btn-emoji">🔵</span>A-Bank</div>
         <div class="bank-btn" data-bank="pumb" onclick="selectBank('pumb','stars')"><span class="bank-btn-emoji">💜</span>PUMB</div>
       </div>
       <div class="bank-error" id="starsBankError">⚠️ Выберите банк для оплаты</div>
@@ -1753,7 +1753,7 @@
       <div class="bank-grid" id="premiumBankGrid">
         <div class="bank-btn" data-bank="mono" onclick="selectBank('mono','premium')"><span class="bank-btn-emoji">🖤</span>Mono Bank</div>
         <div class="bank-btn" data-bank="myraif" onclick="selectBank('myraif','premium')"><span class="bank-btn-emoji">💚</span>MyRaif</div>
-        <div class="bank-btn" data-bank="sense" onclick="selectBank('sense','premium')"><span class="bank-btn-emoji">🧡</span>Sense Bank</div>
+        <div class="bank-btn" data-bank="abank" onclick="selectBank('abank','premium')"><span class="bank-btn-emoji">🔵</span>A-Bank</div>
         <div class="bank-btn" data-bank="pumb" onclick="selectBank('pumb','premium')"><span class="bank-btn-emoji">💜</span>PUMB</div>
       </div>
       <div class="bank-error" id="premiumBankError">⚠️ Выберите банк для оплаты</div>
@@ -1791,7 +1791,7 @@
   const BANKS = [
     { id: 'mono',   name: 'Mono Bank',  emoji: '🖤' },
     { id: 'myraif', name: 'MyRaif',     emoji: '💚' },
-    { id: 'sense',  name: 'Sense Bank', emoji: '🧡' },
+    { id: 'abank',  name: 'A-Bank',     emoji: '🔵' },
     { id: 'pumb',   name: 'PUMB',       emoji: '💜' }
   ];
 
@@ -1823,22 +1823,22 @@
   const PRODUCTS_DATA = {
     id: {
       lite: [
-        { id: "buy_id_60",   name: "💰 60 UC",   uah: "40 грн",     pln: "5 zł" },
-        { id: "buy_id_325",  name: "💰 325 UC",  uah: "195 грн",    pln: "20 zł" },
-        { id: "buy_id_660",  name: "💰 660 UC",  uah: "385 грн",    pln: "35 zł" }
+        { id: "buy_id_60",   name: "💰 60 UC",   uah: "45 грн",     pln: "5 zł" },
+        { id: "buy_id_325",  name: "💰 325 UC",  uah: "210 грн",    pln: "20 zł" },
+        { id: "buy_id_660",  name: "💰 660 UC",  uah: "415 грн",    pln: "35 zł" }
       ],
       medium: [
-        { id: "buy_id_1800",  name: "💰 1800 UC",  uah: "965 грн",    pln: "80 zł" },
-        { id: "buy_id_3850",  name: "💰 3850 UC",  uah: "1 950 грн",  pln: "160 zł" },
-        { id: "buy_id_8100",  name: "💰 8100 UC",  uah: "3 850 грн",  pln: "320 zł" },
-        { id: "buy_id_16200", name: "💰 16200 UC", uah: "7 700 грн",  pln: "630 zł" }
+        { id: "buy_id_1800",  name: "💰 1800 UC",  uah: "1 020 грн",  pln: "80 zł" },
+        { id: "buy_id_3850",  name: "💰 3850 UC",  uah: "2 040 грн",  pln: "160 zł" },
+        { id: "buy_id_8100",  name: "💰 8100 UC",  uah: "3 950 грн",  pln: "320 zł" },
+        { id: "buy_id_16200", name: "💰 16200 UC", uah: "7 800 грн",  pln: "630 zł" }
       ],
       elite: [
-        { id: "buy_id_24300", name: "💰 24300 UC", uah: "11 600 грн", pln: "945 zł" },
-        { id: "buy_id_32400", name: "💰 32400 UC", uah: "15 450 грн", pln: "1300 zł" },
-        { id: "buy_id_40500", name: "💰 40500 UC", uah: "19 350 грн", pln: "1600 zł" },
-        { id: "buy_id_48600", name: "💰 48600 UC", uah: "23 450 грн", pln: "1900 zł" },
-        { id: "buy_id_81000", name: "💰 81000 UC", uah: "38 500 грн", pln: "3200 zł" }
+        { id: "buy_id_24300", name: "💰 24300 UC", uah: "11 850 грн", pln: "945 zł" },
+        { id: "buy_id_32400", name: "💰 32400 UC", uah: "16 800 грн", pln: "1300 zł" },
+        { id: "buy_id_40500", name: "💰 40500 UC", uah: "20 750 грн", pln: "1600 zł" },
+        { id: "buy_id_48600", name: "💰 48600 UC", uah: "24 950 грн", pln: "1900 zł" },
+        { id: "buy_id_81000", name: "💰 81000 UC", uah: "39 500 грн", pln: "3200 zł" }
       ]
     },
     entry: {
