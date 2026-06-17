@@ -2041,10 +2041,12 @@ var USER_STATUS = {
 async function telegramAuth() {
   var tg = window.Telegram && window.Telegram.WebApp;
   if (!tg || !tg.initData) {
-    // В браузере (не в Telegram) — работаем без авторизации
+    showToast('⚠️ Нет initData — не в Telegram');
     console.log('Не в Telegram — авторизация пропущена');
     return;
   }
+
+  showToast('🔄 Авторизация...');
 
   try {
     var resp = await fetch(API_URL + '/api/auth/telegram/', {
@@ -2053,23 +2055,25 @@ async function telegramAuth() {
       body: JSON.stringify({init_data: tg.initData})
     });
 
-    if (!resp.ok) throw new Error('Auth failed: ' + resp.status);
+    if (!resp.ok) {
+      showToast('❌ Ошибка ' + resp.status);
+      throw new Error('Auth failed: ' + resp.status);
+    }
 
     var data = await resp.json();
     accessToken  = data.access;
     refreshToken = data.refresh;
     currentUser  = data.user;
 
-    // Сохраняем токены
     try { localStorage.setItem('kr_access', accessToken); } catch(e){}
     try { localStorage.setItem('kr_refresh', refreshToken); } catch(e){}
 
-    // Обновляем USER_STATUS из бэкенда
     applyUserData(data.user);
     // DEBUG — удалить после проверки
-    showToast('Auth OK: @' + (data.user.username || data.user.first_name || data.user.telegram_id));
+    showToast('✅ @' + (data.user.username || data.user.first_name || data.user.telegram_id));
 
   } catch(e) {
+    showToast('❌ ' + e.message);
     console.warn('Ошибка авторизации:', e.message);
   }
 }
