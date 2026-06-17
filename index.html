@@ -2100,23 +2100,20 @@ function applyUserData(user) {
     color:    s.color
   };
 
-  // Обновляем имя в профиле по ID (не querySelector — он берёт первый .pname из товаров)
+  // Имя пользователя
   var nameEl = document.getElementById('profile-name');
   if (nameEl) {
-    if (user.username) {
-      nameEl.textContent = '@' + user.username;
-    } else if (user.first_name) {
-      nameEl.textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
-    }
+    nameEl.textContent = user.username ? '@' + user.username
+      : (user.first_name || '') + (user.last_name ? ' ' + user.last_name : '');
   }
 
-  // Статистика по ID
+  // Статистика
   var ucEl  = document.getElementById('stat-uc-val');
   var ordEl = document.getElementById('stat-orders-val');
   var refEl = document.getElementById('stat-refs-val');
-  if (ucEl)  ucEl.textContent  = (user.uc_purchased || 0).toLocaleString();
-  if (ordEl) ordEl.textContent = user.total_orders   || 0;
-  if (refEl) refEl.textContent = user.referral_count || 0;
+  if (ucEl)  ucEl.textContent  = (user.uc_purchased  || 0).toLocaleString();
+  if (ordEl) ordEl.textContent = (user.total_orders  || 0);
+  if (refEl) refEl.textContent = (user.referral_count || 0);
 
   // Применяем язык/валюту из настроек пользователя
   if (user.preferred_lang && user.preferred_lang !== currentLang) {
