@@ -847,15 +847,15 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       <div class="pstats">
         <div class="pstat">
           <div class="pstat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
-          <div class="pstat-val" id="stat-uc-val">—</div><div class="pstat-lbl" data-tr="stat-uc">Куплено UC</div>
+          <div class="pstat-val" id="stat-uc-val">0</div><div class="pstat-lbl" data-tr="stat-uc">Куплено UC</div>
         </div>
         <div class="pstat">
           <div class="pstat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-          <div class="pstat-val" id="stat-orders-val">—</div><div class="pstat-lbl" data-tr="stat-orders">Всего заказов</div>
+          <div class="pstat-val" id="stat-orders-val">0</div><div class="pstat-lbl" data-tr="stat-orders">Всего заказов</div>
         </div>
         <div class="pstat">
           <div class="pstat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-          <div class="pstat-val" id="stat-refs-val">—</div><div class="pstat-lbl" data-tr="stat-refs">Рефералы</div>
+          <div class="pstat-val" id="stat-refs-val">0</div><div class="pstat-lbl" data-tr="stat-refs">Рефералы</div>
         </div>
       </div>
     </div>
@@ -2100,7 +2100,7 @@ function applyUserData(user) {
     color:    s.color
   };
 
-  // Обновляем имя в профиле
+  // Обновляем имя в профиле по ID (не querySelector — он берёт первый .pname из товаров)
   var nameEl = document.getElementById('profile-name');
   if (nameEl) {
     if (user.username) {
@@ -2110,12 +2110,12 @@ function applyUserData(user) {
     }
   }
 
-  // Статистика — по ID
-  var ucEl     = document.getElementById('stat-uc-val');
-  var ordEl    = document.getElementById('stat-orders-val');
-  var refEl    = document.getElementById('stat-refs-val');
-  if (ucEl)  ucEl.textContent  = user.uc_purchased != null ? user.uc_purchased.toLocaleString() : '0';
-  if (ordEl) ordEl.textContent = user.total_orders  || 0;
+  // Статистика по ID
+  var ucEl  = document.getElementById('stat-uc-val');
+  var ordEl = document.getElementById('stat-orders-val');
+  var refEl = document.getElementById('stat-refs-val');
+  if (ucEl)  ucEl.textContent  = (user.uc_purchased || 0).toLocaleString();
+  if (ordEl) ordEl.textContent = user.total_orders   || 0;
   if (refEl) refEl.textContent = user.referral_count || 0;
 
   // Применяем язык/валюту из настроек пользователя
