@@ -1755,6 +1755,7 @@ function selectLang(lang) {
   updateSettingsSummary();
   applyTranslations();
   showToast(lang==='ru' ? '✓ Язык изменён' : '✓ Мову змінено');
+  savePreferences();
 }
 
 function selectCurr(curr) {
@@ -1766,6 +1767,7 @@ function selectCurr(curr) {
   renderAllProducts();
   renderCart();
   showToast('✓ валюта изменена на ' + CURR_NAMES[curr]);
+  savePreferences();
 }
 
 function updateSettingsSummary() {
@@ -2021,13 +2023,127 @@ var MAX_DISCOUNT = 15;
 var activePromo = null;
 var activePromoDisc = 0;
 
-// Demo user status — in real app this comes from backend
+// ═══ BACKEND CONFIG ══════════════════════════════
+var API_URL = 'https://kraken-production-c849.up.railway.app';
+var accessToken  = null;
+var refreshToken = null;
+var currentUser  = null;
+
+// Default USER_STATUS — будет перезаписан после авторизации
 var USER_STATUS = {
-  level: 'vip-gold',   // 'normal','loyal','vip-bronze','vip-silver','vip-gold','clan-deputy','clan-leader'
-  discount: 15,
-  label: '🥇 VIP Gold',
-  color: '#d4af37'
+  level: 'normal',
+  discount: 0,
+  label: 'Обычный клиент',
+  color: '#999'
 };
+
+// ── Авторизация через Telegram initData ──────────────────
+async function telegramAuth() {
+  var tg = window.Telegram && window.Telegram.WebApp;
+  if (!tg || !tg.initData) {
+    // В браузере (не в Telegram) — работаем без авторизации
+    console.log('Не в Telegram — авторизация пропущена');
+    return;
+  }
+
+  try {
+    var resp = await fetch(API_URL + '/api/auth/telegram/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({init_data: tg.initData})
+    });
+
+    if (!resp.ok) throw new Error('Auth failed: ' + resp.status);
+
+    var data = await resp.json();
+    accessToken  = data.access;
+    refreshToken = data.refresh;
+    currentUser  = data.user;
+
+    // Сохраняем токены
+    try { localStorage.setItem('kr_access', accessToken); } catch(e){}
+    try { localStorage.setItem('kr_refresh', refreshToken); } catch(e){}
+
+    // Обновляем USER_STATUS из бэкенда
+    applyUserData(data.user);
+
+  } catch(e) {
+    console.warn('Ошибка авторизации:', e.message);
+  }
+}
+
+// ── Применить данные пользователя к интерфейсу ───────────
+function applyUserData(user) {
+  if (!user) return;
+  currentUser = user;
+
+  // Маппинг уровней бэкенда → фронтенд
+  var levelMap = {
+    'none':   {level:'normal',      label:'Обычный клиент',      color:'#999'},
+    'bronze': {level:'vip-bronze',  label:'🥉 VIP Bronze',        color:'#cd7f32'},
+    'silver': {level:'vip-silver',  label:'🥈 VIP Silver',        color:'#c0c0c0'},
+    'gold':   {level:'vip-gold',    label:'🥇 VIP Gold',          color:'#d4af37'},
+    'deputy': {level:'clan-deputy', label:'🛡️ Заместитель клана', color:'#818cf8'},
+    'leader': {level:'clan-leader', label:'⚔️ Лидер клана',      color:'#e02020'}
+  };
+
+  // Определяем статус — VIP приоритетнее клана
+  var vip  = user.vip_level  || 'none';
+  var clan = user.clan_role  || 'none';
+  var key  = (vip !== 'none') ? vip : (clan !== 'none') ? clan : 'none';
+  var s    = levelMap[key] || levelMap['none'];
+
+  USER_STATUS = {
+    level:    s.level,
+    discount: user.total_discount || 0,
+    label:    user.is_loyal && key === 'none' ? '⭐ Постоянный клиент' : s.label,
+    color:    s.color
+  };
+
+  // Обновляем имя в профиле
+  var nameEl = document.querySelector('.pname');
+  if (nameEl && user.username) {
+    nameEl.textContent = '@' + user.username;
+  } else if (nameEl && user.first_name) {
+    nameEl.textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+  }
+
+  // Статистика
+  var statOrders = document.querySelector('.pstat-val:nth-child(2)');
+  var ordersEls = document.querySelectorAll('.pstat-val');
+  if (ordersEls[1]) ordersEls[1].textContent = user.total_orders || 0;
+  if (ordersEls[2]) ordersEls[2].textContent = user.referral_count || 0;
+
+  // Применяем язык/валюту из настроек пользователя
+  if (user.preferred_lang && user.preferred_lang !== currentLang) {
+    selectLang(user.preferred_lang);
+  }
+  if (user.preferred_currency && user.preferred_currency !== currentCurr) {
+    selectCurr(user.preferred_currency);
+  }
+
+  updateProfileStatus();
+}
+
+// ── Обновить язык/валюту на бэкенде ─────────────────────
+async function savePreferences() {
+  if (!accessToken) return;
+  try {
+    await fetch(API_URL + '/api/auth/profile/', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      },
+      body: JSON.stringify({
+        preferred_lang:     currentLang,
+        preferred_currency: currentCurr
+      })
+    });
+  } catch(e) {
+    console.warn('Ошибка сохранения настроек:', e.message);
+  }
+}
 
 function applyPromo() {
   var inp = document.getElementById('promo-input');
@@ -2167,6 +2283,9 @@ function init(){
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
   }
+
+  // Авторизация через Telegram (асинхронно, не блокирует UI)
+  telegramAuth();
 }
 init();
 </script>
