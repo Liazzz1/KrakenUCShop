@@ -481,7 +481,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   <div class="topbar">
     <div class="logo">
       <div class="logo-img"><img id="logo-kraken" src="" alt=""/></div>
-      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v1.0</span></div>
+      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v1.1</span></div>
     </div>
     <div class="notif">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -2040,13 +2040,7 @@ var USER_STATUS = {
 // ── Авторизация через Telegram initData ──────────────────
 async function telegramAuth() {
   var tg = window.Telegram && window.Telegram.WebApp;
-  if (!tg || !tg.initData) {
-    showToast('⚠️ Нет initData — не в Telegram');
-    console.log('Не в Telegram — авторизация пропущена');
-    return;
-  }
-
-  showToast('🔄 Авторизация...');
+  if (!tg || !tg.initData) { return; }
 
   try {
     var resp = await fetch(API_URL + '/api/auth/telegram/', {
@@ -2055,10 +2049,7 @@ async function telegramAuth() {
       body: JSON.stringify({init_data: tg.initData})
     });
 
-    if (!resp.ok) {
-      showToast('❌ Ошибка ' + resp.status);
-      throw new Error('Auth failed: ' + resp.status);
-    }
+    if (!resp.ok) throw new Error('Auth failed: ' + resp.status);
 
     var data = await resp.json();
     accessToken  = data.access;
@@ -2069,11 +2060,8 @@ async function telegramAuth() {
     try { localStorage.setItem('kr_refresh', refreshToken); } catch(e){}
 
     applyUserData(data.user);
-    // DEBUG — удалить после проверки
-    showToast('✅ @' + (data.user.username || data.user.first_name || data.user.telegram_id));
 
   } catch(e) {
-    showToast('❌ ' + e.message);
     console.warn('Ошибка авторизации:', e.message);
   }
 }
@@ -2117,7 +2105,7 @@ function applyUserData(user) {
   var ucEl  = document.getElementById('stat-uc-val');
   var ordEl = document.getElementById('stat-orders-val');
   var refEl = document.getElementById('stat-refs-val');
-  if (ucEl)  ucEl.textContent  = (user.uc_purchased  || 0).toLocaleString();
+  if (ucEl)  ucEl.textContent  = '—';
   if (ordEl) ordEl.textContent = (user.total_orders  || 0);
   if (refEl) refEl.textContent = (user.referral_count || 0);
 
