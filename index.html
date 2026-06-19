@@ -430,6 +430,24 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .score-col:first-child{border-right:1px solid var(--border);color:var(--text2);font-weight:500;}
 .score-col:last-child{font-weight:800;}
 
+
+/* ── PAYMENT SCREEN ── */
+.pay-summary{margin:0 12px 14px;background:rgba(13,13,13,.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
+.pay-summary-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);}
+.pay-summary-row:last-child{border-bottom:none;padding-top:10px;margin-top:4px;}
+.pay-summary-row.big .pay-summary-label{font-size:14px;font-weight:700;}
+.pay-summary-label{font-size:12px;color:var(--text2);}
+.pay-summary-val{font-size:13px;font-weight:600;text-align:right;max-width:60%;}
+
+.pay-method{background:rgba(13,13,13,.85);backdrop-filter:blur(8px);border:1.5px solid var(--border);border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;}
+.pay-method:active{transform:scale(.98);}
+.pay-method.on{border-color:var(--red);box-shadow:0 0 14px var(--red-glow);}
+.pay-method-icon{font-size:26px;flex-shrink:0;width:36px;text-align:center;}
+.pay-method-info{flex:1;}
+.pay-method-name{font-size:14px;font-weight:800;}
+.pay-method-detail{font-size:11px;color:var(--text2);margin-top:2px;font-family:monospace;}
+.pay-method-check{color:var(--green);font-size:18px;font-weight:900;opacity:0;transition:opacity .2s;}
+
 /* ── STUB SCREEN ── */
 .stub-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 30px;text-align:center;animation:fadeUp .4s ease;}
 .stub-icon{
@@ -481,7 +499,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   <div class="topbar">
     <div class="logo">
       <div class="logo-img"><img id="logo-kraken" src="" alt=""/></div>
-      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v1.1</span></div>
+      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v1.2</span></div>
     </div>
     <div class="notif">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -1278,6 +1296,81 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 
 
 </div>
+<!-- ══════════════ PAYMENT ══════════════ -->
+<div class="screen" id="sc-payment">
+  <div class="topbar">
+    <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
+    <div class="btn-back" onclick="goTo('cart')">&#8592; Назад</div>
+  </div>
+  <div class="scroll">
+    <div class="phdr">
+      <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <div><div class="phdr-title">Оплата</div><div class="phdr-sub">Выберите способ оплаты</div></div>
+    </div>
+
+    <!-- Order summary -->
+    <div class="pay-summary">
+      <div class="pay-summary-row">
+        <span class="pay-summary-label">&#128230; Товары</span>
+        <span class="pay-summary-val" id="payment-items">—</span>
+      </div>
+      <div class="pay-summary-row">
+        <span class="pay-summary-label">&#127918; Получатель</span>
+        <span class="pay-summary-val" id="payment-recv">—</span>
+      </div>
+      <div class="pay-summary-row big">
+        <span class="pay-summary-label">&#128176; К оплате</span>
+        <span class="pay-summary-val" id="payment-amount" style="color:var(--green);font-size:20px;font-weight:900">—</span>
+      </div>
+    </div>
+
+    <!-- Payment methods -->
+    <div class="sec-hdr"><div class="sec-title">&#128179; Способ оплаты</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:0 12px;" id="payment-methods-wrap"></div>
+
+    <!-- Pay button -->
+    <div style="margin:14px 12px 8px;">
+      <button class="btn full ripple" id="open-payment-btn" style="margin-bottom:10px;">Открыть оплату &#8594;</button>
+      <button class="btn full ripple" onclick="confirmPayment()" style="background:var(--green);box-shadow:0 4px 16px rgba(34,197,94,.3);">
+        &#9989; Я оплатил — отправить заказ
+      </button>
+    </div>
+
+    <div class="method-note" style="margin:0 12px 12px;">
+      &#9888;&#65039; После нажатия «Я оплатил» ваш заказ уйдёт менеджеру. Укажите сумму и отправьте скриншот оплаты.
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="goTo('home')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Главная</span></div>
+    <div class="ni" onclick="goTo('catalog')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Каталог</span></div>
+    <div class="ni on" onclick="goTo('cart')"><div class="cwrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cbadge" id="cb12">0</span></div><span>Корзина</span></div>
+    <div class="ni" onclick="goTo('orders')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Заказы</span></div>
+    <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span></div>
+  </div>
+</div>
+
+<!-- ══════════════ ORDER SUCCESS ══════════════ -->
+<div class="screen" id="sc-order-success">
+  <div class="topbar">
+    <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
+  </div>
+  <div class="scroll">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;text-align:center;animation:fadeUp .4s ease;">
+      <div style="width:80px;height:80px;border-radius:50%;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:40px;animation:scalePop .4s ease;">&#9989;</div>
+      <div style="font-size:22px;font-weight:900;margin-bottom:8px;">Заказ отправлен!</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:8px;">Ваш заказ передан менеджеру в Telegram. Пожалуйста, отправьте скриншот оплаты.</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:28px;">Обычное время выполнения — до 10 минут.</div>
+      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:12px 20px;margin-bottom:24px;">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Поддержка</div>
+        <div style="font-size:14px;font-weight:700;color:var(--green);">@KrAkeNn1n</div>
+      </div>
+      <button class="btn full ripple" onclick="goTo('home')" style="max-width:280px;">На главную &#8594;</button>
+      <div style="height:8px;"></div>
+      <button class="btn full ripple" onclick="goTo('orders')" style="max-width:280px;background:var(--bg3);box-shadow:none;color:var(--text2);">Мои заказы</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <!-- ══ MODALS ══ -->
@@ -1667,30 +1760,174 @@ function renderCart() {
 
 function updateBadges(){
   var c=0; for(var i=0;i<cart.length;i++) c+=cart[i].qty;
-  ['cb1','cb2','cb4','cb5','cb6','cb7','cb8','cb9','cb10','cb11'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=c;});
+  ['cb1','cb2','cb4','cb5','cb6','cb7','cb8','cb9','cb10','cb11','cb12'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=c;});
 }
 
 function checkout(){
-  var inp=document.getElementById('recv-id');
-  if(!inp.value.trim()){
-    inp.style.borderBottom='2px solid var(--red)';
-    inp.placeholder = currentLang==='ua' ? '\u26A0\uFE0F \u0412\u0432\u0435\u0434\u0456\u0442\u044c ID!' : '\u26A0\uFE0F \u0412\u0432\u0435\u0434\u0438\u0442\u0435 ID \u0434\u043b\u044f \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0435\u043d\u0438\u044f!';
+  var inp = document.getElementById('recv-id');
+  if (!inp.value.trim()) {
+    inp.style.borderBottom = '2px solid var(--red)';
+    inp.placeholder = currentLang==='ua' ? '\u26A0\uFE0F \u0412\u0432\u0435\u0434\u0456\u0442\u044c ID!' : '\u26A0\uFE0F \u0412\u0432\u0435\u0434\u0438\u0442\u0435 ID!';
     inp.focus();
     setTimeout(function(){
-      inp.style.borderBottom='';
+      inp.style.borderBottom = '';
       inp.placeholder = TR['recv-placeholder'][currentLang] || TR['recv-placeholder'].ru;
-    },2500);
+    }, 2500);
     return;
   }
-  showToast(currentLang==='ua' ? '\u2705 \u0417\u0430\u043c\u043e\u0432\u043b\u0435\u043d\u043d\u044f \u043e\u0444\u043e\u0440\u043c\u043b\u0435\u043d\u043e!' : '\u2705 \u0417\u0430\u043a\u0430\u0437 \u043e\u0444\u043e\u0440\u043c\u043b\u0435\u043d! \u041f\u0435\u0440\u0435\u0445\u043e\u0434\u0438\u043c...');
-  cart=[];updateBadges();
-  setTimeout(function(){goTo('orders');},1000);
+  // Go to payment method selection
+  goTo('payment');
+  try {
+    renderPaymentScreen();
+  } catch(e) {
+    showToast('⚠️ Ошибка: ' + e.message);
+    console.error('renderPaymentScreen error:', e);
+  }
+}
+
+// ── PAYMENT SCREEN ─────────────────────────────────────────────
+// Реквизиты — замените на свои!
+var PAYMENT_METHODS = {
+  UAH: [
+    {id:'mono',   name:'Monobank',  icon:'🟡', number:'4441 1144 XXXX XXXX', tag:'monobank'},
+    {id:'myrais', name:'MyRaif',    icon:'🔵', number:'4731 1234 XXXX XXXX', tag:'raiffeisen'},
+    {id:'sense',  name:'Sense',     icon:'🟢', number:'4149 5000 XXXX XXXX', tag:'sense'},
+    {id:'pumb',   name:'ПУМБ',      icon:'🟠', number:'5168 7422 XXXX XXXX', tag:'pumb'},
+  ],
+  EUR: [
+    {id:'revolut_eur', name:'Revolut', icon:'🔷', link:'https://revolut.me/ваш_ник', tag:'revolut'},
+  ],
+  PLN: [
+    {id:'revolut_pln', name:'Revolut', icon:'🔷', link:'https://revolut.me/ваш_ник', tag:'revolut'},
+  ]
+};
+
+function renderPaymentScreen() {
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS['UAH'];
+  var total = cart.reduce(function(s,i){ return s + i.price*i.qty; }, 0);
+  var discountedTotal = total;
+  if (activePromoDisc > 0) {
+    discountedTotal = total - Math.round(total * activePromoDisc / 100);
+  }
+  var recvId = document.getElementById('recv-id') ? document.getElementById('recv-id').value : '';
+  var itemsList = cart.map(function(i){ return i.name + ' x' + i.qty; }).join(', ');
+
+  // Build methods HTML
+  var methodsHtml = methods.map(function(m) {
+    return '<div class="pay-method ripple" onclick="selectPayMethod(\'' + m.id + '\')" id="pm-' + m.id + '">' +
+      '<div class="pay-method-icon">' + m.icon + '</div>' +
+      '<div class="pay-method-info"><div class="pay-method-name">' + m.name + '</div>' +
+      (m.number ? '<div class="pay-method-detail">' + m.number + '</div>' : '') +
+      (m.link ? '<div class="pay-method-detail">' + m.link + '</div>' : '') +
+      '</div>' +
+      '<div class="pay-method-check" id="chk-' + m.id + '">&#10003;</div>' +
+    '</div>';
+  }).join('');
+
+  var wrap = document.getElementById('payment-methods-wrap');
+  if (wrap) wrap.innerHTML = methodsHtml;
+
+  // Update amount
+  var amtEl = document.getElementById('payment-amount');
+  if (amtEl) amtEl.textContent = fmtPrice(discountedTotal);
+
+  // Update order summary
+  var summEl = document.getElementById('payment-items');
+  if (summEl) summEl.textContent = itemsList;
+
+  var recvEl = document.getElementById('payment-recv');
+  if (recvEl) recvEl.textContent = recvId;
+
+  // Auto-select first method
+  if (methods.length > 0) selectPayMethod(methods[0].id);
+}
+
+var selectedPayMethod = null;
+
+function selectPayMethod(id) {
+  selectedPayMethod = id;
+  // Update checkmarks
+  document.querySelectorAll('.pay-method').forEach(function(el) {
+    el.classList.remove('on');
+  });
+  document.querySelectorAll('.pay-method-check').forEach(function(el) {
+    el.style.opacity = '0';
+  });
+  var el = document.getElementById('pm-' + id);
+  var chk = document.getElementById('chk-' + id);
+  if (el) el.classList.add('on');
+  if (chk) chk.style.opacity = '1';
+
+  // Find method and update pay button
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS['UAH'];
+  var method = null;
+  for (var i=0;i<methods.length;i++) { if (methods[i].id===id) { method=methods[i]; break; } }
+  if (!method) return;
+
+  var payBtn = document.getElementById('open-payment-btn');
+  if (payBtn) {
+    if (method.link) {
+      payBtn.onclick = function(){ window.open(method.link, '_blank'); };
+      payBtn.textContent = '\u041e\u0442\u043a\u0440\u044b\u0442\u044c Revolut \u2192';
+    } else {
+      // Copy card number
+      payBtn.onclick = function(){
+        navigator.clipboard.writeText(method.number.replace(/\s/g,'')).then(function(){
+          showToast('\u2705 \u041d\u043e\u043c\u0435\u0440 \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d');
+        }).catch(function(){
+          showToast('\u041d\u043e\u043c\u0435\u0440: ' + method.number);
+        });
+      };
+      payBtn.textContent = '\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043d\u043e\u043c\u0435\u0440 \u043a\u0430\u0440\u0442\u044b';
+    }
+  }
+}
+
+function confirmPayment() {
+  var recvId = document.getElementById('recv-id') ? document.getElementById('recv-id').value : '';
+  var total = cart.reduce(function(s,i){ return s + i.price*i.qty; }, 0);
+  var discountedTotal = total;
+  if (activePromoDisc > 0) discountedTotal = total - Math.round(total * activePromoDisc / 100);
+  var itemsList = cart.map(function(i){ return i.name + ' x' + i.qty + ' = ' + fmtPrice(i.price*i.qty); }).join('\n');
+
+  var username = currentUser ? (currentUser.username ? '@'+currentUser.username : currentUser.first_name) : 'Неизвестно';
+  var tgId = currentUser ? currentUser.telegram_id : '—';
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS['UAH'];
+  var method = null;
+  for (var i=0;i<methods.length;i++) { if (methods[i].id===selectedPayMethod) { method=methods[i]; break; } }
+  var methodName = method ? method.name : '—';
+
+  var msg = [
+    '🛍️ НОВЫЙ ЗАКАЗ',
+    '',
+    '👤 Пользователь: ' + username + ' (ID: ' + tgId + ')',
+    '🎮 Игровой ID: ' + recvId,
+    '📦 Товары:',
+    itemsList,
+    '💰 Сумма: ' + fmtPrice(discountedTotal),
+    '💳 Оплата: ' + methodName
+  ].join('\n');
+
+  var tgUrl = 'https://t.me/KrAkeNn1n?text=' + encodeURIComponent(msg);
+  window.open(tgUrl, '_blank');
+
+  cart = [];
+  activePromo = null;
+  activePromoDisc = 0;
+  updateBadges();
+  goTo('order-success');
 }
 
 // ═══ NAVIGATION ══════════════════════════════
 function goTo(name){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
-  document.getElementById('sc-'+name).classList.add('active');
+  var target = document.getElementById('sc-'+name);
+  if (!target) {
+    showToast('⚠️ Экран "' + name + '" не найден');
+    console.error('goTo: элемент sc-' + name + ' не существует в DOM');
+    return;
+  }
+  target.classList.add('active');
   if(name==='cart') renderCart();
 }
 
