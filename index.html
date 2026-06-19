@@ -499,7 +499,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   <div class="topbar">
     <div class="logo">
       <div class="logo-img"><img id="logo-kraken" src="" alt=""/></div>
-      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v1.8</span></div>
+      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v1.9</span></div>
     </div>
     <div class="notif">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -1767,7 +1767,7 @@ function checkout(){
   var inp = document.getElementById('recv-id');
   if (!inp.value.trim()) {
     inp.style.borderBottom = '2px solid var(--red)';
-    inp.placeholder = currentLang==='ua' ? '⚠️ Введіть ID!' : '⚠️ Введите ID!';
+    inp.placeholder = currentLang==='ua' ? 'Введіть ID!' : 'Введите ID!';
     inp.focus();
     setTimeout(function(){
       inp.style.borderBottom = '';
@@ -1775,132 +1775,182 @@ function checkout(){
     }, 2500);
     return;
   }
-  goTo('payment');
   renderPaymentScreen();
+  goTo('payment');
 }
 
-// ── PAYMENT SCREEN ─────────────────────────────────────────────
-// Реквизиты — замените на свои!
 var PAYMENT_METHODS = {
   UAH: [
-    {id:'mono',   name:'Monobank',  icon:'🟡', number:'4441 1144 XXXX XXXX', tag:'monobank'},
-    {id:'myrais', name:'MyRaif',    icon:'🔵', number:'4731 1234 XXXX XXXX', tag:'raiffeisen'},
-    {id:'sense',  name:'Sense',     icon:'🟢', number:'4149 5000 XXXX XXXX', tag:'sense'},
-    {id:'pumb',   name:'ПУМБ',      icon:'🟠', number:'5168 7422 XXXX XXXX', tag:'pumb'},
+    {id:'mono',   name:'Monobank', icon:'🟡', number:'4441 1144 0000 0000'},
+    {id:'myraif', name:'MyRaif',   icon:'🔵', number:'4731 1234 0000 0000'},
+    {id:'sense',  name:'Sense',    icon:'🟢', number:'4149 5000 0000 0000'},
+    {id:'pumb',   name:'PUMB',     icon:'🟠', number:'5168 7422 0000 0000'}
   ],
   EUR: [
-    {id:'revolut_eur', name:'Revolut', icon:'🔷', link:'https://revolut.me/ваш_ник', tag:'revolut'},
+    {id:'revolut_eur', name:'Revolut', icon:'🔷', link:'https://revolut.me/your_username'}
   ],
   PLN: [
-    {id:'revolut_pln', name:'Revolut', icon:'🔷', link:'https://revolut.me/ваш_ник', tag:'revolut'},
+    {id:'revolut_pln', name:'Revolut', icon:'🔷', link:'https://revolut.me/your_username'}
   ]
 };
 
+var selectedPayMethod = null;
+
 function renderPaymentScreen() {
-  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS['UAH'];
-  var total = cart.reduce(function(s,i){ return s + i.price*i.qty; }, 0);
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
+  var total = 0;
+  for (var i=0; i<cart.length; i++) { total = total + cart[i].price * cart[i].qty; }
   var discountedTotal = total;
   if (activePromoDisc > 0) {
     discountedTotal = total - Math.round(total * activePromoDisc / 100);
   }
-  var recvId = document.getElementById('recv-id') ? document.getElementById('recv-id').value : '';
-  var itemsList = cart.map(function(i){ return i.name + ' x' + i.qty; }).join(', ');
+  var recvId = '';
+  var recvInput = document.getElementById('recv-id');
+  if (recvInput) { recvId = recvInput.value; }
 
-  // Build methods HTML
-  var methodsHtml = methods.map(function(m) {
-    return '<div class="pay-method ripple" onclick="selectPayMethod(\'' + m.id + '\')" id="pm-' + m.id + '">' +
-      '<div class="pay-method-icon">' + m.icon + '</div>' +
-      '<div class="pay-method-info"><div class="pay-method-name">' + m.name + '</div>' +
-      (m.number ? '<div class="pay-method-detail">' + m.number + '</div>' : '') +
-      (m.link ? '<div class="pay-method-detail">' + m.link + '</div>' : '') +
-      '</div>' +
-      '<div class="pay-method-check" id="chk-' + m.id + '">&#10003;</div>' +
-    '</div>';
-  }).join('');
+  var itemsParts = [];
+  for (var j=0; j<cart.length; j++) {
+    itemsParts.push(cart[j].name + ' x' + cart[j].qty);
+  }
+  var itemsList = itemsParts.join(', ');
 
   var wrap = document.getElementById('payment-methods-wrap');
-  if (wrap) wrap.innerHTML = methodsHtml;
+  if (wrap) {
+    wrap.innerHTML = '';
+    for (var k=0; k<methods.length; k++) {
+      var m = methods[k];
+      var card = document.createElement('div');
+      card.className = 'pay-method';
+      card.id = 'pm-' + m.id;
 
-  // Update amount
+      var iconDiv = document.createElement('div');
+      iconDiv.className = 'pay-method-icon';
+      iconDiv.textContent = m.icon;
+
+      var infoDiv = document.createElement('div');
+      infoDiv.className = 'pay-method-info';
+      var nameDiv = document.createElement('div');
+      nameDiv.className = 'pay-method-name';
+      nameDiv.textContent = m.name;
+      infoDiv.appendChild(nameDiv);
+      var detailDiv = document.createElement('div');
+      detailDiv.className = 'pay-method-detail';
+      detailDiv.textContent = m.number || m.link || '';
+      infoDiv.appendChild(detailDiv);
+
+      var checkDiv = document.createElement('div');
+      checkDiv.className = 'pay-method-check';
+      checkDiv.id = 'chk-' + m.id;
+      checkDiv.innerHTML = '&#10003;';
+
+      card.appendChild(iconDiv);
+      card.appendChild(infoDiv);
+      card.appendChild(checkDiv);
+
+      (function(methodId){
+        card.addEventListener('click', function(){ selectPayMethod(methodId); });
+      })(m.id);
+
+      wrap.appendChild(card);
+    }
+  }
+
   var amtEl = document.getElementById('payment-amount');
-  if (amtEl) amtEl.textContent = fmtPrice(discountedTotal);
+  if (amtEl) { amtEl.textContent = fmtPrice(discountedTotal); }
 
-  // Update order summary
   var summEl = document.getElementById('payment-items');
-  if (summEl) summEl.textContent = itemsList;
+  if (summEl) { summEl.textContent = itemsList; }
 
   var recvEl = document.getElementById('payment-recv');
-  if (recvEl) recvEl.textContent = recvId;
+  if (recvEl) { recvEl.textContent = recvId; }
 
-  // Auto-select first method
-  if (methods.length > 0) selectPayMethod(methods[0].id);
+  if (methods.length > 0) { selectPayMethod(methods[0].id); }
 }
-
-var selectedPayMethod = null;
 
 function selectPayMethod(id) {
   selectedPayMethod = id;
-  // Update checkmarks
-  document.querySelectorAll('.pay-method').forEach(function(el) {
-    el.classList.remove('on');
-  });
-  document.querySelectorAll('.pay-method-check').forEach(function(el) {
-    el.style.opacity = '0';
-  });
+
+  var allMethods = document.querySelectorAll('.pay-method');
+  for (var i=0; i<allMethods.length; i++) { allMethods[i].classList.remove('on'); }
+
+  var allChecks = document.querySelectorAll('.pay-method-check');
+  for (var j=0; j<allChecks.length; j++) { allChecks[j].style.opacity = '0'; }
+
   var el = document.getElementById('pm-' + id);
   var chk = document.getElementById('chk-' + id);
-  if (el) el.classList.add('on');
-  if (chk) chk.style.opacity = '1';
+  if (el) { el.classList.add('on'); }
+  if (chk) { chk.style.opacity = '1'; }
 
-  // Find method and update pay button
-  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS['UAH'];
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
   var method = null;
-  for (var i=0;i<methods.length;i++) { if (methods[i].id===id) { method=methods[i]; break; } }
-  if (!method) return;
+  for (var k=0; k<methods.length; k++) {
+    if (methods[k].id === id) { method = methods[k]; break; }
+  }
+  if (!method) { return; }
 
   var payBtn = document.getElementById('open-payment-btn');
-  if (payBtn) {
-    if (method.link) {
-      payBtn.onclick = function(){ window.open(method.link, '_blank'); };
-      payBtn.textContent = '\u041e\u0442\u043a\u0440\u044b\u0442\u044c Revolut \u2192';
-    } else {
-      // Copy card number
-      payBtn.onclick = function(){
-        navigator.clipboard.writeText(method.number.replace(/\s/g,'')).then(function(){
-          showToast('\u2705 \u041d\u043e\u043c\u0435\u0440 \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d');
+  if (!payBtn) { return; }
+
+  if (method.link) {
+    payBtn.textContent = 'Открыть Revolut';
+    payBtn.onclick = function(){ window.open(method.link, '_blank'); };
+  } else {
+    payBtn.textContent = 'Скопировать номер карты';
+    payBtn.onclick = function(){
+      var cleanNumber = method.number.replace(/\s/g, '');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cleanNumber).then(function(){
+          showToast('Номер скопирован');
         }).catch(function(){
-          showToast('\u041d\u043e\u043c\u0435\u0440: ' + method.number);
+          showToast('Номер: ' + method.number);
         });
-      };
-      payBtn.textContent = '\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043d\u043e\u043c\u0435\u0440 \u043a\u0430\u0440\u0442\u044b';
-    }
+      } else {
+        showToast('Номер: ' + method.number);
+      }
+    };
   }
 }
 
 function confirmPayment() {
-  var recvId = document.getElementById('recv-id') ? document.getElementById('recv-id').value : '';
-  var total = cart.reduce(function(s,i){ return s + i.price*i.qty; }, 0);
+  var recvId = '';
+  var recvInput = document.getElementById('recv-id');
+  if (recvInput) { recvId = recvInput.value; }
+
+  var total = 0;
+  for (var i=0; i<cart.length; i++) { total = total + cart[i].price * cart[i].qty; }
   var discountedTotal = total;
-  if (activePromoDisc > 0) discountedTotal = total - Math.round(total * activePromoDisc / 100);
-  var itemsList = cart.map(function(i){ return i.name + ' x' + i.qty + ' = ' + fmtPrice(i.price*i.qty); }).join('\n');
+  if (activePromoDisc > 0) { discountedTotal = total - Math.round(total * activePromoDisc / 100); }
 
-  var username = currentUser ? (currentUser.username ? '@'+currentUser.username : currentUser.first_name) : 'Неизвестно';
-  var tgId = currentUser ? currentUser.telegram_id : '—';
-  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS['UAH'];
+  var itemLines = [];
+  for (var j=0; j<cart.length; j++) {
+    itemLines.push(cart[j].name + ' x' + cart[j].qty + ' = ' + fmtPrice(cart[j].price * cart[j].qty));
+  }
+  var itemsText = itemLines.join('\n');
+
+  var username = 'Неизвестно';
+  var tgId = '-';
+  if (currentUser) {
+    username = currentUser.username ? ('@' + currentUser.username) : (currentUser.first_name || 'Неизвестно');
+    tgId = currentUser.telegram_id || '-';
+  }
+
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
   var method = null;
-  for (var i=0;i<methods.length;i++) { if (methods[i].id===selectedPayMethod) { method=methods[i]; break; } }
-  var methodName = method ? method.name : '—';
+  for (var k=0; k<methods.length; k++) {
+    if (methods[k].id === selectedPayMethod) { method = methods[k]; break; }
+  }
+  var methodName = method ? method.name : '-';
 
-  var msg = [
-    '🛍️ НОВЫЙ ЗАКАЗ',
-    '',
-    '👤 Пользователь: ' + username + ' (ID: ' + tgId + ')',
-    '🎮 Игровой ID: ' + recvId,
-    '📦 Товары:',
-    itemsList,
-    '💰 Сумма: ' + fmtPrice(discountedTotal),
-    '💳 Оплата: ' + methodName
-  ].join('\n');
+  var lines = [];
+  lines.push('NOVYY ZAKAZ');
+  lines.push('');
+  lines.push('Polzovatel: ' + username + ' (ID: ' + tgId + ')');
+  lines.push('Igrovoy ID: ' + recvId);
+  lines.push('Tovary:');
+  lines.push(itemsText);
+  lines.push('Summa: ' + fmtPrice(discountedTotal));
+  lines.push('Oplata: ' + methodName);
+  var msg = lines.join('\n');
 
   var tgUrl = 'https://t.me/KrAkeNn1n?text=' + encodeURIComponent(msg);
   window.open(tgUrl, '_blank');
@@ -1912,12 +1962,16 @@ function confirmPayment() {
   goTo('order-success');
 }
 
-// ═══ NAVIGATION ══════════════════════════════
 function goTo(name){
-  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
-  var target = document.getElementById('sc-'+name);
-  if (target) target.classList.add('active');
-  if(name==='cart') renderCart();
+  var allScreens = document.querySelectorAll('.screen');
+  for (var i=0; i<allScreens.length; i++) {
+    allScreens[i].classList.remove('active');
+  }
+  var target = document.getElementById('sc-' + name);
+  if (target) {
+    target.classList.add('active');
+  }
+  if (name === 'cart') { renderCart(); }
 }
 
 function switchCat(cat){
