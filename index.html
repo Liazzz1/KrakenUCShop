@@ -15,9 +15,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   --border:rgba(255,255,255,0.06);--border-r:rgba(224,32,32,0.45);
   --text2:#666;--text3:#2a2a2a;--green:#22c55e;--orange:#f59e0b;--blue:#6366f1;--nav-h:64px;
 }
-
-
-/* ── BACKGROUND ── */
 #app::before{
   content:'';position:fixed;inset:0;z-index:0;
   background:
@@ -28,75 +25,39 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 }
 #app::after{
   content:'';position:fixed;inset:0;z-index:0;
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-image:radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
   background-size:28px 28px;
   pointer-events:none;
 }
 .screen{position:relative;z-index:1;}
-
-/* scan lines overlay */
 .scan-lines{
   position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgba(0,0,0,0.07) 3px,
-    rgba(0,0,0,0.07) 4px
-  );
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);
 }
-
 @keyframes rotateBg{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes floatOrb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-15px) scale(1.05)}66%{transform:translate(-10px,10px) scale(0.97)}}
-
-.bg-orb{
-  position:fixed;border-radius:50%;filter:blur(80px);
-  pointer-events:none;z-index:0;
-}
-/* Orb color layers — we transition opacity instead of gradient */
-.bg-orb1{
-  width:320px;height:320px;top:-100px;right:-80px;
-  animation:floatOrb 8s ease-in-out infinite;
-}
-.bg-orb2{
-  width:280px;height:280px;bottom:-60px;left:-60px;
-  animation:floatOrb 11s ease-in-out infinite reverse;
-}
-.bg-orb3{
-  width:200px;height:200px;top:40%;left:50%;transform:translateX(-50%);
-  animation:floatOrb 14s ease-in-out infinite 2s;
-}
-.orb-layer{
-  position:absolute;inset:0;border-radius:50%;
-  transition:opacity 0.9s ease;
-}
-.orb-red    {background:radial-gradient(circle,rgba(224,32,32,1) 0%,transparent 70%);}
-.orb-indigo {background:radial-gradient(circle,rgba(99,102,241,1) 0%,transparent 70%);}
-.orb-purple {background:radial-gradient(circle,rgba(139,92,246,1) 0%,transparent 70%);}
-
-/* ── KEYFRAMES ── */
+.bg-orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
+.bg-orb1{width:320px;height:320px;top:-100px;right:-80px;animation:floatOrb 8s ease-in-out infinite;}
+.bg-orb2{width:280px;height:280px;bottom:-60px;left:-60px;animation:floatOrb 11s ease-in-out infinite reverse;}
+.bg-orb3{width:200px;height:200px;top:40%;left:50%;transform:translateX(-50%);animation:floatOrb 14s ease-in-out infinite 2s;}
+.orb-layer{position:absolute;inset:0;border-radius:50%;transition:opacity 0.9s ease;}
+.orb-red{background:radial-gradient(circle,rgba(224,32,32,1) 0%,transparent 70%);}
+.orb-indigo{background:radial-gradient(circle,rgba(99,102,241,1) 0%,transparent 70%);}
+.orb-purple{background:radial-gradient(circle,rgba(139,92,246,1) 0%,transparent 70%);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 @keyframes glow{0%,100%{box-shadow:0 0 12px rgba(224,32,32,.3)}50%{box-shadow:0 0 24px rgba(224,32,32,.6)}}
-@keyframes slideIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 @keyframes scalePop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
 @keyframes heroFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.02)}}
 @keyframes dotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.7}}
-
-/* ── APP ── */
 #app{width:100%;max-width:430px;margin:0 auto;height:100vh;display:flex;flex-direction:column;overflow:hidden;background:#000;}
 .screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
 .screen.active{display:flex;animation:fadeIn .2s ease;}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:16px;background:transparent;}
 .scroll::-webkit-scrollbar{width:2px;}
 .scroll::-webkit-scrollbar-thumb{background:#1a1a1a;}
-
-/* ── TOPBAR ── */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;}
 .logo{display:flex;align-items:center;gap:9px;cursor:pointer;}
 .logo-img{width:36px;height:36px;border-radius:50%;overflow:hidden;border:1.5px solid var(--red);animation:glow 3s ease-in-out infinite;}
@@ -109,8 +70,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .notif svg{color:var(--text2);transition:color .2s;}
 .notif:active svg{color:#fff;}
 .nbadge{position:absolute;top:0;right:0;background:var(--red);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid #000;animation:scalePop 2s ease infinite;}
-
-/* ── BOTTOM NAV ── */
 .bnav{height:var(--nav-h);background:rgba(0,0,0,0.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0);}
 .ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 8px;flex:1;max-width:80px;transition:transform .15s;position:relative;}
 .ni:active{transform:scale(.92);}
@@ -120,13 +79,9 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .ni.on::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:var(--red);border-radius:2px;}
 .cwrap{position:relative;display:inline-block;}
 .cbadge{position:absolute;top:-6px;right:-9px;background:var(--red);color:#fff;font-size:9px;font-weight:800;min-width:17px;height:17px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 3px;animation:scalePop 2s ease infinite;}
-
-/* ── BTN ── */
 .btn{background:var(--red);color:#fff;border:none;border-radius:12px;padding:12px 22px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,transform .1s,box-shadow .2s;-webkit-appearance:none;box-shadow:0 4px 20px rgba(224,32,32,.3);}
 .btn:active{background:var(--red2);transform:scale(.97);box-shadow:none;}
 .btn.full{width:100%;font-size:15px;padding:14px;}
-
-/* ── HERO SLIDER ── */
 .hero-wrap{margin:12px 12px 8px;border-radius:18px;border:1px solid var(--border-r);overflow:hidden;position:relative;background:#000;min-height:168px;}
 @keyframes slideShow{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
 .hero-slide{display:none;padding:22px 18px 18px;position:relative;overflow:hidden;min-height:168px;}
@@ -140,13 +95,8 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .hero-dots{display:flex;gap:5px;margin-bottom:14px;position:relative;z-index:1;}
 .hdot{width:6px;height:6px;border-radius:50%;background:var(--text3);cursor:pointer;transition:all .3s;}
 .hdot.on{background:var(--red);width:18px;border-radius:3px;animation:dotPulse 2s ease infinite;}
-
-/* ── SECTION HEADER ── */
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;}
 .sec-title{font-size:16px;font-weight:800;}
-.sec-link{font-size:12px;color:var(--red);font-weight:600;}
-
-/* ── CAT CARDS ── */
 .cats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px 14px;}
 .ccard{border-radius:16px;border:1px solid var(--border);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;background:rgba(13,13,13,0.85);backdrop-filter:blur(8px);position:relative;transition:transform .2s,border-color .2s,box-shadow .2s;}
 .ccard:active{transform:scale(.95);border-color:var(--border-r);box-shadow:0 0 16px var(--red-glow);}
@@ -161,18 +111,10 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .ccard-icon-bg.battle-bg{background:radial-gradient(ellipse 70% 100% at 50% 50%,rgba(224,32,32,.18) 0%,var(--bg3) 75%);}
 .ccard-icon-bg.rewards-bg{background:radial-gradient(ellipse 70% 100% at 50% 50%,rgba(245,158,11,.18) 0%,var(--bg3) 75%);}
 .ccard-icon-bg.loyalty-bg{background:radial-gradient(ellipse 70% 100% at 50% 50%,rgba(139,92,246,.18) 0%,var(--bg3) 75%);}
-
-/* ── TRUST ROW ── */
 .trust{display:flex;justify-content:space-around;background:rgba(13,13,13,0.7);backdrop-filter:blur(8px);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 4px;margin-bottom:4px;}
 .titem{display:flex;flex-direction:column;align-items:center;gap:5px;animation:fadeUp .4s ease both;}
-.titem:nth-child(1){animation-delay:.05s}
-.titem:nth-child(2){animation-delay:.1s}
-.titem:nth-child(3){animation-delay:.15s}
-.titem:nth-child(4){animation-delay:.2s}
 .ticon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;}
 .tlbl{font-size:9px;color:var(--text2);text-align:center;max-width:58px;line-height:1.4;}
-
-/* ── CATALOG SWITCHER ── */
 .csw{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 12px 4px;}
 .csw-item{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;display:flex;flex-direction:column;}
 .csw-item:active{transform:scale(.97);}
@@ -185,25 +127,16 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .csw-sub2{font-size:10px;color:var(--text2);margin-top:1px;}
 .csw-dot{width:8px;height:8px;border-radius:50%;background:var(--text3);flex-shrink:0;transition:background .2s;}
 .csw-item.on .csw-dot{background:var(--red);box-shadow:0 0 6px var(--red);}
-
-/* ── PAGE HDR ── */
 .phdr{padding:12px 16px 8px;display:flex;align-items:center;gap:12px;animation:fadeUp .3s ease;}
 .phdr-icon{width:42px;height:42px;border-radius:12px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg3);}
 .phdr-icon img{width:100%;height:100%;object-fit:contain;}
 .phdr-title{font-size:19px;font-weight:800;}
 .phdr-sub{font-size:12px;color:var(--text2);margin-top:2px;}
-
-/* ── TABS ── */
 .tabs{display:flex;margin:0 12px 10px;background:var(--bg2);border-radius:10px;padding:3px;border:1px solid var(--border);}
 .tab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;color:var(--text2);transition:all .2s;}
 .tab.on{background:var(--red);color:#fff;box-shadow:0 2px 10px rgba(224,32,32,.3);}
-
-/* ── PRODUCT ROW ── */
 .plist{display:flex;flex-direction:column;gap:8px;margin:0 12px;}
 .prow{background:rgba(13,13,13,0.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:12px;transition:border-color .2s,transform .15s,box-shadow .2s;animation:fadeUp .35s ease both;}
-.prow:nth-child(1){animation-delay:.05s}.prow:nth-child(2){animation-delay:.1s}
-.prow:nth-child(3){animation-delay:.15s}.prow:nth-child(4){animation-delay:.2s}
-.prow:nth-child(5){animation-delay:.25s}.prow:nth-child(6){animation-delay:.3s}
 .prow:active{border-color:var(--border-r);transform:scale(.98);box-shadow:0 0 12px var(--red-glow);}
 .pimg{width:54px;height:54px;border-radius:12px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg3);}
 .pimg img{width:100%;height:100%;object-fit:contain;}
@@ -214,8 +147,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .pprice{font-size:16px;font-weight:800;}
 .abtn{background:var(--red);border:none;color:#fff;width:32px;height:32px;border-radius:9px;font-size:22px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s,box-shadow .2s;line-height:1;box-shadow:0 2px 8px rgba(224,32,32,.3);}
 .abtn:active{transform:scale(.88);box-shadow:none;}
-
-/* ── TG BANNER ── */
 .tgbanner{margin:10px 12px 0;border-radius:16px;border:1px solid rgba(99,102,241,.35);overflow:hidden;position:relative;height:96px;display:flex;align-items:center;padding:0 20px;background:#000;}
 .tgbanner-glow{position:absolute;inset:0;background:radial-gradient(ellipse 70% 100% at 85% 50%,rgba(99,102,241,.35) 0%,transparent 70%);pointer-events:none;}
 .tgbanner-content{position:relative;z-index:1;}
@@ -223,10 +154,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .tgbanner-sub{font-size:12px;color:var(--text2);margin-top:3px;}
 .tgbanner-img{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:90px;height:80px;overflow:hidden;}
 .tgbanner-img img{width:100%;height:100%;object-fit:contain;animation:heroFloat 3s ease-in-out infinite;}
-
-/* ── CART ── */
 .ci{background:rgba(13,13,13,0.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;margin:0 12px 8px;animation:fadeUp .3s ease both;transition:border-color .2s;}
-.ci:nth-child(1){animation-delay:.05s}.ci:nth-child(2){animation-delay:.1s}
 .ci-img{width:50px;height:50px;border-radius:12px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg3);}
 .ci-img img{width:100%;height:100%;object-fit:contain;}
 .ci-info{flex:1;min-width:0;}
@@ -240,16 +168,12 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .delbtn{background:none;border:none;cursor:pointer;padding:4px;opacity:.4;transition:opacity .2s;}
 .delbtn:hover{opacity:1;}
 .ciprice{font-size:16px;font-weight:800;}
-
-/* ── INPUT ── */
 .iblock{margin:0 12px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s;}
 .iblock:focus-within{border-color:var(--border-r);}
 .ilbl{padding:10px 14px 3px;font-size:9px;letter-spacing:2px;color:var(--text2);font-weight:700;display:flex;align-items:center;gap:6px;}
 .ilbl span{margin-left:auto;color:var(--text3);}
 .ifield{width:100%;background:transparent;border:none;color:#fff;font-size:14px;padding:6px 14px 12px;outline:none;font-family:inherit;}
 .ifield::placeholder{color:var(--text3);}
-
-/* ── TOTAL ── */
 .totblock{margin:0 12px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
 .totttl{font-size:9px;letter-spacing:2px;color:var(--text2);font-weight:700;margin-bottom:10px;}
 .totrow{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;}
@@ -257,50 +181,16 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .totrow.big{font-size:20px;font-weight:900;padding-top:10px;margin-top:6px;border-top:1px solid var(--border);}
 .trustmini{display:flex;justify-content:center;gap:16px;margin-top:10px;}
 .trustmini span{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px;}
-
-/* ── ORDERS ── */
 .otabs{display:flex;gap:6px;margin:0 12px 12px;overflow-x:auto;scrollbar-width:none;}
 .otabs::-webkit-scrollbar{display:none;}
 .otab{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;background:var(--bg2);border:1px solid var(--border);color:var(--text2);transition:all .2s;}
 .otab.on{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 2px 10px rgba(224,32,32,.3);}
-.ocard{margin:0 12px 10px;background:rgba(13,13,13,0.88);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:16px;padding:14px;animation:fadeUp .35s ease both;}
-.ocard:nth-child(2){animation-delay:.05s}.ocard:nth-child(3){animation-delay:.1s}.ocard:nth-child(4){animation-delay:.15s}
-.ocard.proc{border-color:var(--border-r);box-shadow:0 0 16px var(--red-glow);}
-.ohdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.oid{font-size:11px;color:var(--text2);font-family:monospace;}
-.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;}
-.bp{background:rgba(245,158,11,.12);color:var(--orange);border:1px solid rgba(245,158,11,.3);animation:pulse 2s ease infinite;}
-.bd{background:rgba(34,197,94,.10);color:var(--green);border:1px solid rgba(34,197,94,.3);}
-.oitem{display:flex;align-items:center;gap:12px;}
-.oiimg{width:44px;height:44px;border-radius:10px;background:var(--bg3);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.oiimg img{width:100%;height:100%;object-fit:contain;}
-.oiname{font-size:14px;font-weight:700;}
-.oimeta{font-size:11px;color:var(--text2);margin-top:2px;}
-.oiprice{margin-left:auto;text-align:right;flex-shrink:0;}
-.oiprice .p{font-size:16px;font-weight:800;}
-.oiprice .q{font-size:11px;color:var(--text2);}
-.oprog{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
-.oplbl{font-size:11px;color:var(--orange);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.otrack{display:flex;align-items:center;}
-.ostep{text-align:center;flex-shrink:0;}
-.odot{width:12px;height:12px;border-radius:50%;margin:0 auto 5px;}
-.odot.on{background:var(--red);box-shadow:0 0 8px rgba(224,32,32,.6);animation:glow 2s ease infinite;}
-.odot.off{background:var(--bg4);border:1px solid var(--border);}
-.oline{flex:1;height:2px;background:var(--border);margin-bottom:17px;}
-.oline.on{background:var(--red);}
-.oslbl{font-size:9px;color:var(--text2);}
-.ofoot{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);}
-
-/* ── PROFILE ── */
 .phero{margin:12px;background:var(--bg2);border:1.5px solid var(--border-r);border-radius:18px;padding:16px;box-shadow:0 0 30px rgba(224,32,32,.1);animation:fadeUp .3s ease;}
 .ptop{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
 .pavatar{width:60px;height:60px;border-radius:50%;background:var(--bg3);border:2px solid var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 0 16px rgba(224,32,32,.3);animation:glow 3s ease-in-out infinite;}
 .pavatar img{width:100%;height:100%;object-fit:cover;}
 .pname{font-size:17px;font-weight:800;}
 .pvip{display:inline-flex;align-items:center;gap:4px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--orange);font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;margin-top:5px;}
-.pwallet{margin-left:auto;text-align:right;}
-.pwl{font-size:11px;color:var(--text2);}
-.pwam{font-size:21px;font-weight:900;color:var(--green);}
 .pstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .pstat{background:var(--bg3);border-radius:12px;padding:10px 6px;text-align:center;border:1px solid var(--border);transition:border-color .2s;}
 .pstat:active{border-color:var(--border-r);}
@@ -309,7 +199,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .pstat-lbl{font-size:9px;color:var(--text2);margin-top:2px;}
 .mlist{display:flex;flex-direction:column;gap:8px;margin:0 12px;}
 .mitem{background:rgba(13,13,13,0.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;padding:14px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s,transform .15s;animation:fadeUp .35s ease both;}
-.mitem:nth-child(1){animation-delay:.05s}.mitem:nth-child(2){animation-delay:.1s}.mitem:nth-child(3){animation-delay:.15s}
 .mitem:active{border-color:var(--border-r);transform:scale(.98);}
 .micon{width:40px;height:40px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
 .minfo{flex:1;}
@@ -317,31 +206,18 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .msub{font-size:12px;color:var(--text2);margin-top:2px;}
 .marr{color:var(--text3);font-size:22px;line-height:1;}
 .supcard{margin:10px 12px 0;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;animation:fadeUp .4s ease .2s both;}
-
-/* ── EMPTY ── */
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;gap:12px;text-align:center;animation:fadeIn .3s ease;}
 .empty p{color:var(--text2);font-size:14px;}
-
-/* ── TOAST ── */
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:#1a1a1a;border:1px solid var(--border);border-radius:12px;padding:10px 20px;font-size:13px;color:#fff;z-index:9999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;display:flex;align-items:center;gap:8px;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-
-
-
-/* ── SETTINGS OPTIONS ── */
 .opt-item{background:rgba(13,13,13,0.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .2s,transform .15s;animation:fadeUp .35s ease both;}
 .opt-item:active{transform:scale(.98);}
 .opt-item.on{border-color:var(--border-r);box-shadow:0 0 14px var(--red-glow);}
 .opt-flag{font-size:24px;width:36px;text-align:center;flex-shrink:0;font-weight:800;}
 .opt-check{color:var(--red);font-size:18px;font-weight:900;opacity:0;transition:opacity .2s;}
 .opt-item.on .opt-check{opacity:1;}
-
-/* ── METHOD TABS (scrollable pills) ── */
 .mtab{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;background:rgba(13,13,13,0.85);border:1px solid var(--border);color:var(--text2);transition:all .2s;flex-shrink:0;}
 .mtab.on{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 2px 10px rgba(224,32,32,.3);}
-
-/* ── PACK HEADERS ── */
 .pack-hdr{padding:14px 16px 6px;display:flex;align-items:center;gap:8px;}
 .pack-badge{font-size:11px;font-weight:800;letter-spacing:1.5px;padding:4px 12px;border-radius:6px;}
 .pack-badge.lite{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.25);}
@@ -349,37 +225,16 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .pack-badge.elite{background:rgba(224,32,32,.12);color:#e02020;border:1px solid rgba(224,32,32,.25);}
 .method-note{margin:12px 16px;font-size:11px;color:var(--text2);display:flex;align-items:center;gap:6px;padding:10px 14px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid var(--border);}
 .price2{font-size:11px;color:var(--text2);text-decoration:line-through;margin-bottom:2px;text-align:right;}
-
-/* ── MODAL ── */
 @keyframes modalIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
-.modal-overlay{
-  position:fixed;inset:0;z-index:10000;
-  background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
-  display:none;align-items:center;justify-content:center;padding:20px;
-}
+.modal-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.show{display:flex;animation:overlayIn .2s ease;}
-.modal-box{
-  width:100%;max-width:380px;
-  background:var(--bg2);border:1px solid var(--border-r);border-radius:20px;
-  padding:24px 20px;box-shadow:0 0 40px rgba(224,32,32,.15);
-  animation:modalIn .25s ease;
-}
-.modal-icon{
-  width:64px;height:64px;border-radius:50%;
-  background:rgba(224,32,32,.1);border:1px solid rgba(224,32,32,.25);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 16px;
-}
+.modal-box{width:100%;max-width:380px;background:var(--bg2);border:1px solid var(--border-r);border-radius:20px;padding:24px 20px;box-shadow:0 0 40px rgba(224,32,32,.15);animation:modalIn .25s ease;}
+.modal-icon{width:64px;height:64px;border-radius:50%;background:rgba(224,32,32,.1);border:1px solid rgba(224,32,32,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
 .modal-icon.soon{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25);}
 .modal-title{font-size:17px;font-weight:800;text-align:center;margin-bottom:6px;}
 .modal-text{font-size:13px;color:var(--text2);text-align:center;line-height:1.5;margin-bottom:18px;}
-.modal-link{
-  display:flex;align-items:center;gap:12px;
-  background:var(--bg3);border:1px solid var(--border);border-radius:14px;
-  padding:13px 15px;margin-bottom:10px;text-decoration:none;color:#fff;
-  transition:border-color .2s,transform .15s;position:relative;overflow:hidden;
-}
+.modal-link{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:10px;text-decoration:none;color:#fff;transition:border-color .2s,transform .15s;position:relative;overflow:hidden;}
 .modal-link:last-of-type{margin-bottom:0;}
 .modal-link:active{border-color:var(--border-r);transform:scale(.98);}
 .modal-link-icon{font-size:22px;flex-shrink:0;}
@@ -387,8 +242,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .modal-link-name{font-size:14px;font-weight:800;}
 .modal-link-sub{font-size:11px;color:var(--text2);margin-top:2px;}
 .modal-link-arr{color:var(--red);font-size:18px;font-weight:800;}
-
-/* ── VIP CARDS ── */
 .vip-card{margin:0 12px 10px;border-radius:14px;padding:14px;border:1px solid var(--border);animation:fadeUp .35s ease both;}
 .vip-bronze{background:linear-gradient(135deg,rgba(180,100,30,.15) 0%,rgba(13,13,13,.9) 100%);border-color:rgba(205,127,50,.35);}
 .vip-silver{background:linear-gradient(135deg,rgba(160,160,180,.12) 0%,rgba(13,13,13,.9) 100%);border-color:rgba(192,192,192,.35);}
@@ -398,9 +251,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .vip-disc{font-size:18px;font-weight:900;color:var(--green);}
 .vip-perks{display:flex;flex-direction:column;gap:5px;}
 .vip-perk{font-size:12px;color:var(--text2);}
-
-/* ── STATUS BADGES ── */
-.status-row{padding:6px 0;}
 .status-badge{display:inline-block;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;}
 .s-normal{background:rgba(255,255,255,.07);color:var(--text2);border:1px solid var(--border);}
 .s-loyal{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3);}
@@ -409,8 +259,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .s-gold{background:rgba(212,175,55,.15);color:#d4af37;border:1px solid rgba(212,175,55,.35);}
 .s-clan{background:rgba(99,102,241,.12);color:#818cf8;border:1px solid rgba(99,102,241,.3);}
 .s-leader{background:rgba(224,32,32,.12);color:var(--red);border:1px solid var(--border-r);}
-
-/* ── PROMO CODE ── */
 .promo-block{margin:0 12px 10px;}
 .promo-input-row{display:flex;align-items:stretch;gap:8px;}
 .promo-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);border-radius:10px;padding:0 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
@@ -419,8 +267,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .promo-msg{margin-top:7px;font-size:12px;padding:8px 12px;border-radius:8px;display:flex;align-items:center;gap:6px;}
 .promo-msg.ok{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.25);}
 .promo-msg.err{background:rgba(224,32,32,.1);color:var(--red);border:1px solid rgba(224,32,32,.25);}
-
-/* ── SCORE TABLE ── */
 .score-table{margin:0 12px 14px;background:rgba(13,13,13,0.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;overflow:hidden;animation:fadeUp .35s ease both;}
 .score-row{display:flex;border-bottom:1px solid var(--border);}
 .score-row:last-child{border-bottom:none;}
@@ -429,16 +275,12 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .score-col{flex:1;padding:11px 14px;font-size:13px;font-weight:600;}
 .score-col:first-child{border-right:1px solid var(--border);color:var(--text2);font-weight:500;}
 .score-col:last-child{font-weight:800;}
-
-
-/* ── PAYMENT SCREEN ── */
 .pay-summary{margin:0 12px 14px;background:rgba(13,13,13,.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
 .pay-summary-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);}
 .pay-summary-row:last-child{border-bottom:none;padding-top:10px;margin-top:4px;}
 .pay-summary-row.big .pay-summary-label{font-size:14px;font-weight:700;}
 .pay-summary-label{font-size:12px;color:var(--text2);}
 .pay-summary-val{font-size:13px;font-weight:600;text-align:right;max-width:60%;}
-
 .pay-method{background:rgba(13,13,13,.85);backdrop-filter:blur(8px);border:1.5px solid var(--border);border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;}
 .pay-method:active{transform:scale(.98);}
 .pay-method.on{border-color:var(--red);box-shadow:0 0 14px var(--red-glow);}
@@ -447,20 +289,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .pay-method-name{font-size:14px;font-weight:800;}
 .pay-method-detail{font-size:11px;color:var(--text2);margin-top:2px;font-family:monospace;}
 .pay-method-check{color:var(--green);font-size:18px;font-weight:900;opacity:0;transition:opacity .2s;}
-
-/* ── STUB SCREEN ── */
-.stub-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 30px;text-align:center;animation:fadeUp .4s ease;}
-.stub-icon{
-  width:80px;height:80px;border-radius:50%;
-  background:rgba(224,32,32,.1);border:1px solid rgba(224,32,32,.25);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:18px;animation:pulse 2.5s ease infinite;
-}
-.stub-icon.orange{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25);}
-.stub-title{font-size:17px;font-weight:800;margin-bottom:10px;}
-.stub-text{font-size:13px;color:var(--text2);line-height:1.6;max-width:300px;}
-
-/* ── RULES SCREEN ── */
 .rules-list{display:flex;flex-direction:column;gap:10px;margin:12px 12px 0;}
 .rule-card{background:rgba(13,13,13,0.85);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;gap:12px;animation:fadeUp .35s ease both;transition:border-color .2s;}
 .rule-card:active{border-color:var(--border-r);}
@@ -469,45 +297,68 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 .rule-title{font-size:14px;font-weight:800;margin-bottom:5px;}
 .rule-text{font-size:12px;color:var(--text2);line-height:1.6;}
 .rule-contact{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;color:var(--red);background:rgba(224,32,32,.1);border:1px solid rgba(224,32,32,.25);padding:4px 12px;border-radius:20px;}
-
-/* ── RIPPLE ── */
 .ripple{position:relative;overflow:hidden;}
 .ripple::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.15);transform:scale(0);animation:rippleAnim .5s ease;pointer-events:none;}
 @keyframes rippleAnim{to{transform:scale(4);opacity:0;}}
+
+/* ── NOTIFICATIONS ── */
+.notif-actions{display:flex;gap:8px;margin:0 12px 12px;}
+.notif-action-btn{flex:1;padding:10px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);transition:all .2s;}
+.notif-action-btn:active{transform:scale(.97);}
+.notif-action-btn.red{border-color:rgba(224,32,32,.3);color:var(--red);}
+
+.ncard{margin:0 12px 8px;background:rgba(13,13,13,0.88);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;gap:12px;transition:border-color .2s,opacity .2s;animation:fadeUp .3s ease both;}
+.ncard.unread{border-color:rgba(224,32,32,.3);background:rgba(224,32,32,.04);}
+.ncard:active{border-color:var(--border-r);}
+.ncard-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border);}
+.ncard.unread .ncard-icon{border-color:rgba(224,32,32,.25);}
+.ncard-body{flex:1;min-width:0;}
+.ncard-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.ncard-text{font-size:12px;color:var(--text2);line-height:1.5;}
+.ncard-meta{display:flex;align-items:center;justify-content:space-between;margin-top:7px;}
+.ncard-time{font-size:10px;color:var(--text3);}
+.ncard-dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:dotPulse 2s ease infinite;}
+
+.notif-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:14px;text-align:center;animation:fadeIn .3s ease;}
+.notif-empty-icon{font-size:48px;opacity:.3;}
+.notif-empty-text{font-size:14px;color:var(--text2);}
+
+.notif-filter{display:flex;gap:6px;margin:0 12px 12px;overflow-x:auto;scrollbar-width:none;}
+.notif-filter::-webkit-scrollbar{display:none;}
+.nfbtn{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;background:var(--bg2);border:1px solid var(--border);color:var(--text2);transition:all .2s;flex-shrink:0;}
+.nfbtn.on{background:var(--red);border-color:var(--red);color:#fff;}
 </style>
 </head>
 <body>
 <div class="bg-orb bg-orb1">
-  <div class="orb-layer orb-red"    id="orb1-red"    style="opacity:.18"></div>
+  <div class="orb-layer orb-red" id="orb1-red" style="opacity:.18"></div>
   <div class="orb-layer orb-indigo" id="orb1-indigo" style="opacity:0"></div>
   <div class="orb-layer orb-purple" id="orb1-purple" style="opacity:0"></div>
 </div>
 <div class="bg-orb bg-orb2">
-  <div class="orb-layer orb-red"    id="orb2-red"    style="opacity:.12"></div>
+  <div class="orb-layer orb-red" id="orb2-red" style="opacity:.12"></div>
   <div class="orb-layer orb-indigo" id="orb2-indigo" style="opacity:0"></div>
   <div class="orb-layer orb-purple" id="orb2-purple" style="opacity:0"></div>
 </div>
 <div class="bg-orb bg-orb3">
-  <div class="orb-layer orb-red"    id="orb3-red"    style="opacity:.06"></div>
+  <div class="orb-layer orb-red" id="orb3-red" style="opacity:.06"></div>
   <div class="orb-layer orb-indigo" id="orb3-indigo" style="opacity:0"></div>
   <div class="orb-layer orb-purple" id="orb3-purple" style="opacity:0"></div>
 </div><div class="scan-lines"></div>
 <div id="app">
 
-<!-- ══════════════ HOME ══════════════ -->
 <div class="screen active" id="sc-home">
   <div class="topbar">
     <div class="logo">
       <div class="logo-img"><img id="logo-kraken" src="" alt=""/></div>
-      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v2.2-TEST</span></div>
+      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v2.2</span></div>
     </div>
-    <div class="notif">
+    <div class="notif" onclick="goTo('notifications')" style="cursor:pointer;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <div class="nbadge">3</div>
+      <div class="nbadge" id="notif-badge">0</div>
     </div>
   </div>
   <div class="scroll">
-    <!-- HERO SLIDER -->
     <div class="hero-wrap">
       <div class="hero-slide active" id="slide0">
         <div class="hero-glow" style="background:radial-gradient(ellipse 55% 80% at 90% 50%,rgba(200,20,20,.6) 0%,transparent 70%)"></div>
@@ -537,8 +388,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <button class="btn ripple" style="background:#8b5cf6;box-shadow:0 4px 20px rgba(139,92,246,.35)" onclick="goTo('loyalty')">Подробнее &rarr;</button>
       </div>
     </div>
-
-    <!-- CATEGORIES -->
     <div class="sec-hdr"><div class="sec-title" data-tr="sec-categories">Категории</div></div>
     <div class="cats">
       <div class="ccard ripple" onclick="goTo('catalog');switchCat('pubg')">
@@ -578,25 +427,11 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="ccard-arr">→</div>
       </div>
     </div>
-
-    <!-- TRUST -->
     <div class="trust">
-      <div class="titem">
-        <div class="ticon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <div class="tlbl" data-tr="trust1">Быстрая доставка</div>
-      </div>
-      <div class="titem">
-        <div class="ticon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="tlbl" data-tr="trust2">100% Безопасно</div>
-      </div>
-      <div class="titem">
-        <div class="ticon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div class="tlbl" data-tr="trust3">Надёжно и честно</div>
-      </div>
-      <div class="titem">
-        <div class="ticon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
-        <div class="tlbl" data-tr="trust4">Поддержка 24/7</div>
-      </div>
+      <div class="titem"><div class="ticon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="tlbl" data-tr="trust1">Быстрая доставка</div></div>
+      <div class="titem"><div class="ticon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="tlbl" data-tr="trust2">100% Безопасно</div></div>
+      <div class="titem"><div class="ticon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="tlbl" data-tr="trust3">Надёжно и честно</div></div>
+      <div class="titem"><div class="ticon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div><div class="tlbl" data-tr="trust4">Поддержка 24/7</div></div>
     </div>
   </div>
   <div class="bnav">
@@ -607,8 +442,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
     <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
   </div>
 </div>
-
-<!-- ══════════════ CATALOG ══════════════ -->
 <div class="screen" id="sc-catalog">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
@@ -626,7 +459,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       </div>
     </div>
     <div id="cat-pubg">
-      <!-- method tabs -->
       <div style="overflow-x:auto;scrollbar-width:none;padding:12px 12px 0;"><div style="display:flex;gap:6px;min-width:max-content;">
         <div class="mtab on" id="pt-id" onclick="switchMethod('id')" data-tr="pubg-tab-id">По ID</div>
         <div class="mtab" id="pt-login" onclick="switchMethod('login')" data-tr="pubg-tab-login">По входу</div>
@@ -634,8 +466,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="mtab" id="pt-pop" onclick="switchMethod('pop')" data-tr="pubg-tab-pop">Популярность</div>
         <div class="mtab" id="pt-clan" onclick="switchMethod('clan')" data-tr="pubg-tab-clan">Кланы</div>
       </div></div>
-
-      <!-- UC по ID -->
       <div id="pm-id">
         <div class="pack-hdr"><span class="pack-badge lite">LITE PACKS</span></div>
         <div class="plist" id="list-id-lite"></div>
@@ -645,8 +475,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="plist" id="list-id-elite"></div>
         <div class="method-note">&#9889; Мгновенное зачисление по Player ID</div>
       </div>
-
-      <!-- UC по входу -->
       <div id="pm-login" style="display:none">
         <div class="pack-hdr"><span class="pack-badge lite">LITE PACKS</span></div>
         <div class="plist" id="list-login-lite"></div>
@@ -656,8 +484,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="plist" id="list-login-elite"></div>
         <div class="method-note">&#128737; Зачисление от 5 до 20 минут</div>
       </div>
-
-      <!-- Royal Pass -->
       <div id="pm-rp" style="display:none">
         <div class="phdr" style="padding-top:12px;">
           <div class="phdr-icon"><img src="img/uc.png" alt=""/></div>
@@ -666,8 +492,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="plist" id="list-rp"></div>
         <div class="method-note">&#9889; Зачисление мгновенно по Player ID</div>
       </div>
-
-      <!-- Популярность -->
       <div id="pm-pop" style="display:none">
         <div class="phdr" style="padding-top:12px;">
           <div class="phdr-icon"><img src="img/uc.png" alt=""/></div>
@@ -683,8 +507,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="plist" id="list-pop-big"></div>
         <div class="method-note">&#128336; Пополнение в течение 20–40 минут по QR-коду</div>
       </div>
-
-      <!-- Кланы -->
       <div id="pm-clan" style="display:none">
         <div class="phdr" style="padding-top:12px;">
           <div class="phdr-icon"><img src="img/uc.png" alt=""/></div>
@@ -704,7 +526,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="tab on" id="tt-stars" onclick="switchTg('stars')" data-tr="tg-tab-stars">Stars</div>
         <div class="tab" id="tt-prem" onclick="switchTg('prem')" data-tr="tg-tab-prem">Premium</div>
       </div>
-      <!-- Stars -->
       <div id="tg-stars-wrap">
         <div class="pack-hdr"><span class="pack-badge lite">МАЛЫЕ</span></div>
         <div class="plist" id="stars-small"></div>
@@ -714,7 +535,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="plist" id="stars-big"></div>
         <div class="method-note">&#9989; После оплаты звёзды поступят на аккаунт в течение 2–3 минут. Для получения обязательно укажите @тег. Паки можно объединять.</div>
       </div>
-      <!-- Premium -->
       <div id="tg-prem-wrap" style="display:none">
         <div class="plist" id="prem-list"></div>
         <div class="method-note">&#9889; Активация по ссылке — доставка до 5 минут</div>
@@ -729,8 +549,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
     <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
   </div>
 </div>
-
-<!-- ══════════════ CART ══════════════ -->
 <div class="screen" id="sc-cart">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
@@ -750,7 +568,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       <div class="promo-block">
         <div class="promo-input-row">
           <div class="iblock" style="flex:1;margin:0;">
-            <div class="ilbl">🎟️ <span data-tr="promo-lbl">ПРОМОКОД</span></div>
+            <div class="ilbl">&#127915;&#65039; <span data-tr="promo-lbl">ПРОМОКОД</span></div>
             <input class="ifield" id="promo-input" data-tr="promo-placeholder" data-tr-attr="placeholder" placeholder="Введите промокод (необязательно)" style="text-transform:uppercase;"/>
           </div>
           <button class="promo-btn ripple" onclick="applyPromo()" id="promo-apply-btn" data-tr="promo-apply-btn">Применить</button>
@@ -779,7 +597,58 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   </div>
 </div>
 
-<!-- ══════════════ ORDERS ══════════════ -->
+<div class="screen" id="sc-payment">
+  <div class="topbar">
+    <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
+    <div class="btn-back" onclick="goTo('cart')">&#8592; Назад</div>
+  </div>
+  <div class="scroll">
+    <div class="phdr">
+      <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <div><div class="phdr-title">Оплата</div><div class="phdr-sub">Выберите способ оплаты</div></div>
+    </div>
+    <div class="pay-summary">
+      <div class="pay-summary-row"><span class="pay-summary-label">&#128230; Товары</span><span class="pay-summary-val" id="payment-items">—</span></div>
+      <div class="pay-summary-row"><span class="pay-summary-label">&#127918; Получатель</span><span class="pay-summary-val" id="payment-recv">—</span></div>
+      <div class="pay-summary-row big"><span class="pay-summary-label">&#128176; К оплате</span><span class="pay-summary-val" id="payment-amount" style="color:var(--green);font-size:20px;font-weight:900">—</span></div>
+    </div>
+    <div class="sec-hdr"><div class="sec-title">&#128179; Способ оплаты</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:0 12px;" id="payment-methods-wrap"></div>
+    <div style="margin:14px 12px 8px;">
+      <button class="btn full ripple" id="open-payment-btn" style="margin-bottom:10px;">Открыть оплату &#8594;</button>
+      <button class="btn full ripple" id="confirm-payment-btn" style="background:var(--green);box-shadow:0 4px 16px rgba(34,197,94,.3);">&#9989; Я оплатил — отправить заказ</button>
+    </div>
+    <div class="method-note" style="margin:0 12px 12px;">&#9888;&#65039; После нажатия «Я оплатил» ваш заказ уйдёт менеджеру. Укажите сумму и отправьте скриншот оплаты.</div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="goTo('home')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Главная</span></div>
+    <div class="ni" onclick="goTo('catalog')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Каталог</span></div>
+    <div class="ni on" onclick="goTo('cart')"><div class="cwrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cbadge" id="cb12">0</span></div><span>Корзина</span></div>
+    <div class="ni" onclick="goTo('orders')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Заказы</span></div>
+    <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span></div>
+  </div>
+</div>
+
+<div class="screen" id="sc-order-success">
+  <div class="topbar">
+    <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
+  </div>
+  <div class="scroll">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;text-align:center;animation:fadeUp .4s ease;">
+      <div style="width:80px;height:80px;border-radius:50%;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:40px;animation:scalePop .4s ease;">&#9989;</div>
+      <div style="font-size:22px;font-weight:900;margin-bottom:8px;">Заказ отправлен!</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:8px;">Ваш заказ передан менеджеру в Telegram. Пожалуйста, отправьте скриншот оплаты.</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:28px;">Обычное время выполнения — до 10 минут.</div>
+      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:12px 20px;margin-bottom:24px;">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Поддержка</div>
+        <div style="font-size:14px;font-weight:700;color:var(--green);">@KrAkeNn1n</div>
+      </div>
+      <button class="btn full ripple" onclick="goTo('home')" style="max-width:280px;">На главную &#8594;</button>
+      <div style="height:8px;"></div>
+      <button class="btn full ripple" onclick="goTo('orders')" style="max-width:280px;background:var(--bg3);box-shadow:none;color:var(--text2);">Мои заказы</button>
+    </div>
+  </div>
+</div>
 <div class="screen" id="sc-orders">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
@@ -796,43 +665,9 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       <div class="otab" data-tr="otab3">Выполнен</div>
       <div class="otab" data-tr="otab4">Отменён</div>
     </div>
-    <!-- processing -->
-    <div class="ocard proc">
-      <div class="ohdr"><div class="oid">Заказ #ORD-E42GAKDH &#128203;</div><div class="badge bp">&#9203; В обработке</div></div>
-      <div class="oitem">
-        <div class="oiimg"><img src="img/uc.png" alt=""/></div>
-        <div><div class="oiname">PUBG Mobile: 60 UC</div><div class="oimeta">ID: 547388389 &bull; Метод: По ID</div></div>
-        <div class="oiprice"><div class="p">40 ₴</div><div class="q">Кол-во: 1</div></div>
-      </div>
-      <div class="oprog">
-        <div class="oplbl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1.5s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Обработка заказа...</div>
-        <div class="otrack">
-          <div class="ostep"><div class="odot on"></div><div class="oslbl">Принят</div></div>
-          <div class="oline on"></div>
-          <div class="ostep"><div class="odot off"></div><div class="oslbl">Обработка</div></div>
-          <div class="oline"></div>
-          <div class="ostep"><div class="odot off"></div><div class="oslbl">Выполнение</div></div>
-        </div>
-      </div>
-      <div class="ofoot"><span>&#128197; Сегодня, 13:24</span><span style="color:var(--orange)">Ожидайте завершения</span></div>
-    </div>
-    <div class="ocard">
-      <div class="ohdr"><div class="oid">Заказ #ORD-7X92BPLM &#128203;</div><div class="badge bd">&#9989; Выполнен</div></div>
-      <div class="oitem">
-        <div class="oiimg"><img src="img/uc.png" alt=""/></div>
-        <div><div class="oiname">PUBG Mobile: 300 UC</div><div class="oimeta">ID: 512784512 &bull; Метод: По ID</div></div>
-        <div class="oiprice"><div class="p">210 ₴</div><div class="q">Кол-во: 1</div></div>
-      </div>
-      <div class="ofoot"><span>&#128197; Вчера, 18:45</span><span style="color:var(--green)">Выполнен 18:47</span></div>
-    </div>
-    <div class="ocard">
-      <div class="ohdr"><div class="oid">Заказ #ORD-LK38M9QZ &#128203;</div><div class="badge bd">&#9989; Выполнен</div></div>
-      <div class="oitem">
-        <div class="oiimg"><img src="img/uc.png" alt=""/></div>
-        <div><div class="oiname">PUBG Mobile: 600 UC</div><div class="oimeta">ID: 734829274 &bull; Метод: По ID</div></div>
-        <div class="oiprice"><div class="p">410 ₴</div><div class="q">Кол-во: 1</div></div>
-      </div>
-      <div class="ofoot"><span>&#128197; 12 мая, 22:16</span><span style="color:var(--green)">Выполнен 22:18</span></div>
+    <div class="empty">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <p>Заказов пока нет</p>
     </div>
   </div>
   <div class="bnav">
@@ -844,13 +679,12 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   </div>
 </div>
 
-<!-- ══════════════ PROFILE ══════════════ -->
 <div class="screen" id="sc-profile">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
-    <div class="notif">
+    <div class="notif" onclick="goTo('notifications')" style="cursor:pointer;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <div class="nbadge">3</div>
+      <div class="nbadge" id="notif-badge2">0</div>
     </div>
   </div>
   <div class="scroll">
@@ -910,9 +744,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
     <div class="ni on" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
   </div>
 </div>
-
-
-<!-- ══════════════ SETTINGS ══════════════ -->
 <div class="screen" id="sc-settings">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
@@ -923,8 +754,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
       <div><div class="phdr-title" data-tr="settings-title">Настройки</div><div class="phdr-sub" data-tr="settings-sub">Язык и валюта</div></div>
     </div>
-
-    <!-- Language -->
     <div class="sec-hdr"><div class="sec-title" data-tr="settings-lang">&#127760; Язык</div></div>
     <div class="mlist" id="lang-list">
       <div class="opt-item on" data-lang="ru" onclick="selectLang('ru')">
@@ -938,8 +767,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="opt-check">&#10003;</div>
       </div>
     </div>
-
-    <!-- Currency -->
     <div class="sec-hdr"><div class="sec-title" data-tr="settings-curr">&#128176; Валюта</div></div>
     <div class="mlist" id="curr-list">
       <div class="opt-item on" data-curr="UAH" onclick="selectCurr('UAH')">
@@ -958,7 +785,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="opt-check">&#10003;</div>
       </div>
     </div>
-
     <div class="method-note" style="margin:14px 12px;" data-tr="settings-note">&#8505;&#65039; Изменение валюты пересчитает все цены в каталоге по текущему курсу.</div>
   </div>
   <div class="bnav">
@@ -966,11 +792,9 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
     <div class="ni" onclick="goTo('catalog')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span data-tr="nav-catalog">Каталог</span></div>
     <div class="ni" onclick="goTo('cart')"><div class="cwrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cbadge" id="cb7">0</span></div><span data-tr="nav-cart">Корзина</span></div>
     <div class="ni" onclick="goTo('orders')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span data-tr="nav-orders">Заказы</span></div>
-    <div class="ni on" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
+    <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
   </div>
 </div>
-
-<!-- ══════════════ RULES ══════════════ -->
 <div class="screen" id="sc-rules">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
@@ -981,74 +805,17 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
       <div><div class="phdr-title" data-tr="rules-title">Правила использования</div><div class="phdr-sub" data-tr="rules-sub">Условия покупки и доставки</div></div>
     </div>
-
     <div class="rules-list">
-      <div class="rule-card">
-        <div class="rule-num">1</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r1-title">Оформление заказа</div>
-          <div class="rule-text" data-tr="r1-text">Выберите нужный товар или пакет и укажите данные для доставки — игровой ID, ID профиля или username в Telegram, в зависимости от требований конкретного товара. Перед оплатой внимательно проверьте введённые данные.</div>
-        </div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-num">2</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r2-title">Оплата</div>
-          <div class="rule-text" data-tr="r2-text">Заказ берётся в обработку только после полного подтверждения оплаты. Если оплата не поступила или не подтверждена, заказ не выполняется.</div>
-        </div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-num">3</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r3-title">Выполнение заказа</div>
-          <div class="rule-text" data-tr="r3-text">После подтверждения оплаты товар зачисляется или отправляется по указанным вами реквизитам — на игровой ID или Telegram-аккаунт. Срок выполнения зависит от текущей загруженности систем и доступности сервисов.</div>
-        </div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-num">4</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r4-title">Ответственность за данные</div>
-          <div class="rule-text" data-tr="r4-text">Магазин не отвечает за ошибки, допущенные при вводе данных. Если указан неверный ID или неправильный username в Telegram, возврат средств или повторная отправка товара не гарантируются.</div>
-        </div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-num">5</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r5-title">Возврат средств</div>
-          <div class="rule-text" data-tr="r5-text">Возврат возможен только до момента передачи заказа в работу или его выполнения. После успешной доставки товара или зачисления валюты средства не возвращаются.</div>
-        </div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-num">6</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r6-title">Поддержка</div>
-          <div class="rule-text" data-tr="r6-text">Если возникли вопросы или проблемы с заказом — обратитесь в нашу службу поддержки. Мы стараемся отвечать каждому клиенту максимально быстро.</div>
-          <div class="rule-contact">@KrAkeNn1n</div>
-        </div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-num">7</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r7-title">Изменение правил</div>
-          <div class="rule-text" data-tr="r7-text">Магазин может изменять данные правила в одностороннем порядке. Действует версия правил, актуальная на момент оформления заказа.</div>
-        </div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-num">8</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r8-title">Сообщения о статусе заказа</div>
-          <div class="rule-text" data-tr="r8-text">Просим не присылать повторяющиеся сообщения вроде «где мой товар?» сразу после оформления заказа. Напоминание можно отправить, если с момента заказа прошло более 10 минут. В противном случае магазин может отказать в дальнейшем обслуживании.</div>
-        </div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-num">9</div>
-        <div class="rule-body">
-          <div class="rule-title" data-tr="r9-title">Отмена заказа с возвратом средств</div>
-          <div class="rule-text" data-tr="r9-text">Если заказ был отменён и деньги вернулись на вашу карту, возможны следующие причины: изменение закупочной цены на официальных платформах, технический сбой на стороне сервиса, либо временные проблемы у продавца. Для уточнения деталей напишите владельцу в личные сообщения или откройте тикет.</div>
-        </div>
-      </div>
+      <div class="rule-card"><div class="rule-num">1</div><div class="rule-body"><div class="rule-title" data-tr="r1-title">Оформление заказа</div><div class="rule-text" data-tr="r1-text">Выберите нужный товар или пакет и укажите данные для доставки — игровой ID, ID профиля или username в Telegram, в зависимости от требований конкретного товара. Перед оплатой внимательно проверьте введённые данные.</div></div></div>
+      <div class="rule-card"><div class="rule-num">2</div><div class="rule-body"><div class="rule-title" data-tr="r2-title">Оплата</div><div class="rule-text" data-tr="r2-text">Заказ берётся в обработку только после полного подтверждения оплаты. Если оплата не поступила или не подтверждена, заказ не выполняется.</div></div></div>
+      <div class="rule-card"><div class="rule-num">3</div><div class="rule-body"><div class="rule-title" data-tr="r3-title">Выполнение заказа</div><div class="rule-text" data-tr="r3-text">После подтверждения оплаты товар зачисляется или отправляется по указанным вами реквизитам — на игровой ID или Telegram-аккаунт. Срок выполнения зависит от текущей загруженности систем и доступности сервисов.</div></div></div>
+      <div class="rule-card"><div class="rule-num">4</div><div class="rule-body"><div class="rule-title" data-tr="r4-title">Ответственность за данные</div><div class="rule-text" data-tr="r4-text">Магазин не отвечает за ошибки, допущенные при вводе данных. Если указан неверный ID или неправильный username в Telegram, возврат средств или повторная отправка товара не гарантируются.</div></div></div>
+      <div class="rule-card"><div class="rule-num">5</div><div class="rule-body"><div class="rule-title" data-tr="r5-title">Возврат средств</div><div class="rule-text" data-tr="r5-text">Возврат возможен только до момента передачи заказа в работу или его выполнения. После успешной доставки товара или зачисления валюты средства не возвращаются.</div></div></div>
+      <div class="rule-card"><div class="rule-num">6</div><div class="rule-body"><div class="rule-title" data-tr="r6-title">Поддержка</div><div class="rule-text" data-tr="r6-text">Если возникли вопросы или проблемы с заказом — обратитесь в нашу службу поддержки. Мы стараемся отвечать каждому клиенту максимально быстро.</div><div class="rule-contact">@KrAkeNn1n</div></div></div>
+      <div class="rule-card"><div class="rule-num">7</div><div class="rule-body"><div class="rule-title" data-tr="r7-title">Изменение правил</div><div class="rule-text" data-tr="r7-text">Магазин может изменять данные правила в одностороннем порядке. Действует версия правил, актуальная на момент оформления заказа.</div></div></div>
+      <div class="rule-card"><div class="rule-num">8</div><div class="rule-body"><div class="rule-title" data-tr="r8-title">Сообщения о статусе заказа</div><div class="rule-text" data-tr="r8-text">Просим не присылать повторяющиеся сообщения вроде «где мой товар?» сразу после оформления заказа. Напоминание можно отправить, если с момента заказа прошло более 10 минут. В противном случае магазин может отказать в дальнейшем обслуживании.</div></div></div>
+      <div class="rule-card"><div class="rule-num">9</div><div class="rule-body"><div class="rule-title" data-tr="r9-title">Отмена заказа с возвратом средств</div><div class="rule-text" data-tr="r9-text">Если заказ был отменён и деньги вернулись на вашу карту, возможны следующие причины: изменение закупочной цены на официальных платформах, технический сбой на стороне сервиса, либо временные проблемы у продавца. Для уточнения деталей напишите владельцу в личные сообщения или откройте тикет.</div></div></div>
     </div>
-
     <div class="method-note" style="margin:14px 12px;" data-tr="rules-footer">Оформляя заказ, вы подтверждаете, что ознакомились с данными правилами и согласны с их условиями.</div>
   </div>
   <div class="bnav">
@@ -1056,11 +823,9 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
     <div class="ni" onclick="goTo('catalog')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span data-tr="nav-catalog">Каталог</span></div>
     <div class="ni" onclick="goTo('cart')"><div class="cwrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cbadge" id="cb8">0</span></div><span data-tr="nav-cart">Корзина</span></div>
     <div class="ni" onclick="goTo('orders')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span data-tr="nav-orders">Заказы</span></div>
-    <div class="ni on" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
+    <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
   </div>
 </div>
-
-<!-- ══════════════ BATTLE RULES PP ══════════════ -->
 <div class="screen" id="sc-battle">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
@@ -1071,14 +836,10 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M3 21l9-9"/></svg></div>
       <div><div class="phdr-title" data-tr="battle-title">Правила Битвы ПП</div><div class="phdr-sub" data-tr="battle-sub">Популярность и рейтинговые сражения</div></div>
     </div>
-
-    <!-- mode tabs -->
     <div class="tabs" style="margin-top:12px;">
       <div class="tab on" id="bt-solo" onclick="switchBattleMode('solo')" data-tr="battle-tab-solo">Режим соло</div>
       <div class="tab" id="bt-team" onclick="switchBattleMode('team')" data-tr="battle-tab-team">Режим команды</div>
     </div>
-
-    <!-- SOLO MODE -->
     <div id="battle-solo">
       <div class="rule-card" style="margin:0 12px 10px;">
         <div class="rule-body">
@@ -1089,10 +850,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         </div>
       </div>
       <div class="score-table">
-        <div class="score-row score-head">
-          <div class="score-col" data-tr="score-col-pop">Популярность</div>
-          <div class="score-col" data-tr="score-col-pts">Кол-во очков</div>
-        </div>
+        <div class="score-row score-head"><div class="score-col" data-tr="score-col-pop">Популярность</div><div class="score-col" data-tr="score-col-pts">Кол-во очков</div></div>
         <div class="score-row"><div class="score-col">0–2.5 тыс</div><div class="score-col" data-tr="score-pts-6">6 очков</div></div>
         <div class="score-row"><div class="score-col">2.5–5 тыс</div><div class="score-col" data-tr="score-pts-10">10 очков</div></div>
         <div class="score-row"><div class="score-col">5–8 тыс</div><div class="score-col" data-tr="score-pts-14">14 очков</div></div>
@@ -1106,8 +864,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="score-row"><div class="score-col" data-tr="score-2m-more">2 млн и больше</div><div class="score-col" data-tr="score-pts-42a">42 очка</div></div>
       </div>
     </div>
-
-    <!-- TEAM MODE -->
     <div id="battle-team" style="display:none">
       <div class="rule-card" style="margin:0 12px 10px;">
         <div class="rule-body">
@@ -1118,10 +874,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         </div>
       </div>
       <div class="score-table">
-        <div class="score-row score-head">
-          <div class="score-col" data-tr="score-col-pop">Популярность</div>
-          <div class="score-col" data-tr="score-col-pts">Кол-во очков</div>
-        </div>
+        <div class="score-row score-head"><div class="score-col" data-tr="score-col-pop">Популярность</div><div class="score-col" data-tr="score-col-pts">Кол-во очков</div></div>
         <div class="score-row"><div class="score-col">0–5.8 тыс</div><div class="score-col" data-tr="score-pts-6">6 очков</div></div>
         <div class="score-row"><div class="score-col">5.8–15 тыс</div><div class="score-col" data-tr="score-pts-10">10 очков</div></div>
         <div class="score-row"><div class="score-col">15–25 тыс</div><div class="score-col" data-tr="score-pts-14">14 очков</div></div>
@@ -1146,7 +899,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   </div>
 </div>
 
-<!-- ══════════════ REWARD SYSTEM ══════════════ -->
 <div class="screen" id="sc-rewards">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
@@ -1157,8 +909,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
       <div><div class="phdr-title" data-tr="rewards-title">Система наград</div><div class="phdr-sub" data-tr="rewards-sub">Бонусы за покупки</div></div>
     </div>
-
-    <!-- existing UC accounting content -->
     <div class="rule-card" style="margin:12px 12px 10px;">
       <div class="rule-body">
         <div class="rule-title" data-tr="rw-q-title">Как засчитываются купленные UC в «Награда за покупку»?</div>
@@ -1166,13 +916,9 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
         <div class="rule-text" style="margin-top:8px" data-tr="rw-q-text2">Но в событии учитывается только часть — без бонуса.</div>
       </div>
     </div>
-
     <div class="sec-hdr"><div class="sec-title" data-tr="rw-examples-title">&#11015;&#65039; Примеры</div></div>
     <div class="score-table" style="margin:0 12px 12px;">
-      <div class="score-row score-head">
-        <div class="score-col" data-tr="rw-col-bought">Покупка UC</div>
-        <div class="score-col" data-tr="rw-col-counted">Засчитывается</div>
-      </div>
+      <div class="score-row score-head"><div class="score-col" data-tr="rw-col-bought">Покупка UC</div><div class="score-col" data-tr="rw-col-counted">Засчитывается</div></div>
       <div class="score-row"><div class="score-col">60 UC</div><div class="score-col">60 UC</div></div>
       <div class="score-row"><div class="score-col">325 UC</div><div class="score-col">300 UC</div></div>
       <div class="score-row"><div class="score-col">660 UC</div><div class="score-col">600 UC</div></div>
@@ -1182,9 +928,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
     </div>
     <div class="rule-card" style="margin:0 12px 16px;border-color:rgba(245,158,11,.3)">
       <div class="rule-num" style="background:#f59e0b">!</div>
-      <div class="rule-body">
-        <div class="rule-text" data-tr="rw-note" style="color:#fff">Независимо от способа пополнения (по ID или кодом) — в событии учитывается только сумма без бонусных UC.</div>
-      </div>
+      <div class="rule-body"><div class="rule-text" data-tr="rw-note" style="color:#fff">Независимо от способа пополнения (по ID или кодом) — в событии учитывается только сумма без бонусных UC.</div></div>
     </div>
   </div>
   <div class="bnav">
@@ -1195,56 +939,1426 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
     <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
   </div>
 </div>
-
-<!-- ══════════════ LOYALTY ══════════════ -->
 <div class="screen" id="sc-loyalty">
   <div class="topbar">
     <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
-    <div class="btn-back" onclick="goTo('home')"><span data-tr="back-menu">← Назад в меню</span></div>
+    <div class="btn-back" onclick="goTo('home')"><span data-tr="back-menu">&#8592; Назад в меню</span></div>
   </div>
   <div class="scroll">
     <div class="phdr">
       <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
       <div><div class="phdr-title">Система лояльности</div><div class="phdr-sub">VIP, скидки и привилегии</div></div>
     </div>
-
     <div class="sec-hdr"><div class="sec-title">&#128081; VIP Подписки</div></div>
     <div class="vip-card vip-bronze">
       <div class="vip-badge-row"><div class="vip-badge">&#129353; VIP Bronze</div><div class="vip-disc">&#8722;5%</div></div>
-      <div class="vip-perks">
-        <div class="vip-perk">&#10003; Скидка 5% на все товары</div>
-        <div class="vip-perk">&#10003; Доступ к специальным акциям</div>
-      </div>
+      <div class="vip-perks"><div class="vip-perk">&#10003; Скидка 5% на все товары</div><div class="vip-perk">&#10003; Доступ к специальным акциям</div></div>
     </div>
     <div class="vip-card vip-silver">
       <div class="vip-badge-row"><div class="vip-badge">&#129352; VIP Silver</div><div class="vip-disc">&#8722;10%</div></div>
-      <div class="vip-perks">
-        <div class="vip-perk">&#10003; Скидка 10% на все товары</div>
-        <div class="vip-perk">&#10003; Доступ к специальным акциям</div>
-        <div class="vip-perk">&#10003; Дополнительные промокоды</div>
-      </div>
+      <div class="vip-perks"><div class="vip-perk">&#10003; Скидка 10% на все товары</div><div class="vip-perk">&#10003; Доступ к специальным акциям</div><div class="vip-perk">&#10003; Дополнительные промокоды</div></div>
     </div>
     <div class="vip-card vip-gold">
       <div class="vip-badge-row"><div class="vip-badge">&#129351; VIP Gold</div><div class="vip-disc">&#8722;15%</div></div>
-      <div class="vip-perks">
-        <div class="vip-perk">&#10003; Скидка 15% на все товары</div>
-        <div class="vip-perk">&#10003; Максимальные бонусы</div>
-        <div class="vip-perk">&#10003; Доступ ко всем акциям</div>
-      </div>
+      <div class="vip-perks"><div class="vip-perk">&#10003; Скидка 15% на все товары</div><div class="vip-perk">&#10003; Максимальные бонусы</div><div class="vip-perk">&#10003; Доступ ко всем акциям</div></div>
     </div>
-
     <div class="sec-hdr"><div class="sec-title">&#128737;&#65039; Система партнёров (Кланы)</div></div>
     <div class="score-table" style="margin:0 12px 14px;">
       <div class="score-row score-head"><div class="score-col">Статус</div><div class="score-col">Скидка</div></div>
       <div class="score-row"><div class="score-col">Заместитель клана</div><div class="score-col" style="color:var(--green)">&#8722;5%</div></div>
       <div class="score-row"><div class="score-col">Лидер клана</div><div class="score-col" style="color:var(--green)">&#8722;10%</div></div>
     </div>
-
     <div class="sec-hdr"><div class="sec-title">&#9878;&#65039; Лимит скидок</div></div>
     <div class="rule-card" style="margin:0 12px 8px;">
       <div class="rule-num">!</div>
+      <div class="rule-body"><div class="rule-text" style="color:#fff">Скидки суммируются, но <b>не превышают 15%</b> автоматически. Персональный максимум &mdash; <b>18%</b> (только по решению администрации).</div></div>
+    </div>
+    <div class="score-table" style="margin:0 12px 14px;">
+      <div class="score-row score-head"><div class="score-col">Комбинация</div><div class="score-col">Итог</div></div>
+      <div class="score-row"><div class="score-col">VIP Silver + Зам клана</div><div class="score-col" style="color:var(--green)">15%</div></div>
+      <div class="score-row"><div class="score-col">VIP Gold + Лидер клана</div><div class="score-col" style="color:var(--red)">15% (лимит)</div></div>
+      <div class="score-row"><div class="score-col">VIP Gold + Персональный бонус</div><div class="score-col" style="color:var(--orange)">до 18%</div></div>
+    </div>
+    <div class="sec-hdr"><div class="sec-title">&#127873; Постоянные клиенты</div></div>
+    <div class="rule-card" style="margin:0 12px 8px;">
+      <div class="rule-body"><div class="rule-text">После 5 покупок одного пака &mdash; статус <b style="color:#f59e0b">&#171;Постоянный клиент&#187;</b> и бонусный подарок: 60 UC, 325 UC, промокод или временная VIP подписка.</div></div>
+    </div>
+    <div class="sec-hdr"><div class="sec-title">&#127885; Статусы</div></div>
+    <div style="margin:0 12px 14px;display:flex;flex-direction:column;gap:8px;">
+      <div><span class="status-badge s-normal">Обычный клиент</span></div>
+      <div><span class="status-badge s-loyal">&#11088; Постоянный клиент</span></div>
+      <div><span class="status-badge s-bronze">&#129353; VIP Bronze &mdash; &#8722;5%</span></div>
+      <div><span class="status-badge s-silver">&#129352; VIP Silver &mdash; &#8722;10%</span></div>
+      <div><span class="status-badge s-gold">&#129351; VIP Gold &mdash; &#8722;15%</span></div>
+      <div><span class="status-badge s-clan">&#128737;&#65039; Заместитель клана &mdash; &#8722;5%</span></div>
+      <div><span class="status-badge s-leader">&#9876;&#65039; Лидер клана &mdash; &#8722;10%</span></div>
+    </div>
+    <div class="sec-hdr"><div class="sec-title">&#128142; Персональные привилегии</div></div>
+    <div class="rule-card" style="margin:0 12px 14px;border-color:rgba(139,92,246,.3)">
+      <div class="rule-num" style="background:#8b5cf6">&#9733;</div>
       <div class="rule-body">
-        <div class="rule-text" style="color:#fff">Скидки суммируются, но <b>не превышают 15%</b> автоматически. Персональный максимум &mdash; <b>18%</b> (только по решению администрации).</div>
+        <div class="rule-text" style="color:#fff;margin-bottom:8px">Доп. персональная скидка до <b>+3%</b> (макс. 18%) выдаётся вручную клиентам которые:</div>
+        <div class="rule-text" style="color:var(--text2)">&#8226; Длительно и активно покупают товары</div>
+        <div class="rule-text" style="color:var(--text2)">&#8226; Совершают крупные и регулярные заказы</div>
+        <div class="rule-text" style="color:var(--text2)">&#8226; Помогают развитию проекта</div>
+        <div class="rule-text" style="color:var(--text2)">&#8226; Привлекают новых клиентов</div>
+        <div class="rule-text" style="color:var(--text2)">&#8226; Участвуют в тестировании новых функций</div>
       </div>
     </div>
-    <div class="score-table" style="margin:0 12
+  </div>
+  <div class="bnav">
+    <div class="ni on" onclick="goTo('home')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span data-tr="nav-home">Главная</span></div>
+    <div class="ni" onclick="goTo('catalog')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span data-tr="nav-catalog">Каталог</span></div>
+    <div class="ni" onclick="goTo('cart')"><div class="cwrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cbadge" id="cb11">0</span></div><span data-tr="nav-cart">Корзина</span></div>
+    <div class="ni" onclick="goTo('orders')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span data-tr="nav-orders">Заказы</span></div>
+    <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-tr="nav-profile">Профиль</span></div>
+  </div>
+</div>
+
+</div>
+
+<!-- ══════════════ NOTIFICATIONS ══════════════ -->
+<div class="screen" id="sc-notifications">
+  <div class="topbar">
+    <div class="logo"><div class="logo-img"><img src="img/kraken.png" alt=""/></div><div class="logo-text"><b>KRAKEN</b><s>SHOP</s></div></div>
+    <div class="btn-back" onclick="goTo('home')">&#8592; Назад</div>
+  </div>
+  <div class="scroll">
+    <div class="phdr">
+      <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+      <div><div class="phdr-title">Уведомления</div><div class="phdr-sub" id="notif-count-label">Нет новых уведомлений</div></div>
+    </div>
+
+    <div class="notif-actions">
+      <button class="notif-action-btn ripple" onclick="markAllRead()">&#10003; Прочитать всё</button>
+      <button class="notif-action-btn red ripple" onclick="clearAllNotifs()">&#128465; Очистить</button>
+    </div>
+
+    <div class="notif-filter" id="notif-filter">
+      <div class="nfbtn on" data-filter="all" onclick="setNotifFilter('all')">Все</div>
+      <div class="nfbtn" data-filter="orders" onclick="setNotifFilter('orders')">&#128230; Заказы</div>
+      <div class="nfbtn" data-filter="bonus" onclick="setNotifFilter('bonus')">&#127873; Бонусы</div>
+      <div class="nfbtn" data-filter="referral" onclick="setNotifFilter('referral')">&#128101; Рефералы</div>
+      <div class="nfbtn" data-filter="vip" onclick="setNotifFilter('vip')">&#128081; VIP</div>
+      <div class="nfbtn" data-filter="promo" onclick="setNotifFilter('promo')">&#127903;&#65039; Акции</div>
+      <div class="nfbtn" data-filter="news" onclick="setNotifFilter('news')">&#128226; Новости</div>
+    </div>
+
+    <div id="notif-list"></div>
+  </div>
+  <div class="bnav">
+    <div class="ni on" onclick="goTo('home')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Главная</span></div>
+    <div class="ni" onclick="goTo('catalog')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Каталог</span></div>
+    <div class="ni" onclick="goTo('cart')"><div class="cwrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cbadge" id="cb-notif">0</span></div><span>Корзина</span></div>
+    <div class="ni" onclick="goTo('orders')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Заказы</span></div>
+    <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <div id="modal-support" style="display:none">
+      <div class="modal-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+      </div>
+      <div class="modal-title" data-tr="modal-support-title">Связаться с поддержкой</div>
+      <div class="modal-text" data-tr="modal-support-text">Выберите оператора — он откроется в Telegram</div>
+      <a class="modal-link ripple" href="https://t.me/KrAkeNn1n" target="_blank" rel="noopener">
+        <span class="modal-link-icon">&#9993;&#65039;</span>
+        <div class="modal-link-info"><div class="modal-link-name">@KrAkeNn1n</div><div class="modal-link-sub" data-tr="modal-operator1">Главный оператор</div></div>
+        <span class="modal-link-arr">&#8594;</span>
+      </a>
+      <a class="modal-link ripple" href="https://t.me/shktasya" target="_blank" rel="noopener">
+        <span class="modal-link-icon">&#9993;&#65039;</span>
+        <div class="modal-link-info"><div class="modal-link-name">@shktasya</div><div class="modal-link-sub" data-tr="modal-operator2">Оператор поддержки</div></div>
+        <span class="modal-link-arr">&#8594;</span>
+      </a>
+    </div>
+    <div id="modal-soon" style="display:none">
+      <div class="modal-icon soon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="modal-title" data-tr="modal-soon-title">Скоро здесь что-то будет</div>
+      <div class="modal-text" data-tr="modal-soon-text">Реферальная система находится в разработке. Загляните позже — мы уже работаем над этим!</div>
+      <button class="btn full ripple" onclick="closeModal()" data-tr="modal-soon-btn" style="margin-top:8px;">Понятно</button>
+    </div>
+  </div>
+</div>
+<script>
+var UC_ID = {
+  lite: [
+    {name:'60 UC',   price:55},
+    {name:'325 UC',  price:240},
+    {name:'660 UC',  price:440}
+  ],
+  medium: [
+    {name:'1800 UC',  price:1130},
+    {name:'3850 UC',  price:2080},
+    {name:'8100 UC',  price:4120},
+    {name:'16200 UC', price:8220}
+  ],
+  elite: [
+    {name:'24300 UC', price:11850},
+    {name:'32400 UC', price:16800},
+    {name:'40500 UC', price:20750},
+    {name:'48600 UC', price:24950},
+    {name:'81000 UC', price:39500}
+  ]
+};
+var UC_LOGIN = {
+  lite: [
+    {name:'1800 UC',  price:930},
+    {name:'2300 UC',  price:1450},
+    {name:'3850 UC',  price:1850},
+    {name:'4500 UC',  price:2300},
+    {name:'8100 UC',  price:3500},
+    {name:'9500 UC',  price:4350}
+  ],
+  medium: [
+    {name:'16200 UC', price:6900},
+    {name:'18100 UC', price:8300},
+    {name:'24300 UC', price:10300},
+    {name:'26500 UC', price:12100},
+    {name:'32400 UC', price:13700},
+    {name:'35500 UC', price:15700}
+  ],
+  elite: [
+    {name:'40500 UC', price:17000},
+    {name:'43500 UC', price:19500},
+    {name:'52100 UC', price:24100},
+    {name:'81000 UC', price:34000},
+    {name:'86250 UC', price:39000}
+  ]
+};
+var ROYAL_PASS = [
+  {name:'Royal Pass Season', price:385, tag:'Мгновенное зачисление по ID', img:'img/uc.png'},
+  {name:'Royal Pass + 60 UC', price:440, tag:'Мгновенное зачисление по ID', img:'img/uc.png'}
+];
+var POPULARITY = [
+  {name:'Карточки на 50к', price2:370, price:320, tag:'Пополнение по QR-коду', img:'img/uc.png'},
+  {name:'Вертолёт',        price2:860, price:760, tag:'Пополнение по QR-коду', img:'img/uc.png'},
+  {name:'Самолёт',         price:2800, tag:'Пополнение по QR-коду', img:'img/uc.png'}
+];
+var POP_SMALL = [
+  {name:'10.000 монет',  price:50,  tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'20.000 монет',  price:100, tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'30.000 монет',  price:150, tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'40.000 монет',  price:200, tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'50.000 монет',  price:250, tag:'Пополнение 20–40 мин', img:'img/uc.png'}
+];
+var POP_MED = [
+  {name:'60.000 монет',  price:300,  tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'70.000 монет',  price:330,  tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'80.000 монет',  price:400,  tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'90.000 монет',  price:430,  tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'100.000 монет', price:480,  tag:'Пополнение 20–40 мин', img:'img/uc.png'}
+];
+var POP_BIG = [
+  {name:'200.000 монет',   price:950,  tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'300.000 монет',   price:1450, tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'400.000 монет',   price:1900, tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'500.000 монет',   price:2350, tag:'Пополнение 20–40 мин', img:'img/uc.png'},
+  {name:'1.000.000 монет', price:4400, tag:'Пополнение 20–40 мин', img:'img/uc.png'}
+];
+var CLANS = [
+  {name:'Клан 10 уровня', price:880, tag:'Со сменой владельца'},
+  {name:'Клан 9 уровня',  price:800, tag:'Со сменой владельца'},
+  {name:'Клан 8 уровня',  price:600, tag:'Со сменой владельца'},
+  {name:'Клан 7 уровня',  price:450, tag:'Со сменой владельца'}
+];
+var STARS_SMALL = [
+  {name:'13 Stars',  price:15},
+  {name:'26 Stars',  price:30},
+  {name:'50 Stars',  price:45},
+  {name:'100 Stars', price:80},
+  {name:'150 Stars', price:120},
+  {name:'200 Stars', price:160}
+];
+var STARS_MED = [
+  {name:'250 Stars',  price:195},
+  {name:'300 Stars',  price:235},
+  {name:'350 Stars',  price:275},
+  {name:'400 Stars',  price:315},
+  {name:'450 Stars',  price:350},
+  {name:'500 Stars',  price:390},
+  {name:'600 Stars',  price:465}
+];
+var STARS_BIG = [
+  {name:'700 Stars',  price:545},
+  {name:'800 Stars',  price:610},
+  {name:'900 Stars',  price:685},
+  {name:'1000 Stars', price:760},
+  {name:'1200 Stars', price:920},
+  {name:'1500 Stars', price:1120}
+];
+var PREM = [
+  {name:'Premium 3 Месяца',  price:600, tag:'Активация по ссылке'},
+  {name:'Premium 6 Месяцев', price:800, tag:'Активация по ссылке'},
+  {name:'Premium 12 Месяцев',price:1400,tag:'Активация по ссылке'}
+];
+
+var cart = [];
+
+var heroIdx = 0, heroTimer;
+var SLIDES = 3;
+
+function buildDots() {
+  ['hero-dots','hero-dots2','hero-dots3'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var h = '';
+    for (var i = 0; i < SLIDES; i++) {
+      h += '<div class="hdot' + (i===0?' on':'') + '" data-slide="' + i + '" onclick="goSlide(' + i + ')"></div>';
+    }
+    el.innerHTML = h;
+  });
+}
+
+var SLIDE_ORBS = [
+  {red:[.18,.12,.06], indigo:[0,0,0],       purple:[0,0,0]},
+  {red:[0,0,0],       indigo:[.18,.12,.08], purple:[0,0,0]},
+  {red:[0,0,0],       indigo:[0,0,0],       purple:[.18,.12,.08]}
+];
+
+function updateOrbColors(idx) {
+  var c = SLIDE_ORBS[idx] || SLIDE_ORBS[0];
+  var set = function(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.style.opacity = val;
+  };
+  set('orb1-red',    c.red[0]);
+  set('orb2-red',    c.red[1]);
+  set('orb3-red',    c.red[2]);
+  set('orb1-indigo', c.indigo[0]);
+  set('orb2-indigo', c.indigo[1]);
+  set('orb3-indigo', c.indigo[2]);
+  set('orb1-purple', c.purple[0]);
+  set('orb2-purple', c.purple[1]);
+  set('orb3-purple', c.purple[2]);
+}
+
+function goSlide(n) {
+  heroIdx = n;
+  for (var i = 0; i < SLIDES; i++) {
+    var s = document.getElementById('slide' + i);
+    if (s) s.classList.remove('active');
+  }
+  var next = document.getElementById('slide' + heroIdx);
+  if (next) next.classList.add('active');
+  var dots = document.querySelectorAll('.hdot');
+  for (var j=0; j<dots.length; j++) {
+    var si = parseInt(dots[j].getAttribute('data-slide'));
+    dots[j].className = 'hdot' + (si === heroIdx ? ' on' : '');
+  }
+  updateOrbColors(heroIdx);
+  resetSlideTimer();
+}
+
+function resetSlideTimer() {
+  clearInterval(heroTimer);
+  heroTimer = setInterval(function(){ goSlide((heroIdx+1) % SLIDES); }, 4000);
+}
+
+function getImg(name) {
+  if (name.indexOf('UC') !== -1) return 'img/uc.png';
+  if (name.indexOf('Stars') !== -1) return 'img/stars.png';
+  if (name.indexOf('Premium') !== -1) return 'img/premium.png';
+  return 'img/uc.png';
+}
+
+function renderPackList(id, items, prefix, tagDefault) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  for (var i = 0; i < items.length; i++) {
+    var p = items[i];
+    var tag = p.tag || tagDefault || 'Мгновенное зачисление';
+    var fullname = prefix + ': ' + p.name;
+    var imgSrc = p.img ? p.img : getImg(fullname);
+
+    var row = document.createElement('div');
+    row.className = 'prow ripple';
+
+    var imgDiv = document.createElement('div');
+    imgDiv.className = 'pimg';
+    var img = document.createElement('img');
+    img.src = imgSrc;
+    imgDiv.appendChild(img);
+
+    var infoDiv = document.createElement('div');
+    infoDiv.className = 'pinfo';
+    var nameDiv = document.createElement('div');
+    nameDiv.className = 'pname';
+    nameDiv.textContent = p.name;
+    var tagDiv = document.createElement('div');
+    tagDiv.className = 'ptag';
+    tagDiv.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="#e02020"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ' + tag;
+    infoDiv.appendChild(nameDiv);
+    infoDiv.appendChild(tagDiv);
+
+    var rightDiv = document.createElement('div');
+    rightDiv.className = 'pright';
+    if (p.price2) {
+      var p2 = document.createElement('div');
+      p2.className = 'price2';
+      p2.textContent = fmtPrice(p.price2);
+      rightDiv.appendChild(p2);
+    }
+    var priceDiv = document.createElement('div');
+    priceDiv.className = 'pprice';
+    priceDiv.textContent = fmtPrice(p.price);
+    rightDiv.appendChild(priceDiv);
+
+    var btnId = 'ab' + id + i;
+    var btn = document.createElement('button');
+    btn.className = 'abtn';
+    btn.id = btnId;
+    btn.textContent = '+';
+    btn.setAttribute('data-name', fullname);
+    btn.setAttribute('data-price', p.price);
+    btn.setAttribute('data-btn', btnId);
+    btn.addEventListener('click', function(){ addCartBtn(this); });
+    rightDiv.appendChild(btn);
+
+    row.appendChild(imgDiv);
+    row.appendChild(infoDiv);
+    row.appendChild(rightDiv);
+    el.appendChild(row);
+  }
+}
+
+function switchMethod(m) {
+  ['id','login','rp','pop','clan'].forEach(function(k){
+    var el = document.getElementById('pm-' + k);
+    var tab = document.getElementById('pt-' + k);
+    if (el) el.style.display = k===m ? 'block' : 'none';
+    if (tab) tab.className = 'mtab' + (k===m ? ' on' : '');
+  });
+}
+
+function addCartBtn(btn) {
+  addCart(btn.getAttribute('data-name'), parseInt(btn.getAttribute('data-price')), btn.getAttribute('data-btn'));
+}
+
+function addCart(name, price, btnId) {
+  var ex = null;
+  for (var i=0;i<cart.length;i++) if (cart[i].name===name){ex=cart[i];break;}
+  if (ex) ex.qty++; else cart.push({name:name,price:price,qty:1});
+  updateBadges();
+  var parts=name.split(':');
+  var itemTxt = parts[1]?parts[1].trim():parts[0];
+  var msg = currentLang==='ua' ? ('✓ ' + itemTxt + ' додано в корзину') : ('✓ ' + itemTxt + ' добавлен в корзину');
+  showToast(msg);
+  var b = document.getElementById(btnId);
+  if (b) {
+    b.textContent='✓'; b.style.background='#22c55e'; b.style.boxShadow='0 2px 8px rgba(34,197,94,.4)';
+    setTimeout(function(){b.textContent='+';b.style.background='';b.style.boxShadow='';},1000);
+  }
+}
+
+function removeCart(i) {
+  cart.splice(i,1); updateBadges(); renderCart();
+}
+function chQty(i,d) {
+  cart[i].qty=Math.max(1,cart[i].qty+d); updateBadges(); renderCart();
+}
+
+function renderCart() {
+  var wrap=document.getElementById('cart-wrap');
+  var form=document.getElementById('cart-form');
+  var sub=document.getElementById('cart-sub');
+  if (cart.length===0) {
+    var emptyTxt = currentLang==='ua' ? 'Корзина порожня' : 'Корзина пуста';
+    var catBtnTxt = TR['btn-catalog'][currentLang] || TR['btn-catalog'].ru;
+    wrap.innerHTML='';
+    var emptyDiv = document.createElement('div');
+    emptyDiv.className = 'empty';
+    emptyDiv.innerHTML = '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><p>'+emptyTxt+'</p>';
+    var catBtn = document.createElement('button');
+    catBtn.className = 'btn';
+    catBtn.textContent = catBtnTxt;
+    catBtn.addEventListener('click', function(){ goTo('catalog'); });
+    emptyDiv.appendChild(catBtn);
+    wrap.appendChild(emptyDiv);
+    form.style.display='none'; sub.textContent=emptyTxt; return;
+  }
+  var total=0,count=0;
+  for(var i=0;i<cart.length;i++){total+=cart[i].price*cart[i].qty;count+=cart[i].qty;}
+  sub.textContent = currentLang==='ua'
+    ? 'У вашому кошику '+count+' товар'+(count===1?'':'и')
+    : 'В вашей корзине '+count+' товар'+(count===1?'':count<5?'а':'ов');
+  var html='';
+  for(var j=0;j<cart.length;j++){
+    var item=cart[j];
+    html+='<div class="ci">'+
+      '<div class="ci-img"><img src="'+getImg(item.name)+'" alt=""/></div>'+
+      '<div class="ci-info">'+
+        '<div class="ci-name">'+item.name+'</div>'+
+        '<div class="ci-tag">&#9889; Мгновенное зачисление</div>'+
+        '<div class="ci-qty">'+
+          '<button class="qbtn" onclick="chQty('+j+',-1)">&#8722;</button>'+
+          '<span class="qnum">'+item.qty+'</span>'+
+          '<button class="qbtn" onclick="chQty('+j+',1)">+</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ci-r">'+
+        '<button class="delbtn" onclick="removeCart('+j+')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>'+
+        '<div class="ciprice">'+fmtPrice(item.price*item.qty)+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+  wrap.innerHTML=html;
+  document.getElementById('csum').textContent=fmtPrice(total);
+  var promoRow = document.getElementById('promo-row');
+  var promoSave = document.getElementById('promo-save');
+  var discountedTotal = total;
+  if (activePromoDisc > 0) {
+    var saving = Math.round(total * activePromoDisc / 100);
+    discountedTotal = total - saving;
+    if (promoRow) promoRow.style.display = 'flex';
+    if (promoSave) promoSave.textContent = '−' + fmtPrice(saving);
+  } else {
+    if (promoRow) promoRow.style.display = 'none';
+  }
+  document.getElementById('ctotal').textContent=fmtPrice(discountedTotal);
+  form.style.display='block';
+}
+
+function updateBadges(){
+  var c=0; for(var i=0;i<cart.length;i++) c+=cart[i].qty;
+  ['cb1','cb2','cb4','cb5','cb6','cb7','cb8','cb9','cb10','cb11','cb12','cb-notif'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=c;});
+}
+
+var PAYMENT_METHODS = {
+  UAH: [
+    {id:'mono',   name:'Monobank', icon:'\uD83D\uDFE1', number:'4441 1144 0000 0000'},
+    {id:'myraif', name:'MyRaif',   icon:'\uD83D\uDD35', number:'4731 1234 0000 0000'},
+    {id:'sense',  name:'Sense',    icon:'\uD83D\uDFE2', number:'4149 5000 0000 0000'},
+    {id:'pumb',   name:'PUMB',     icon:'\uD83D\uDFE0', number:'5168 7422 0000 0000'}
+  ],
+  EUR: [
+    {id:'revolut_eur', name:'Revolut', icon:'\uD83D\uDD37', link:'https://revolut.me/your_username'}
+  ],
+  PLN: [
+    {id:'revolut_pln', name:'Revolut', icon:'\uD83D\uDD37', link:'https://revolut.me/your_username'}
+  ]
+};
+
+var selectedPayMethod = null;
+
+function checkout(){
+  var inp = document.getElementById('recv-id');
+  if (!inp.value.trim()) {
+    inp.style.borderBottom = '2px solid var(--red)';
+    inp.placeholder = currentLang==='ua' ? 'Введіть ID!' : 'Введите ID!';
+    inp.focus();
+    setTimeout(function(){
+      inp.style.borderBottom = '';
+      inp.placeholder = TR['recv-placeholder'][currentLang] || TR['recv-placeholder'].ru;
+    }, 2500);
+    return;
+  }
+  renderPaymentScreen();
+  goTo('payment');
+}
+
+function renderPaymentScreen() {
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
+  var total = 0;
+  for (var i=0; i<cart.length; i++) { total = total + cart[i].price * cart[i].qty; }
+  var discountedTotal = total;
+  if (activePromoDisc > 0) {
+    discountedTotal = total - Math.round(total * activePromoDisc / 100);
+  }
+  var recvId = '';
+  var recvInput = document.getElementById('recv-id');
+  if (recvInput) { recvId = recvInput.value; }
+
+  var itemsParts = [];
+  for (var j=0; j<cart.length; j++) {
+    itemsParts.push(cart[j].name + ' x' + cart[j].qty);
+  }
+  var itemsList = itemsParts.join(', ');
+
+  var wrap = document.getElementById('payment-methods-wrap');
+  if (wrap) {
+    wrap.innerHTML = '';
+    for (var k=0; k<methods.length; k++) {
+      var m = methods[k];
+      var card = document.createElement('div');
+      card.className = 'pay-method';
+      card.id = 'pm-' + m.id;
+
+      var iconDiv = document.createElement('div');
+      iconDiv.className = 'pay-method-icon';
+      iconDiv.textContent = m.icon;
+
+      var infoDiv = document.createElement('div');
+      infoDiv.className = 'pay-method-info';
+      var nameDiv = document.createElement('div');
+      nameDiv.className = 'pay-method-name';
+      nameDiv.textContent = m.name;
+      infoDiv.appendChild(nameDiv);
+      var detailDiv = document.createElement('div');
+      detailDiv.className = 'pay-method-detail';
+      detailDiv.textContent = m.number || m.link || '';
+      infoDiv.appendChild(detailDiv);
+
+      var checkDiv = document.createElement('div');
+      checkDiv.className = 'pay-method-check';
+      checkDiv.id = 'chk-' + m.id;
+      checkDiv.innerHTML = '&#10003;';
+
+      card.appendChild(iconDiv);
+      card.appendChild(infoDiv);
+      card.appendChild(checkDiv);
+
+      (function(methodId){
+        card.addEventListener('click', function(){ selectPayMethod(methodId); });
+      })(m.id);
+
+      wrap.appendChild(card);
+    }
+  }
+
+  var amtEl = document.getElementById('payment-amount');
+  if (amtEl) { amtEl.textContent = fmtPrice(discountedTotal); }
+
+  var summEl = document.getElementById('payment-items');
+  if (summEl) { summEl.textContent = itemsList; }
+
+  var recvEl = document.getElementById('payment-recv');
+  if (recvEl) { recvEl.textContent = recvId; }
+
+  if (methods.length > 0) { selectPayMethod(methods[0].id); }
+}
+
+function selectPayMethod(id) {
+  selectedPayMethod = id;
+
+  var allMethods = document.querySelectorAll('.pay-method');
+  for (var i=0; i<allMethods.length; i++) { allMethods[i].classList.remove('on'); }
+
+  var allChecks = document.querySelectorAll('.pay-method-check');
+  for (var j=0; j<allChecks.length; j++) { allChecks[j].style.opacity = '0'; }
+
+  var el = document.getElementById('pm-' + id);
+  var chk = document.getElementById('chk-' + id);
+  if (el) { el.classList.add('on'); }
+  if (chk) { chk.style.opacity = '1'; }
+
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
+  var method = null;
+  for (var k=0; k<methods.length; k++) {
+    if (methods[k].id === id) { method = methods[k]; break; }
+  }
+  if (!method) { return; }
+
+  var payBtn = document.getElementById('open-payment-btn');
+  if (!payBtn) { return; }
+
+  if (method.link) {
+    payBtn.textContent = 'Открыть Revolut';
+    payBtn.onclick = function(){ window.open(method.link, '_blank'); };
+  } else {
+    payBtn.textContent = 'Скопировать номер карты';
+    payBtn.onclick = function(){
+      var cleanNumber = method.number.replace(/\s/g, '');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cleanNumber).then(function(){
+          showToast('Номер скопирован');
+        }).catch(function(){
+          showToast('Номер: ' + method.number);
+        });
+      } else {
+        showToast('Номер: ' + method.number);
+      }
+    };
+  }
+}
+
+function confirmPayment() {
+  var recvId = '';
+  var recvInput = document.getElementById('recv-id');
+  if (recvInput) { recvId = recvInput.value; }
+
+  var total = 0;
+  for (var i=0; i<cart.length; i++) { total = total + cart[i].price * cart[i].qty; }
+  var discountedTotal = total;
+  if (activePromoDisc > 0) { discountedTotal = total - Math.round(total * activePromoDisc / 100); }
+
+  var itemLines = [];
+  for (var j=0; j<cart.length; j++) {
+    itemLines.push(cart[j].name + ' x' + cart[j].qty + ' = ' + fmtPrice(cart[j].price * cart[j].qty));
+  }
+  var itemsText = itemLines.join('\n');
+
+  var username = 'Неизвестно';
+  var tgId = '-';
+  if (currentUser) {
+    username = currentUser.username ? ('@' + currentUser.username) : (currentUser.first_name || 'Неизвестно');
+    tgId = currentUser.telegram_id || '-';
+  }
+
+  var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
+  var method = null;
+  for (var k=0; k<methods.length; k++) {
+    if (methods[k].id === selectedPayMethod) { method = methods[k]; break; }
+  }
+  var methodName = method ? method.name : '-';
+
+  var lines = [];
+  lines.push('NOVYY ZAKAZ');
+  lines.push('');
+  lines.push('Polzovatel: ' + username + ' (ID: ' + tgId + ')');
+  lines.push('Igrovoy ID: ' + recvId);
+  lines.push('Tovary:');
+  lines.push(itemsText);
+  lines.push('Summa: ' + fmtPrice(discountedTotal));
+  lines.push('Oplata: ' + methodName);
+  var msg = lines.join('\n');
+
+  var tgUrl = 'https://t.me/KrAkeNn1n?text=' + encodeURIComponent(msg);
+  window.open(tgUrl, '_blank');
+
+  cart = [];
+  activePromo = null;
+  activePromoDisc = 0;
+  updateBadges();
+  addOrderNotification(itemsText.replace(/\n/g, ', '), fmtPrice(discountedTotal));
+  goTo('order-success');
+}
+
+function goTo(name){
+  var allScreens = document.querySelectorAll('.screen');
+  for (var i=0; i<allScreens.length; i++) {
+    allScreens[i].classList.remove('active');
+  }
+  var target = document.getElementById('sc-' + name);
+  if (target) {
+    target.classList.add('active');
+  }
+  if (name === 'cart') { renderCart(); }
+  if (name === 'notifications') { renderNotifications(); }
+}
+
+function switchCat(cat){
+  document.getElementById('cat-pubg').style.display=cat==='pubg'?'block':'none';
+  document.getElementById('cat-tg').style.display=cat==='tg'?'block':'none';
+  document.getElementById('csw-pubg').className='csw-item ripple'+(cat==='pubg'?' on':'');
+  document.getElementById('csw-tg').className='csw-item ripple'+(cat==='tg'?' on':'');
+}
+
+function switchTg(tab){
+  var sw = document.getElementById('tg-stars-wrap');
+  var pw = document.getElementById('tg-prem-wrap');
+  if(sw) sw.style.display = tab==='stars'?'block':'none';
+  if(pw) pw.style.display = tab==='prem'?'block':'none';
+  document.getElementById('tt-stars').className='tab'+(tab==='stars'?' on':'');
+  document.getElementById('tt-prem').className='tab'+(tab==='prem'?' on':'');
+}
+
+var _tt;
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.innerHTML=msg; t.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+document.addEventListener('click',function(e){
+  var el=e.target.closest('.ripple');
+  if(!el) return;
+  var r=document.createElement('span');
+  var rect=el.getBoundingClientRect();
+  var sz=Math.max(rect.width,rect.height)*2;
+  r.style.cssText='position:absolute;border-radius:50%;background:rgba(255,255,255,.12);width:'+sz+'px;height:'+sz+'px;left:'+(e.clientX-rect.left-sz/2)+'px;top:'+(e.clientY-rect.top-sz/2)+'px;transform:scale(0);animation:rippleAnim .5s ease;pointer-events:none;';
+  el.appendChild(r);
+  setTimeout(function(){r.remove();},500);
+});
+
+var currentLang = 'ru';
+var currentCurr = 'UAH';
+var RATES = {UAH:1, EUR:0.022, PLN:0.094};
+var CURR_SYMBOLS = {UAH:'\u20B4', EUR:'\u20AC', PLN:'z\u0142'};
+var CURR_NAMES = {UAH:'Гривна', EUR:'Евро', PLN:'Злотый'};
+var LANG_NAMES = {ru:'русский', ua:'українська'};
+
+function fmtPrice(uahPrice) {
+  var val = uahPrice * RATES[currentCurr];
+  var sym = CURR_SYMBOLS[currentCurr];
+  if (currentCurr === 'UAH') return Math.round(val) + ' ' + sym;
+  var rounded = Math.round(val * 100) / 100;
+  var str = rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(2);
+  return str + ' ' + sym;
+}
+
+function selectLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('#lang-list .opt-item').forEach(function(el){
+    el.className = 'opt-item' + (el.getAttribute('data-lang')===lang ? ' on' : '');
+  });
+  updateSettingsSummary();
+  applyTranslations();
+  showToast(lang==='ru' ? '✓ Язык изменён' : '✓ Мову змінено');
+  savePreferences();
+}
+
+function selectCurr(curr) {
+  currentCurr = curr;
+  document.querySelectorAll('#curr-list .opt-item').forEach(function(el){
+    el.className = 'opt-item' + (el.getAttribute('data-curr')===curr ? ' on' : '');
+  });
+  updateSettingsSummary();
+  renderAllProducts();
+  renderCart();
+  showToast('✓ валюта изменена на ' + CURR_NAMES[curr]);
+  savePreferences();
+}
+
+function updateSettingsSummary() {
+  var el = document.getElementById('settings-summary');
+  if (el) el.textContent = LANG_NAMES[currentLang] + ' • ' + CURR_NAMES[currentCurr] + ' (' + CURR_SYMBOLS[currentCurr] + ')';
+}
+
+function renderAllProducts() {
+  renderPackList('list-id-lite',    UC_ID.lite,   'По ID', 'Мгновенное зачисление');
+  renderPackList('list-id-medium',  UC_ID.medium, 'По ID', 'Мгновенное зачисление');
+  renderPackList('list-id-elite',   UC_ID.elite,  'По ID', 'Мгновенное зачисление');
+  renderPackList('list-login-lite',    UC_LOGIN.lite,   'По входу', 'Зачисление 5–20 мин');
+  renderPackList('list-login-medium',  UC_LOGIN.medium, 'По входу', 'Зачисление 5–20 мин');
+  renderPackList('list-login-elite',   UC_LOGIN.elite,  'По входу', 'Зачисление 5–20 мин');
+  renderPackList('list-rp',   ROYAL_PASS, 'Royal Pass', 'Мгновенное зачисление по ID');
+  renderPackList('list-pop-items', POPULARITY, 'Популярность', 'Пополнение по QR-коду');
+  renderPackList('list-pop-small', POP_SMALL,  'Популярность', 'Пополнение 20–40 мин');
+  renderPackList('list-pop-med',   POP_MED,    'Популярность', 'Пополнение 20–40 мин');
+  renderPackList('list-pop-big',   POP_BIG,    'Популярность', 'Пополнение 20–40 мин');
+  renderPackList('list-clan', CLANS, 'Клан', 'Со сменой владельца');
+  renderPackList('stars-small', STARS_SMALL, 'Stars', 'Зачисление 2–3 минуты');
+  renderPackList('stars-med',   STARS_MED,   'Stars', 'Зачисление 2–3 минуты');
+  renderPackList('stars-big',   STARS_BIG,   'Stars', 'Зачисление 2–3 минуты');
+  renderPackList('prem-list',   PREM,        'Telegram', 'Активация по ссылке');
+}
+
+var TR = {
+  'hero-eyebrow-pubg':   {ru:'ПОПОЛНЕНИЕ', ua:'ПОВНИЙ РАХУНОК'},
+  'hero-sub-pubg':       {ru:'Быстро • Выгодно • Безопасно', ua:'Швидко • Гідно • Безпечно'},
+  'hero-sub-tg':         {ru:'Мгновенное зачисление', ua:'Миттєве нарахування'},
+  'btn-catalog':         {ru:'Перейти в каталог →', ua:'До каталогу →'},
+  'sec-categories':      {ru:'Категории', ua:'Категорії'},
+  'cc-pubg-sub':         {ru:'UC и наборы', ua:'UC та набори'},
+  'cc-tg-sub':           {ru:'Stars и Premium', ua:'Stars та Premium'},
+  'cc-rev-sub':          {ru:'Реальные отзывы', ua:'Справжні відгуки'},
+  'trust1':              {ru:'Быстрая доставка', ua:'Швидка доставка'},
+  'trust2':              {ru:'100% Безопасно', ua:'100% Безпечно'},
+  'trust3':              {ru:'Надёжно и честно', ua:'Надійно та чесно'},
+  'trust4':              {ru:'Поддержка 24/7', ua:'Підтримка 24/7'},
+  'nav-home':            {ru:'Главная', ua:'Головна'},
+  'nav-catalog':         {ru:'Каталог', ua:'Каталог'},
+  'nav-cart':            {ru:'Корзина', ua:'Корзина'},
+  'nav-orders':          {ru:'Заказы', ua:'Замовлення'},
+  'nav-profile':         {ru:'Профиль', ua:'Профіль'},
+  'back-menu':           {ru:'← Назад в меню', ua:'← До меню'},
+  'back-catalog':        {ru:'← Назад в каталог', ua:'← До каталогу'},
+  'back-profile':        {ru:'← Назад', ua:'← Назад'},
+  'csw-pubg-sub':        {ru:'UC и наборы', ua:'UC та набори'},
+  'csw-tg-sub':          {ru:'Stars & Premium', ua:'Stars & Premium'},
+  'cart-title':          {ru:'Корзина', ua:'Корзина'},
+  'ilbl-recipient':      {ru:'ДАННЫЕ ПОЛУЧАТЕЛЯ', ua:'ДАНІ ОТРИМУВАЧА'},
+  'recv-placeholder':    {ru:'Введите ваш PUBG Mobile ID или Telegram @username', ua:'Введіть ваш PUBG Mobile ID або Telegram @username'},
+  'tot-title':           {ru:'ИТОГО', ua:'РАЗОМ'},
+  'tot-sum':             {ru:'Сумма товаров', ua:'Сума товарів'},
+  'tot-fee':             {ru:'Комиссия сервиса', ua:'Комісія сервісу'},
+  'tot-total':           {ru:'Общая сумма заказа', ua:'Сума замовлення'},
+  'btn-checkout':        {ru:'Перейти к оплате →', ua:'До оплати →'},
+  'trustmini1':          {ru:'Данные под защитой', ua:'Дані під захистом'},
+  'trustmini2':          {ru:'Мгновенная доставка', ua:'Миттєва доставка'},
+  'orders-title':        {ru:'Мои заказы', ua:'Мої замовлення'},
+  'orders-sub':          {ru:'История и статус ваших покупок', ua:'Історія та статус ваших покупок'},
+  'otab1':               {ru:'Все заказы', ua:'Всі замовлення'},
+  'otab2':               {ru:'В обработке', ua:'В обробці'},
+  'otab3':               {ru:'Выполнен', ua:'Виконано'},
+  'otab4':               {ru:'Отменён', ua:'Відмінено'},
+  'profile-vip':         {ru:'VIP Покупатель', ua:'VIP Покупець'},
+  'stat-uc':             {ru:'Куплено UC', ua:'Куплено UC'},
+  'stat-orders':         {ru:'Всего заказов', ua:'Всього замовлень'},
+  'stat-refs':           {ru:'Рефералы', ua:'Реферали'},
+  'menu-ref':            {ru:'Реферальная система', ua:'Реферальна система'},
+  'menu-ref-sub':        {ru:'Пригласи друга', ua:'Запроси друга'},
+  'menu-settings':       {ru:'Настройки', ua:'Налаштування'},
+  'menu-rules':          {ru:'Правила использования и магазина', ua:'Правила використання та магазину'},
+  'support-title':       {ru:'Техническая поддержка 24/7', ua:'Технічна підтримка 24/7'},
+  'support-btn':         {ru:'Написать менеджеру →', ua:'Написати менеджеру →'},
+  'settings-title':      {ru:'Настройки', ua:'Налаштування'},
+  'settings-sub':        {ru:'Язык и валюта', ua:'Мова та валюта'},
+  'settings-lang':       {ru:'🌐 Язык', ua:'🌐 Мова'},
+  'settings-curr':       {ru:'💰 Валюта', ua:'💰 Валюта'},
+  'settings-note':       {ru:'ℹ️ Изменение валюты пересчитает все цены в каталоге по текущему курсу.', ua:'ℹ️ Зміна валюти перерахує всі ціни в каталозі за поточним курсом.'},
+  'lang-ru':             {ru:'Русский', ua:'Російська'},
+  'lang-ua':             {ru:'Украинский', ua:'Українська'},
+  'curr-uah':            {ru:'Гривна', ua:'Гривня'},
+  'curr-eur':            {ru:'Евро', ua:'Євро'},
+  'curr-pln':            {ru:'Злотый', ua:'Злотий'},
+  'pubg-tab-id':         {ru:'По ID', ua:'За ID'},
+  'pubg-tab-login':      {ru:'По входу', ua:'За входом'},
+  'pubg-tab-rp':         {ru:'Royal Pass', ua:'Royal Pass'},
+  'pubg-tab-pop':        {ru:'Популярность', ua:'Популярність'},
+  'pubg-tab-clan':       {ru:'Кланы', ua:'Клани'},
+  'tg-tab-stars':        {ru:'Stars', ua:'Stars'},
+  'tg-tab-prem':         {ru:'Premium', ua:'Premium'},
+  'rules-title':  {ru:'Правила использования', ua:'Правила використання'},
+  'rules-sub':    {ru:'Условия покупки и доставки', ua:'Умови покупки та доставки'},
+  'rules-footer': {ru:'Оформляя заказ, вы подтверждаете, что ознакомились с данными правилами и согласны с их условиями.', ua:'Оформлюючи замовлення, ви підтверджуєте, що ознайомились із цими правилами та погоджуєтесь з їх умовами.'},
+  'r1-title': {ru:'Оформление заказа', ua:'Оформлення замовлення'},
+  'r1-text':  {ru:'Выберите нужный товар или пакет и укажите данные для доставки — игровой ID, ID профиля или username в Telegram, в зависимости от требований конкретного товара. Перед оплатой внимательно проверьте введённые данные.', ua:'Оберіть потрібний товар або пакет і вкажіть дані для доставки — ігровий ID, ID профілю або username у Telegram, залежно від вимог конкретного товару. Перед оплатою уважно перевірте введені дані.'},
+  'r2-title': {ru:'Оплата', ua:'Оплата'},
+  'r2-text':  {ru:'Заказ берётся в обработку только после полного подтверждения оплаты. Если оплата не поступила или не подтверждена, заказ не выполняется.', ua:'Замовлення береться в обробку лише після повного підтвердження оплати. Якщо оплата не надійшла або не підтверджена, замовлення не виконується.'},
+  'r3-title': {ru:'Выполнение заказа', ua:'Виконання замовлення'},
+  'r3-text':  {ru:'После подтверждения оплаты товар зачисляется или отправляется по указанным вами реквизитам — на игровой ID или Telegram-аккаунт. Срок выполнения зависит от текущей загруженности систем и доступности сервисов.', ua:'Після підтвердження оплати товар нараховується або надсилається за вказаними вами реквізитами — на ігровий ID або Telegram-акаунт. Термін виконання залежить від поточного завантаження систем та доступності сервісів.'},
+  'r4-title': {ru:'Ответственность за данные', ua:'Відповідальність за дані'},
+  'r4-text':  {ru:'Магазин не отвечает за ошибки, допущенные при вводе данных. Если указан неверный ID или неправильный username в Telegram, возврат средств или повторная отправка товара не гарантируются.', ua:'Магазин не відповідає за помилки, допущені під час введення даних. Якщо вказано неправильний ID або username у Telegram, повернення коштів чи повторне надсилання товару не гарантуються.'},
+  'r5-title': {ru:'Возврат средств', ua:'Повернення коштів'},
+  'r5-text':  {ru:'Возврат возможен только до момента передачи заказа в работу или его выполнения. После успешной доставки товара или зачисления валюты средства не возвращаются.', ua:'Повернення можливе лише до моменту передачі замовлення в роботу або його виконання. Після успішної доставки товару чи нарахування валюти кошти не повертаються.'},
+  'r6-title': {ru:'Поддержка', ua:'Підтримка'},
+  'r6-text':  {ru:'Если возникли вопросы или проблемы с заказом — обратитесь в нашу службу поддержки. Мы стараемся отвечать каждому клиенту максимально быстро.', ua:'Якщо виникли питання чи проблеми із замовленням — звертайтесь до нашої служби підтримки. Ми намагаємось відповідати кожному клієнту максимально швидко.'},
+  'r7-title': {ru:'Изменение правил', ua:'Зміна правил'},
+  'r7-text':  {ru:'Магазин может изменять данные правила в одностороннем порядке. Действует версия правил, актуальная на момент оформления заказа.', ua:'Магазин може змінювати ці правила в односторонньому порядку. Діє версія правил, актуальна на момент оформлення замовлення.'},
+  'r8-title': {ru:'Сообщения о статусе заказа', ua:'Повідомлення про статус замовлення'},
+  'r8-text':  {ru:'Просим не присылать повторяющиеся сообщения вроде «где мой товар?» сразу после оформления заказа. Напоминание можно отправить, если с момента заказа прошло более 10 минут. В противном случае магазин может отказать в дальнейшем обслуживании.', ua:'Просимо не надсилати повторювані повідомлення типу «де мій товар?» одразу після оформлення замовлення. Нагадування можна надіслати, якщо з моменту замовлення минуло більше 10 хвилин. Інакше магазин може відмовити в подальшому обслуговуванні.'},
+  'r9-title': {ru:'Отмена заказа с возвратом средств', ua:'Скасування замовлення з поверненням коштів'},
+  'r9-text':  {ru:'Если заказ был отменён и деньги вернулись на вашу карту, возможны следующие причины: изменение закупочной цены на официальных платформах, технический сбой на стороне сервиса, либо временные проблемы у продавца. Для уточнения деталей напишите владельцу в личные сообщения или откройте тикет.', ua:'Якщо замовлення було скасовано і кошти повернулися на вашу картку, можливі такі причини: зміна закупівельної ціни на офіційних платформах, технічний збій на боці сервісу, або тимчасові проблеми у продавця. Для уточнення деталей напишіть власнику в особисті повідомлення або відкрийте тікет.'},
+  'modal-support-title': {ru:'Связаться с поддержкой', ua:'Зв\u2019язатися з підтримкою'},
+  'modal-support-text':  {ru:'Выберите оператора — он откроется в Telegram', ua:'Оберіть оператора — він відкриється в Telegram'},
+  'modal-operator1':     {ru:'Главный оператор', ua:'Головний оператор'},
+  'modal-operator2':     {ru:'Оператор поддержки', ua:'Оператор підтримки'},
+  'modal-soon-title':    {ru:'Скоро здесь что-то будет', ua:'Скоро тут щось буде'},
+  'modal-soon-text':     {ru:'Реферальная система находится в разработке. Загляните позже — мы уже работаем над этим!', ua:'Реферальна система перебуває в розробці. Завітайте пізніше — ми вже працюємо над цим!'},
+  'modal-soon-btn':      {ru:'Понятно', ua:'Зрозуміло'},
+  'cc-battle-name':      {ru:'ПРАВИЛА ПП', ua:'ПРАВИЛА ПП'},
+  'cc-battle-sub':       {ru:'Правила битвы', ua:'Правила битви'},
+  'cc-rewards-name':     {ru:'НАГРАДЫ', ua:'НАГОРОДИ'},
+  'cc-rewards-sub':      {ru:'За покупки', ua:'За покупки'},
+  'cc-loyalty-name':     {ru:'ЛОЯЛЬНОСТЬ', ua:'ЛОЯЛЬНІСТЬ'},
+  'cc-loyalty-sub':      {ru:'VIP и скидки', ua:'VIP та знижки'},
+  'battle-title':        {ru:'Правила Битвы ПП', ua:'Правила Битви ПП'},
+  'battle-sub':          {ru:'Популярность и рейтинговые сражения', ua:'Популярність та рейтингові битви'},
+  'rewards-title':       {ru:'Система наград', ua:'Система нагород'},
+  'rewards-sub':         {ru:'Бонусы за покупки', ua:'Бонуси за покупки'},
+  'battle-tab-solo': {ru:'Режим соло', ua:'Режим соло'},
+  'battle-tab-team': {ru:'Режим команды', ua:'Режим команди'},
+  'battle-bonus':    {ru:'Дополнительно вы получаете половину очков от популярности соперника.', ua:'Додатково ви отримуєте половину очок від популярності суперника.'},
+  'battle-example-title': {ru:'Пример:', ua:'Приклад:'},
+  'battle-solo-intro':   {ru:'В таблице указаны очки за набранную вами популярность в случае победы.', ua:'У таблиці вказані очки за набрану вами популярність у разі перемоги.'},
+  'battle-solo-example': {ru:'Если вы набрали 120 тысяч очков, а противник 15 тысяч, то по итогу вы получаете: 28 очков за себя + 10 очков за противника = 38 очков за раунд. А противник получит за этот раунд 10 очков.', ua:'Якщо ви набрали 120 тисяч очок, а противник 15 тисяч, то за підсумком ви отримуєте: 28 очок за себе + 10 очок за противника = 38 очок за раунд. А противник отримає за цей раунд 10 очок.'},
+  'battle-team-intro':   {ru:'В таблице указаны очки за набранную ОБЩУЮ популярность всей команды в случае победы.', ua:'У таблиці вказані очки за набрану ЗАГАЛЬНУ популярність усієї команди у разі перемоги.'},
+  'battle-team-example': {ru:'Если вы набрали командой 400 тысяч очков, а противник 150 тысяч, то по итогу вы получаете: 32 очка за себя + 12 очков за противника = 44 очка за раунд получит каждый. А противник получит за этот раунд 12 очков.', ua:'Якщо ви набрали командою 400 тисяч очок, а противник 150 тисяч, то за підсумком ви отримуєте: 32 очка за себе + 12 очок за противника = 44 очка за раунд отримає кожен. А противник отримає за цей раунд 12 очок.'},
+  'score-col-pop': {ru:'Популярность', ua:'Популярність'},
+  'score-col-pts': {ru:'Кол-во очков', ua:'Кількість очок'},
+  'score-2m-more':  {ru:'2 млн и больше', ua:'2 млн і більше'},
+  'score-51m-more': {ru:'5.1 млн и больше', ua:'5.1 млн і більше'},
+  'score-pts-6':   {ru:'6 очков', ua:'6 очок'},
+  'score-pts-10':  {ru:'10 очков', ua:'10 очок'},
+  'score-pts-14':  {ru:'14 очков', ua:'14 очок'},
+  'score-pts-16':  {ru:'16 очков', ua:'16 очок'},
+  'score-pts-20':  {ru:'20 очков', ua:'20 очок'},
+  'score-pts-24a': {ru:'24 очка', ua:'24 очки'},
+  'score-pts-24b': {ru:'24 очка', ua:'24 очки'},
+  'score-pts-28':  {ru:'28 очков', ua:'28 очок'},
+  'score-pts-32':  {ru:'32 очка', ua:'32 очки'},
+  'score-pts-34':  {ru:'34 очка', ua:'34 очки'},
+  'score-pts-36':  {ru:'36 очков', ua:'36 очок'},
+  'score-pts-40':  {ru:'40 очков', ua:'40 очок'},
+  'score-pts-42a': {ru:'42 очка', ua:'42 очки'},
+  'score-pts-42b': {ru:'42 очка', ua:'42 очки'},
+  'rw-q-title': {ru:'Как засчитываются купленные UC в «Награда за покупку»?', ua:'Як зараховуються куплені UC у «Нагороду за покупку»?'},
+  'rw-q-text1': {ru:'При пополнении UC на аккаунт вся сумма приходит полностью.', ua:'При поповненні UC на акаунт вся сума приходить повністю.'},
+  'rw-q-text2': {ru:'Но в событии учитывается только часть — без бонуса.', ua:'Але в події враховується лише частина — без бонусу.'},
+  'rw-examples-title': {ru:'Примеры', ua:'Приклади'},
+  'rw-col-bought':  {ru:'Покупка UC', ua:'Покупка UC'},
+  'rw-col-counted': {ru:'Засчитывается', ua:'Зараховується'},
+  'rw-note': {ru:'Независимо от способа пополнения (по ID или кодом) — в событии учитывается только сумма без бонусных UC.', ua:'Незалежно від способу поповнення (за ID або кодом) — у події враховується лише сума без бонусних UC.'},
+  'promo-lbl':       {ru:'ПРОМОКОД', ua:'ПРОМОКОД'},
+  'promo-placeholder':{ru:'Введите промокод (необязательно)', ua:'Введіть промокод (необов\u2019язково)'},
+  'promo-apply-btn': {ru:'Применить', ua:'Застосувати'},
+  'tot-promo':       {ru:'Скидка по промокоду', ua:'Знижка за промокодом'}
+};
+
+function applyTranslations() {
+  for (var key in TR) {
+    var els = document.querySelectorAll('[data-tr="'+key+'"]');
+    for (var i=0;i<els.length;i++){
+      var t = TR[key][currentLang] || TR[key].ru;
+      if (els[i].hasAttribute('data-tr-attr')) {
+        els[i].setAttribute(els[i].getAttribute('data-tr-attr'), t);
+      } else {
+        els[i].textContent = t;
+      }
+    }
+  }
+}
+
+function updateProfileStatus() {
+  var badge = document.getElementById('profile-status-badge');
+  if (!badge) return;
+  var s = USER_STATUS;
+  var colors = {
+    'normal':      {bg:'rgba(255,255,255,.07)',color:'#999',border:'rgba(255,255,255,.08)'},
+    'loyal':       {bg:'rgba(34,197,94,.1)',color:'#22c55e',border:'rgba(34,197,94,.3)'},
+    'vip-bronze':  {bg:'rgba(180,100,30,.15)',color:'#cd7f32',border:'rgba(205,127,50,.35)'},
+    'vip-silver':  {bg:'rgba(160,160,180,.12)',color:'#c0c0c0',border:'rgba(192,192,192,.3)'},
+    'vip-gold':    {bg:'rgba(212,175,55,.15)',color:'#d4af37',border:'rgba(212,175,55,.4)'},
+    'clan-deputy': {bg:'rgba(99,102,241,.12)',color:'#818cf8',border:'rgba(99,102,241,.3)'},
+    'clan-leader': {bg:'rgba(224,32,32,.12)',color:'#e02020',border:'rgba(224,32,32,.4)'}
+  };
+  var c = colors[s.level] || colors['normal'];
+  badge.style.background = c.bg;
+  badge.style.color = c.color;
+  badge.style.border = '1px solid ' + c.border;
+  badge.innerHTML = s.label;
+  if (s.discount > 0) {
+    badge.innerHTML += ' <span style="opacity:.7;font-size:10px;margin-left:4px;">−' + s.discount + '%</span>';
+  }
+}
+
+var PROMOS = { 'KRAKEN5': 5, 'KRAKEN10': 10 };
+var MAX_DISCOUNT = 15;
+var activePromo = null;
+var activePromoDisc = 0;
+
+var API_URL = 'https://kraken-production-c849.up.railway.app';
+var accessToken  = null;
+var refreshToken = null;
+var currentUser  = null;
+
+var USER_STATUS = { level: 'normal', discount: 0, label: 'Обычный клиент', color: '#999' };
+
+async function telegramAuth() {
+  var tg = window.Telegram && window.Telegram.WebApp;
+  if (!tg || !tg.initData) { return; }
+  try {
+    var resp = await fetch(API_URL + '/api/auth/telegram/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({init_data: tg.initData})
+    });
+    if (!resp.ok) throw new Error('Auth failed: ' + resp.status);
+    var data = await resp.json();
+    accessToken  = data.access;
+    refreshToken = data.refresh;
+    currentUser  = data.user;
+    try { localStorage.setItem('kr_access', accessToken); } catch(e){}
+    try { localStorage.setItem('kr_refresh', refreshToken); } catch(e){}
+    applyUserData(data.user);
+  } catch(e) {
+    console.warn('Ошибка авторизации:', e.message);
+  }
+}
+
+function applyUserData(user) {
+  if (!user) return;
+  currentUser = user;
+  var levelMap = {
+    'none':   {level:'normal',      label:'Обычный клиент',      color:'#999'},
+    'bronze': {level:'vip-bronze',  label:'🥉 VIP Bronze',        color:'#cd7f32'},
+    'silver': {level:'vip-silver',  label:'🥈 VIP Silver',        color:'#c0c0c0'},
+    'gold':   {level:'vip-gold',    label:'🥇 VIP Gold',          color:'#d4af37'},
+    'deputy': {level:'clan-deputy', label:'🛡️ Заместитель клана', color:'#818cf8'},
+    'leader': {level:'clan-leader', label:'⚔️ Лидер клана',      color:'#e02020'}
+  };
+  var vip  = user.vip_level  || 'none';
+  var clan = user.clan_role  || 'none';
+  var key  = (vip !== 'none') ? vip : (clan !== 'none') ? clan : 'none';
+  var s    = levelMap[key] || levelMap['none'];
+  USER_STATUS = {
+    level:    s.level,
+    discount: user.total_discount || 0,
+    label:    user.is_loyal && key === 'none' ? '⭐ Постоянный клиент' : s.label,
+    color:    s.color
+  };
+  var nameEl = document.getElementById('profile-name');
+  if (nameEl) {
+    nameEl.textContent = user.username ? '@' + user.username
+      : (user.first_name || '') + (user.last_name ? ' ' + user.last_name : '');
+  }
+  var ucEl  = document.getElementById('stat-uc-val');
+  var ordEl = document.getElementById('stat-orders-val');
+  var refEl = document.getElementById('stat-refs-val');
+  if (ucEl)  ucEl.textContent  = '—';
+  if (ordEl) ordEl.textContent = (user.total_orders  || 0);
+  if (refEl) refEl.textContent = (user.referral_count || 0);
+  if (user.preferred_lang && user.preferred_lang !== currentLang) {
+    selectLang(user.preferred_lang);
+  }
+  if (user.preferred_currency && user.preferred_currency !== currentCurr) {
+    selectCurr(user.preferred_currency);
+  }
+  updateProfileStatus();
+}
+
+async function savePreferences() {
+  if (!accessToken) return;
+  try {
+    await fetch(API_URL + '/api/auth/profile/', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
+      body: JSON.stringify({ preferred_lang: currentLang, preferred_currency: currentCurr })
+    });
+  } catch(e) {
+    console.warn('Ошибка сохранения настроек:', e.message);
+  }
+}
+
+function applyPromo() {
+  var inp = document.getElementById('promo-input');
+  var code = inp.value.toUpperCase().trim();
+  if (!code) {
+    showPromoMsg('err', currentLang==='ua' ? '⚠️ Введіть промокод' : '⚠️ Введите промокод');
+    return;
+  }
+  if (USER_STATUS.discount >= MAX_DISCOUNT) {
+    showPromoMsg('err', currentLang==='ua' ? '✗ У вас вже максимальна знижка ' + MAX_DISCOUNT + '%' : '✗ У вас уже максимальная скидка ' + MAX_DISCOUNT + '%');
+    return;
+  }
+  if (PROMOS[code] !== undefined) {
+    var disc = PROMOS[code];
+    var total = USER_STATUS.discount + disc;
+    var actual = Math.min(total, MAX_DISCOUNT) - USER_STATUS.discount;
+    if (actual <= 0) {
+      showPromoMsg('err', currentLang==='ua' ? '✗ Промокод не збільшує знижку — ліміт досягнуто' : '✗ Промокод не увеличивает скидку — лимит достигнут');
+      return;
+    }
+    activePromo = code;
+    activePromoDisc = actual;
+    var btn = document.getElementById('promo-apply-btn');
+    btn.textContent = currentLang==='ua' ? 'Скасувати' : 'Отменить';
+    btn.className = 'promo-btn applied ripple';
+    btn.onclick = removePromo;
+    inp.disabled = true;
+    showPromoMsg('ok', (currentLang==='ua' ? '✓ Промокод застосовано — знижка ' : '✓ Промокод применён — скидка ') + actual + '%');
+    renderCart();
+  } else {
+    showPromoMsg('err', currentLang==='ua' ? '✗ Невірний промокод' : '✗ Неверный промокод');
+  }
+}
+
+function removePromo() {
+  activePromo = null;
+  activePromoDisc = 0;
+  var inp = document.getElementById('promo-input');
+  var btn = document.getElementById('promo-apply-btn');
+  if (inp) { inp.value = ''; inp.disabled = false; }
+  if (btn) {
+    btn.textContent = TR['promo-apply-btn'] ? (TR['promo-apply-btn'][currentLang] || 'Применить') : 'Применить';
+    btn.className = 'promo-btn ripple';
+    btn.onclick = applyPromo;
+  }
+  var msg = document.getElementById('promo-msg');
+  if (msg) msg.style.display = 'none';
+  renderCart();
+}
+
+function showPromoMsg(type, text) {
+  var el = document.getElementById('promo-msg');
+  if (!el) return;
+  el.className = 'promo-msg ' + type;
+  el.textContent = text;
+  el.style.display = 'flex';
+}
+
+function switchBattleMode(mode) {
+  document.getElementById('battle-solo').style.display = mode==='solo' ? 'block' : 'none';
+  document.getElementById('battle-team').style.display = mode==='team' ? 'block' : 'none';
+  document.getElementById('bt-solo').className = 'tab' + (mode==='solo' ? ' on' : '');
+  document.getElementById('bt-team').className = 'tab' + (mode==='team' ? ' on' : '');
+}
+
+function showSupportModal() {
+  document.getElementById('modal-support').style.display = 'block';
+  document.getElementById('modal-soon').style.display = 'none';
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function showSoonModal() {
+  document.getElementById('modal-soon').style.display = 'block';
+  document.getElementById('modal-support').style.display = 'none';
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function closeModal(e) {
+  if (e && e.target.id !== 'modal-overlay') return;
+  document.getElementById('modal-overlay').classList.remove('show');
+}
+
+// ═══ NOTIFICATION SYSTEM ═════════════════════
+var NOTIF_ICONS = {
+  orders:   '📦',
+  bonus:    '🎁',
+  referral: '👥',
+  rating:   '🏆',
+  vip:      '👑',
+  promo:    '🔥',
+  news:     '📢'
+};
+
+var notifications = [];
+var notifFilter = 'all';
+
+function loadNotifications() {
+  try {
+    var stored = localStorage.getItem('kr_notifications');
+    if (stored) {
+      notifications = JSON.parse(stored);
+    } else {
+      // Demo notifications for first launch
+      notifications = [
+        {
+          id: 1,
+          type: 'news',
+          title: 'Добро пожаловать!',
+          text: 'Kraken UC Shop готов к работе. Выбирайте товары и оформляйте заказы.',
+          time: Date.now() - 60000,
+          read: false
+        },
+        {
+          id: 2,
+          type: 'promo',
+          title: 'Промокоды доступны',
+          text: 'Используйте KRAKEN5 или KRAKEN10 для получения скидки на заказ.',
+          time: Date.now() - 120000,
+          read: false
+        }
+      ];
+      saveNotifications();
+    }
+  } catch(e) {
+    notifications = [];
+  }
+  updateNotifBadge();
+}
+
+function saveNotifications() {
+  try {
+    localStorage.setItem('kr_notifications', JSON.stringify(notifications));
+  } catch(e) {}
+}
+
+function addNotification(type, title, text) {
+  var notif = {
+    id: Date.now(),
+    type: type,
+    title: title,
+    text: text,
+    time: Date.now(),
+    read: false
+  };
+  notifications.unshift(notif);
+  saveNotifications();
+  updateNotifBadge();
+  return notif;
+}
+
+function getUnreadCount() {
+  var count = 0;
+  for (var i=0; i<notifications.length; i++) {
+    if (!notifications[i].read) count++;
+  }
+  return count;
+}
+
+function updateNotifBadge() {
+  var count = getUnreadCount();
+  var badge1 = document.getElementById('notif-badge');
+  var badge2 = document.getElementById('notif-badge2');
+  if (badge1) {
+    badge1.textContent = count > 99 ? '99+' : count;
+    badge1.style.display = count > 0 ? 'flex' : 'none';
+  }
+  if (badge2) {
+    badge2.textContent = count > 99 ? '99+' : count;
+    badge2.style.display = count > 0 ? 'flex' : 'none';
+  }
+  // Update cart badge on notifications screen
+  var cbNotif = document.getElementById('cb-notif');
+  if (cbNotif) {
+    var cartCount = 0;
+    for (var j=0; j<cart.length; j++) cartCount += cart[j].qty;
+    cbNotif.textContent = cartCount;
+  }
+  // Update label
+  var label = document.getElementById('notif-count-label');
+  if (label) {
+    if (count === 0) {
+      label.textContent = 'Нет новых уведомлений';
+    } else {
+      label.textContent = count + ' непрочитанн' + (count === 1 ? 'ое' : count < 5 ? 'ых' : 'ых');
+    }
+  }
+}
+
+function formatNotifTime(ts) {
+  var now = Date.now();
+  var diff = Math.floor((now - ts) / 1000);
+  if (diff < 60) return 'только что';
+  if (diff < 3600) return Math.floor(diff/60) + ' мин назад';
+  if (diff < 86400) return Math.floor(diff/3600) + ' ч назад';
+  var d = new Date(ts);
+  return d.getDate() + '.' + (d.getMonth()+1) + '.' + d.getFullYear();
+}
+
+function setNotifFilter(filter) {
+  notifFilter = filter;
+  var btns = document.querySelectorAll('.nfbtn');
+  for (var i=0; i<btns.length; i++) {
+    btns[i].className = 'nfbtn' + (btns[i].getAttribute('data-filter') === filter ? ' on' : '');
+  }
+  renderNotifications();
+}
+
+function renderNotifications() {
+  var list = document.getElementById('notif-list');
+  if (!list) return;
+
+  var filtered = notifications.filter(function(n) {
+    return notifFilter === 'all' || n.type === notifFilter;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = '';
+    var empty = document.createElement('div');
+    empty.className = 'notif-empty';
+    empty.innerHTML = '<div class="notif-empty-icon">🔔</div><div class="notif-empty-text">Уведомлений нет</div>';
+    list.appendChild(empty);
+    return;
+  }
+
+  list.innerHTML = '';
+  for (var i=0; i<filtered.length; i++) {
+    var n = filtered[i];
+    var card = document.createElement('div');
+    card.className = 'ncard' + (n.read ? '' : ' unread');
+    card.setAttribute('data-id', n.id);
+
+    var icon = document.createElement('div');
+    icon.className = 'ncard-icon';
+    icon.textContent = NOTIF_ICONS[n.type] || '🔔';
+
+    var body = document.createElement('div');
+    body.className = 'ncard-body';
+
+    var title = document.createElement('div');
+    title.className = 'ncard-title';
+    title.textContent = n.title;
+
+    var text = document.createElement('div');
+    text.className = 'ncard-text';
+    text.textContent = n.text;
+
+    var meta = document.createElement('div');
+    meta.className = 'ncard-meta';
+
+    var time = document.createElement('div');
+    time.className = 'ncard-time';
+    time.textContent = formatNotifTime(n.time);
+
+    meta.appendChild(time);
+
+    if (!n.read) {
+      var dot = document.createElement('div');
+      dot.className = 'ncard-dot';
+      meta.appendChild(dot);
+    }
+
+    body.appendChild(title);
+    body.appendChild(text);
+    body.appendChild(meta);
+    card.appendChild(icon);
+    card.appendChild(body);
+
+    (function(notifId) {
+      card.addEventListener('click', function() {
+        markRead(notifId);
+      });
+    })(n.id);
+
+    list.appendChild(card);
+  }
+
+  updateNotifBadge();
+}
+
+function markRead(id) {
+  for (var i=0; i<notifications.length; i++) {
+    if (notifications[i].id === id) {
+      notifications[i].read = true;
+      break;
+    }
+  }
+  saveNotifications();
+  renderNotifications();
+}
+
+function markAllRead() {
+  for (var i=0; i<notifications.length; i++) {
+    notifications[i].read = true;
+  }
+  saveNotifications();
+  renderNotifications();
+  showToast('✓ Все уведомления прочитаны');
+}
+
+function clearAllNotifs() {
+  notifications = [];
+  saveNotifications();
+  renderNotifications();
+  showToast('🗑 Уведомления очищены');
+}
+
+// Called after order is sent
+function addOrderNotification(items, total) {
+  addNotification(
+    'orders',
+    'Заказ отправлен',
+    'Товары: ' + items + '. Сумма: ' + total + '. Ожидайте подтверждения менеджера.'
+  );
+}
+
+// ═══════════════════════════════════════════════
+
+function init(){
+  var kl=document.getElementById('logo-kraken');
+  if(kl) kl.src='img/kraken.png';
+
+  renderAllProducts();
+  switchCat('pubg');
+  switchMethod('id');
+  switchBattleMode('solo');
+  updateProfileStatus();
+  applyTranslations();
+  updateSettingsSummary();
+  switchTg('stars');
+  renderCart();
+  updateBadges();
+  buildDots();
+  resetSlideTimer();
+  updateOrbColors(0);
+
+  var checkoutBtn = document.getElementById('checkout-btn');
+  if (checkoutBtn) checkoutBtn.addEventListener('click', checkout);
+
+  var confirmBtn = document.getElementById('confirm-payment-btn');
+  if (confirmBtn) confirmBtn.addEventListener('click', confirmPayment);
+
+  loadNotifications();
+
+  if(window.Telegram&&window.Telegram.WebApp){
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+  }
+
+  telegramAuth();
+}
+init();
+</script>
+</body>
+</html>
