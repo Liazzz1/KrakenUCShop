@@ -351,7 +351,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   <div class="topbar">
     <div class="logo">
       <div class="logo-img"><img id="logo-kraken" src="" alt=""/></div>
-      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v2.2</span></div>
+      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v2.3</span></div>
     </div>
     <div class="notif" onclick="goTo('notifications')" style="cursor:pointer;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -2092,13 +2092,13 @@ function closeModal(e) {
 
 // ═══ NOTIFICATION SYSTEM ═════════════════════
 var NOTIF_ICONS = {
-  orders:   '📦',
-  bonus:    '🎁',
-  referral: '👥',
-  rating:   '🏆',
-  vip:      '👑',
-  promo:    '🔥',
-  news:     '📢'
+  orders:   '\uD83D\uDCE6',
+  bonus:    '\uD83C\uDF81',
+  referral: '\uD83D\uDC65',
+  rating:   '\uD83C\uDFC6',
+  vip:      '\uD83D\uDC51',
+  promo:    '\uD83D\uDD25',
+  news:     '\uD83D\uDCE2'
 };
 
 var notifications = [];
@@ -2216,75 +2216,99 @@ function setNotifFilter(filter) {
 }
 
 function renderNotifications() {
-  var list = document.getElementById('notif-list');
-  if (!list) return;
+  try {
+    var list = document.getElementById('notif-list');
+    if (!list) return;
 
-  var filtered = notifications.filter(function(n) {
-    return notifFilter === 'all' || n.type === notifFilter;
-  });
-
-  if (filtered.length === 0) {
-    list.innerHTML = '';
-    var empty = document.createElement('div');
-    empty.className = 'notif-empty';
-    empty.innerHTML = '<div class="notif-empty-icon">🔔</div><div class="notif-empty-text">Уведомлений нет</div>';
-    list.appendChild(empty);
-    return;
-  }
-
-  list.innerHTML = '';
-  for (var i=0; i<filtered.length; i++) {
-    var n = filtered[i];
-    var card = document.createElement('div');
-    card.className = 'ncard' + (n.read ? '' : ' unread');
-    card.setAttribute('data-id', n.id);
-
-    var icon = document.createElement('div');
-    icon.className = 'ncard-icon';
-    icon.textContent = NOTIF_ICONS[n.type] || '🔔';
-
-    var body = document.createElement('div');
-    body.className = 'ncard-body';
-
-    var title = document.createElement('div');
-    title.className = 'ncard-title';
-    title.textContent = n.title;
-
-    var text = document.createElement('div');
-    text.className = 'ncard-text';
-    text.textContent = n.text;
-
-    var meta = document.createElement('div');
-    meta.className = 'ncard-meta';
-
-    var time = document.createElement('div');
-    time.className = 'ncard-time';
-    time.textContent = formatNotifTime(n.time);
-
-    meta.appendChild(time);
-
-    if (!n.read) {
-      var dot = document.createElement('div');
-      dot.className = 'ncard-dot';
-      meta.appendChild(dot);
+    // Build filtered array with plain loop
+    var filtered = [];
+    for (var i=0; i<notifications.length; i++) {
+      var n = notifications[i];
+      if (notifFilter === 'all' || n.type === notifFilter) {
+        filtered.push(n);
+      }
     }
 
-    body.appendChild(title);
-    body.appendChild(text);
-    body.appendChild(meta);
-    card.appendChild(icon);
-    card.appendChild(body);
+    list.innerHTML = '';
 
-    (function(notifId) {
-      card.addEventListener('click', function() {
-        markRead(notifId);
-      });
-    })(n.id);
+    if (filtered.length === 0) {
+      var empty = document.createElement('div');
+      empty.className = 'notif-empty';
+      var eIcon = document.createElement('div');
+      eIcon.className = 'notif-empty-icon';
+      eIcon.textContent = '\uD83D\uDD14';
+      var eText = document.createElement('div');
+      eText.className = 'notif-empty-text';
+      eText.textContent = 'Уведомлений нет';
+      empty.appendChild(eIcon);
+      empty.appendChild(eText);
+      list.appendChild(empty);
+      updateNotifBadge();
+      return;
+    }
 
-    list.appendChild(card);
+    for (var j=0; j<filtered.length; j++) {
+      var notif = filtered[j];
+
+      var card = document.createElement('div');
+      card.className = notif.read ? 'ncard' : 'ncard unread';
+      card.setAttribute('data-id', notif.id);
+
+      var iconDiv = document.createElement('div');
+      iconDiv.className = 'ncard-icon';
+      var iconText = NOTIF_ICONS[notif.type];
+      if (!iconText) iconText = '!';
+      iconDiv.textContent = iconText;
+
+      var bodyDiv = document.createElement('div');
+      bodyDiv.className = 'ncard-body';
+
+      var titleDiv = document.createElement('div');
+      titleDiv.className = 'ncard-title';
+      titleDiv.textContent = notif.title || '';
+
+      var textDiv = document.createElement('div');
+      textDiv.className = 'ncard-text';
+      textDiv.textContent = notif.text || '';
+
+      var metaDiv = document.createElement('div');
+      metaDiv.className = 'ncard-meta';
+
+      var timeDiv = document.createElement('div');
+      timeDiv.className = 'ncard-time';
+      try {
+        timeDiv.textContent = formatNotifTime(notif.time);
+      } catch(te) {
+        timeDiv.textContent = '';
+      }
+      metaDiv.appendChild(timeDiv);
+
+      if (!notif.read) {
+        var dot = document.createElement('div');
+        dot.className = 'ncard-dot';
+        metaDiv.appendChild(dot);
+      }
+
+      bodyDiv.appendChild(titleDiv);
+      bodyDiv.appendChild(textDiv);
+      bodyDiv.appendChild(metaDiv);
+      card.appendChild(iconDiv);
+      card.appendChild(bodyDiv);
+
+      (function(nid) {
+        card.addEventListener('click', function() { markRead(nid); });
+      })(notif.id);
+
+      list.appendChild(card);
+    }
+
+    updateNotifBadge();
+  } catch(e) {
+    var list2 = document.getElementById('notif-list');
+    if (list2) {
+      list2.innerHTML = '<div style="padding:20px;color:#666;text-align:center;">Ошибка загрузки: ' + e.message + '</div>';
+    }
   }
-
-  updateNotifBadge();
 }
 
 function markRead(id) {
