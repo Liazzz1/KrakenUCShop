@@ -351,7 +351,7 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   <div class="topbar">
     <div class="logo">
       <div class="logo-img"><img id="logo-kraken" src="" alt=""/></div>
-      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v2.4</span></div>
+      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v2.7</span></div>
     </div>
     <div class="notif" id="notif-btn-home" style="cursor:pointer;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -665,9 +665,11 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
       <div class="otab" data-tr="otab3">Выполнен</div>
       <div class="otab" data-tr="otab4">Отменён</div>
     </div>
-    <div class="empty">
-      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <p>Заказов пока нет</p>
+    <div id="orders-wrap">
+      <div class="empty">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <p>Заказов пока нет</p>
+      </div>
     </div>
   </div>
   <div class="bnav">
@@ -1015,8 +1017,6 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   </div>
 </div>
 
-</div>
-
 <!-- ══════════════ NOTIFICATIONS ══════════════ -->
 <div class="screen" id="sc-notifications">
   <div class="topbar">
@@ -1053,6 +1053,8 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
     <div class="ni" onclick="goTo('orders')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Заказы</span></div>
     <div class="ni" onclick="goTo('profile')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span></div>
   </div>
+</div>
+
 </div>
 
 <div id="toast"></div>
@@ -1589,45 +1591,107 @@ function confirmPayment() {
   var discountedTotal = total;
   if (activePromoDisc > 0) { discountedTotal = total - Math.round(total * activePromoDisc / 100); }
 
-  var itemLines = [];
-  for (var j=0; j<cart.length; j++) {
-    itemLines.push(cart[j].name + ' x' + cart[j].qty + ' = ' + fmtPrice(cart[j].price * cart[j].qty));
-  }
-  var itemsText = itemLines.join('\n');
-
-  var username = 'Неизвестно';
-  var tgId = '-';
-  if (currentUser) {
-    username = currentUser.username ? ('@' + currentUser.username) : (currentUser.first_name || 'Неизвестно');
-    tgId = currentUser.telegram_id || '-';
-  }
-
   var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
   var method = null;
   for (var k=0; k<methods.length; k++) {
     if (methods[k].id === selectedPayMethod) { method = methods[k]; break; }
   }
+
+  // Prepare order payload
+  var orderItems = [];
+  for (var j=0; j<cart.length; j++) {
+    orderItems.push({
+      name:  cart[j].name,
+      qty:   cart[j].qty,
+      price: cart[j].price
+    });
+  }
+
+  var payload = {
+    items:          orderItems,
+    recipient_id:   recvId,
+    payment_method: selectedPayMethod || 'unknown',
+    currency:       currentCurr,
+    total_uah:      discountedTotal,
+    total_display:  fmtPrice(discountedTotal),
+    promo_code:     activePromo || '',
+    discount_pct:   activePromoDisc || 0
+  };
+
+  // Disable confirm button to prevent double-tap
+  var confirmBtn = document.getElementById('confirm-payment-btn');
+  if (confirmBtn) {
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Отправляем...';
+  }
+
+  if (accessToken) {
+    // Send to backend
+    fetch(API_URL + '/api/orders/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(function(resp) {
+      if (!resp.ok) { throw new Error('HTTP ' + resp.status); }
+      return resp.json();
+    })
+    .then(function(data) {
+      // Success — order saved and manager notified
+      finishOrder(data.id);
+    })
+    .catch(function(err) {
+      // Fallback: open Telegram chat manually
+      console.warn('Order API failed, falling back to Telegram link:', err.message);
+      sendOrderViaTelegram(payload, method);
+    });
+  } else {
+    // Not authenticated — fallback to Telegram link
+    sendOrderViaTelegram(payload, method);
+  }
+}
+
+function sendOrderViaTelegram(payload, method) {
   var methodName = method ? method.name : '-';
-
-  var lines = [];
-  lines.push('NOVYY ZAKAZ');
-  lines.push('');
-  lines.push('Polzovatel: ' + username + ' (ID: ' + tgId + ')');
-  lines.push('Igrovoy ID: ' + recvId);
-  lines.push('Tovary:');
-  lines.push(itemsText);
-  lines.push('Summa: ' + fmtPrice(discountedTotal));
-  lines.push('Oplata: ' + methodName);
-  var msg = lines.join('\n');
-
-  var tgUrl = 'https://t.me/KrAkeNn1n?text=' + encodeURIComponent(msg);
+  var itemLines = [];
+  for (var i=0; i<payload.items.length; i++) {
+    var it = payload.items[i];
+    itemLines.push(it.name + ' x' + it.qty + ' = ' + fmtPrice(it.price * it.qty));
+  }
+  var lines = [
+    'NOVYY ZAKAZ',
+    '',
+    'Igrovoy ID: ' + payload.recipient_id,
+    'Tovary:',
+    itemLines.join('\n'),
+    'Summa: ' + payload.total_display,
+    'Oplata: ' + methodName
+  ];
+  var tgUrl = 'https://t.me/KrAkeNn1n?text=' + encodeURIComponent(lines.join('\n'));
   window.open(tgUrl, '_blank');
+  finishOrder(null);
+}
 
+function finishOrder(orderId) {
+  // Add notification
+  addNotification('orders', 'Заказ отправлен', 'Ваш заказ принят и передан менеджеру. Ожидайте подтверждения.');
+
+  // Clear cart
   cart = [];
   activePromo = null;
   activePromoDisc = 0;
   updateBadges();
-  addOrderNotification(itemsText.replace(/\n/g, ', '), fmtPrice(discountedTotal));
+
+  // Re-enable button
+  var confirmBtn = document.getElementById('confirm-payment-btn');
+  if (confirmBtn) {
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = '\u2705 Я оплатил — отправить заказ';
+  }
+
   goTo('order-success');
 }
 
@@ -1642,6 +1706,7 @@ function goTo(name){
   }
   if (name === 'cart') { renderCart(); }
   if (name === 'notifications') { renderNotifications(); }
+  if (name === 'orders') { loadOrders(); }
 }
 
 function switchCat(cat){
@@ -2348,6 +2413,82 @@ function addOrderNotification(items, total) {
 }
 
 // ═══════════════════════════════════════════════
+
+// ═══ ORDERS SCREEN ═══════════════════════════
+var ORDER_STATUS_LABELS = {
+  pending:    { text: 'Принят',       color: '#f59e0b' },
+  processing: { text: 'В обработке',  color: '#6366f1' },
+  completed:  { text: 'Выполнен',     color: '#22c55e' },
+  cancelled:  { text: 'Отменён',      color: '#ef4444' },
+  refunded:   { text: 'Возврат',      color: '#8b5cf6' }
+};
+
+function loadOrders() {
+  var wrap = document.getElementById('orders-wrap');
+  if (!wrap) return;
+
+  if (!accessToken) {
+    wrap.innerHTML = '<div class="empty"><p>Войдите чтобы видеть заказы</p></div>';
+    return;
+  }
+
+  wrap.innerHTML = '<div class="empty"><p>Загрузка...</p></div>';
+
+  fetch(API_URL + '/api/orders/', {
+    headers: { 'Authorization': 'Bearer ' + accessToken }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(orders) {
+    renderOrders(orders, wrap);
+  })
+  .catch(function() {
+    wrap.innerHTML = '<div class="empty"><p>Ошибка загрузки заказов</p></div>';
+  });
+}
+
+function renderOrders(orders, wrap) {
+  if (!orders || orders.length === 0) {
+    wrap.innerHTML = '<div class="empty"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p>Заказов пока нет</p></div>';
+    return;
+  }
+
+  wrap.innerHTML = '';
+  for (var i=0; i<orders.length; i++) {
+    var o = orders[i];
+    var st = ORDER_STATUS_LABELS[o.status] || { text: o.status, color: '#999' };
+
+    var d = new Date(o.created_at);
+    var dateStr = d.getDate() + '.' + (d.getMonth()+1) + '.' + d.getFullYear()
+                + ' ' + d.getHours() + ':' + (d.getMinutes()<10?'0':'') + d.getMinutes();
+
+    var itemNames = [];
+    for (var j=0; j<o.items.length; j++) {
+      itemNames.push(o.items[j].name + ' x' + o.items[j].qty);
+    }
+
+    var card = document.createElement('div');
+    card.className = 'ocard' + (o.status==='processing' ? ' proc' : '');
+    card.innerHTML =
+      '<div class="ohdr">' +
+        '<div class="oid">&#128203; Заказ #' + o.id + '</div>' +
+        '<span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:' + st.color + '22;color:' + st.color + ';border:1px solid ' + st.color + '55">' + st.text + '</span>' +
+      '</div>' +
+      '<div class="oitem">' +
+        '<div class="oiimg"><img src="img/uc.png" alt=""/></div>' +
+        '<div>' +
+          '<div class="oiname">' + itemNames.join(', ') + '</div>' +
+          '<div class="oimeta">&#127918; ' + (o.recipient_id || '—') + '</div>' +
+        '</div>' +
+        '<div class="oiprice">' +
+          '<div class="p">' + (o.total_display || '') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ofoot"><span>&#128197; ' + dateStr + '</span><span style="color:' + st.color + '">' + st.text + '</span></div>';
+
+    wrap.appendChild(card);
+  }
+}
+// ══════════════════════════════════════════════
 
 function init(){
   var kl=document.getElementById('logo-kraken');
