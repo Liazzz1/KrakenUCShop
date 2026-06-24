@@ -15,32 +15,9 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
   --border:rgba(255,255,255,0.06);--border-r:rgba(224,32,32,0.45);
   --text2:#666;--text3:#2a2a2a;--green:#22c55e;--orange:#f59e0b;--blue:#6366f1;--nav-h:64px;
 }
-#app::before{
-  content:'';position:fixed;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse 80% 40% at 50% -10%, rgba(224,32,32,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 30% at 100% 60%, rgba(180,10,10,0.1) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 25% at 0% 80%, rgba(99,102,241,0.07) 0%, transparent 50%);
-  pointer-events:none;
-}
-#app::after{
-  content:'';position:fixed;inset:0;z-index:0;
-  background-image:radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
-  background-size:28px 28px;
-  pointer-events:none;
-}
 .screen{position:relative;z-index:1;}
-.scan-lines{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);
-}
 @keyframes rotateBg{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes floatOrb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-15px) scale(1.05)}66%{transform:translate(-10px,10px) scale(0.97)}}
-.bg-orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
-.bg-orb1{width:320px;height:320px;top:-100px;right:-80px;animation:floatOrb 8s ease-in-out infinite;}
-.bg-orb2{width:280px;height:280px;bottom:-60px;left:-60px;animation:floatOrb 11s ease-in-out infinite reverse;}
-.bg-orb3{width:200px;height:200px;top:40%;left:50%;transform:translateX(-50%);animation:floatOrb 14s ease-in-out infinite 2s;}
-.orb-layer{position:absolute;inset:0;border-radius:50%;transition:opacity 0.9s ease;}
 .orb-red{background:radial-gradient(circle,rgba(224,32,32,1) 0%,transparent 70%);}
 .orb-indigo{background:radial-gradient(circle,rgba(99,102,241,1) 0%,transparent 70%);}
 .orb-purple{background:radial-gradient(circle,rgba(139,92,246,1) 0%,transparent 70%);}
@@ -330,28 +307,13 @@ body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Se
 </style>
 </head>
 <body>
-<div class="bg-orb bg-orb1">
-  <div class="orb-layer orb-red" id="orb1-red" style="opacity:.18"></div>
-  <div class="orb-layer orb-indigo" id="orb1-indigo" style="opacity:0"></div>
-  <div class="orb-layer orb-purple" id="orb1-purple" style="opacity:0"></div>
-</div>
-<div class="bg-orb bg-orb2">
-  <div class="orb-layer orb-red" id="orb2-red" style="opacity:.12"></div>
-  <div class="orb-layer orb-indigo" id="orb2-indigo" style="opacity:0"></div>
-  <div class="orb-layer orb-purple" id="orb2-purple" style="opacity:0"></div>
-</div>
-<div class="bg-orb bg-orb3">
-  <div class="orb-layer orb-red" id="orb3-red" style="opacity:.06"></div>
-  <div class="orb-layer orb-indigo" id="orb3-indigo" style="opacity:0"></div>
-  <div class="orb-layer orb-purple" id="orb3-purple" style="opacity:0"></div>
-</div><div class="scan-lines"></div>
 <div id="app">
 
 <div class="screen active" id="sc-home">
   <div class="topbar">
     <div class="logo">
       <div class="logo-img"><img id="logo-kraken" src="" alt=""/></div>
-      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v3.1</span></div>
+      <div class="logo-text"><b>KRAKEN</b><s>SHOP</s><span style="font-size:7px;color:#333;letter-spacing:1px;display:block;margin-top:1px;">v3.2</span></div>
     </div>
     <div class="notif" id="notif-btn-home" style="cursor:pointer;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
