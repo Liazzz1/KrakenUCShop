@@ -1351,22 +1351,35 @@ function switchMethod(m) {
   });
 }
 
-function cartHasPubg() {
-  return cart.some(function(i){ return i.name.indexOf('Stars') === -1 && i.name.indexOf('Premium') === -1; });
+function cartHasId() {
+  return cart.some(function(i){ return i.name.indexOf('По ID:') !== -1; });
+}
+function cartHasLogin() {
+  return cart.some(function(i){ return i.name.indexOf('По входу') !== -1; });
 }
 function cartHasTg() {
   return cart.some(function(i){ return i.name.indexOf('Stars') !== -1 || i.name.indexOf('Premium') !== -1; });
+}
+function cartHasPubg() {
+  return cartHasId() || cartHasLogin();
 }
 
 function updateRecvFields() {
   var wrap = document.getElementById('recv-fields');
   if (!wrap) return;
-  var hasPubg = cartHasPubg();
-  var hasTg = cartHasTg();
+  var hasId    = cartHasId();
+  var hasLogin = cartHasLogin();
+  var hasTg    = cartHasTg();
   var html = '';
-  if (hasPubg) {
+  if (hasId) {
     html += '<div class="iblock"><div class="ilbl">&#128203; PUBG MOBILE ID</div>' +
       '<input class="ifield" id="recv-pubg" type="tel" inputmode="numeric" placeholder="Введите PUBG ID (начинается с 5, 9–15 цифр)"/></div>';
+  }
+  if (hasLogin) {
+    html += '<div class="iblock"><div class="ilbl">&#128203; НИК В ИГРЕ</div>' +
+      '<input class="ifield" id="recv-nick" type="text" placeholder="Введите ник персонажа"/></div>';
+    html += '<div class="iblock"><div class="ilbl">&#127757; СТРАНА</div>' +
+      '<input class="ifield" id="recv-country" type="text" placeholder="Укажите вашу страну"/></div>';
   }
   if (hasTg) {
     html += '<div class="iblock"><div class="ilbl">&#128203; TELEGRAM @USERNAME</div>' +
@@ -1376,15 +1389,30 @@ function updateRecvFields() {
 }
 
 function validateRecvFields() {
-  var hasPubg = cartHasPubg();
-  var hasTg = cartHasTg();
+  var hasId    = cartHasId();
+  var hasLogin = cartHasLogin();
+  var hasTg    = cartHasTg();
 
-  if (hasPubg) {
+  if (hasId) {
     var inp = document.getElementById('recv-pubg');
     var val = inp ? inp.value.trim() : '';
     if (!/^5\d{8,14}$/.test(val)) {
       if (inp) { inp.style.borderBottom = '2px solid var(--red)'; inp.focus(); setTimeout(function(){ inp.style.borderBottom=''; }, 2500); }
       showToast('PUBG ID: 9–15 цифр, начинается с 5');
+      return false;
+    }
+  }
+  if (hasLogin) {
+    var nick = document.getElementById('recv-nick');
+    if (!nick || !nick.value.trim()) {
+      if (nick) { nick.style.borderBottom = '2px solid var(--red)'; nick.focus(); setTimeout(function(){ nick.style.borderBottom=''; }, 2500); }
+      showToast('Введите ник в игре');
+      return false;
+    }
+    var country = document.getElementById('recv-country');
+    if (!country || !country.value.trim()) {
+      if (country) { country.style.borderBottom = '2px solid var(--red)'; country.focus(); setTimeout(function(){ country.style.borderBottom=''; }, 2500); }
+      showToast('Укажите страну');
       return false;
     }
   }
@@ -1402,10 +1430,14 @@ function validateRecvFields() {
 
 function getRecvId() {
   var parts = [];
-  var pubg = document.getElementById('recv-pubg');
-  var tg = document.getElementById('recv-tg');
-  if (pubg && pubg.value.trim()) parts.push('PUBG: ' + pubg.value.trim());
-  if (tg && tg.value.trim()) parts.push('TG: ' + tg.value.trim());
+  var pubg    = document.getElementById('recv-pubg');
+  var nick    = document.getElementById('recv-nick');
+  var country = document.getElementById('recv-country');
+  var tg      = document.getElementById('recv-tg');
+  if (pubg    && pubg.value.trim())    parts.push('PUBG ID: ' + pubg.value.trim());
+  if (nick    && nick.value.trim())    parts.push('Ник: ' + nick.value.trim());
+  if (country && country.value.trim()) parts.push('Страна: ' + country.value.trim());
+  if (tg      && tg.value.trim())      parts.push('TG: ' + tg.value.trim());
   return parts.join(' | ');
 }
 
