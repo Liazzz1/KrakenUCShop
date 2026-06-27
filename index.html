@@ -579,6 +579,41 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
   </div>
 </div>
 
+<div class="screen" id="sc-order-qr">
+  <div class="topbar">
+    <div class="logo"><img src="img/logo.png" alt="Kraken Shop" style="height:40px;object-fit:contain;"/></div>
+  </div>
+  <div class="scroll">
+    <div style="display:flex;flex-direction:column;align-items:center;padding:32px 24px;text-align:center;animation:fadeUp .4s ease;">
+      <div style="font-size:22px;font-weight:900;margin-bottom:6px;">Оплата в EUR</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6;">Отсканируйте QR-код банковским приложением или переведите вручную по реквизитам ниже.</div>
+      <div id="qr-img-wrap" style="background:#fff;border-radius:16px;padding:12px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;min-width:200px;min-height:200px;">
+        <div style="color:#333;font-size:13px;">Загрузка...</div>
+      </div>
+      <div style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:24px;text-align:left;">
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:2px;">Получатель</div>
+          <div style="font-size:14px;font-weight:700;" id="qr-beneficiary">—</div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:2px;">IBAN</div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:1px;word-break:break-all;" id="qr-iban">—</div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:2px;">Сумма</div>
+          <div style="font-size:16px;font-weight:900;color:var(--green);" id="qr-amount">—</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text2);margin-bottom:2px;">Назначение платежа</div>
+          <div style="font-size:14px;font-weight:700;" id="qr-reference">—</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:24px;">После оплаты нажмите кнопку ниже — менеджер проверит поступление.</div>
+      <button class="btn full ripple" id="qr-done-btn" onclick="finishAfterQR()" style="max-width:320px;">✅ Я оплатил — сообщить менеджеру</button>
+    </div>
+  </div>
+</div>
+
 <div class="screen" id="sc-order-success">
   <div class="topbar">
     <div class="logo"><img src="img/logo.png" alt="Kraken Shop" style="height:40px;object-fit:contain;"/></div>
@@ -1634,8 +1669,11 @@ function confirmPayment() {
       return resp.json();
     })
     .then(function(data) {
-      // Success — order saved and manager notified
-      finishOrder(data.id);
+      if (currentCurr === 'EUR') {
+        showQR(data.id);
+      } else {
+        finishOrder(data.id);
+      }
     })
     .catch(function(err) {
       // Fallback: open Telegram chat manually
@@ -1668,6 +1706,31 @@ function sendOrderViaTelegram(payload, method) {
   var tgUrl = 'https://t.me/KrAkeNn1n?text=' + encodeURIComponent(lines.join('\n'));
   window.open(tgUrl, '_blank');
   finishOrder(null);
+}
+
+function showQR(orderId) {
+  goTo('order-qr');
+  document.getElementById('qr-img-wrap').innerHTML = '<div style="color:#333;font-size:13px;">Загрузка...</div>';
+
+  fetch(API_URL + '/api/orders/' + orderId + '/qr/', {
+    headers: { 'Authorization': 'Bearer ' + accessToken }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    document.getElementById('qr-img-wrap').innerHTML = '<img src="' + d.qr + '" style="width:200px;height:200px;display:block;"/>';
+    document.getElementById('qr-beneficiary').textContent = d.beneficiary;
+    document.getElementById('qr-iban').textContent = d.iban;
+    document.getElementById('qr-amount').textContent = d.amount.replace('EUR', '') + ' EUR';
+    document.getElementById('qr-reference').textContent = d.reference;
+    document.getElementById('qr-done-btn').setAttribute('data-order-id', orderId);
+  })
+  .catch(function() {
+    document.getElementById('qr-img-wrap').innerHTML = '<div style="color:#e02020;font-size:13px;">Ошибка загрузки QR</div>';
+  });
+}
+
+function finishAfterQR() {
+  finishOrder(document.getElementById('qr-done-btn').getAttribute('data-order-id'));
 }
 
 function finishOrder(orderId) {
