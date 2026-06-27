@@ -1533,7 +1533,7 @@ function renderPaymentScreen() {
       infoDiv.appendChild(nameDiv);
       var detailDiv = document.createElement('div');
       detailDiv.className = 'pay-method-detail';
-      detailDiv.textContent = m.number || m.link || '';
+      detailDiv.textContent = m.number || '';
       infoDiv.appendChild(detailDiv);
 
       var checkDiv = document.createElement('div');
@@ -1589,10 +1589,13 @@ function selectPayMethod(id) {
   var payBtn = document.getElementById('open-payment-btn');
   if (!payBtn) { return; }
 
+  var confirmBtn2 = document.getElementById('confirm-payment-btn');
   if (method.link) {
-    payBtn.textContent = 'Открыть Revolut';
-    payBtn.onclick = function(){ window.open(method.link, '_blank'); };
+    payBtn.textContent = 'Продолжить →';
+    payBtn.onclick = function(){ confirmPayment(); };
+    if (confirmBtn2) confirmBtn2.style.display = 'none';
   } else {
+    if (confirmBtn2) confirmBtn2.style.display = '';
     payBtn.textContent = 'Скопировать номер карты';
     payBtn.onclick = function(){
       var cleanNumber = method.number.replace(/\s/g, '');
