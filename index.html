@@ -653,10 +653,10 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
       <div><div class="phdr-title" data-tr="orders-title">Мои заказы</div><div class="phdr-sub" data-tr="orders-sub">История и статус ваших покупок</div></div>
     </div>
     <div class="otabs">
-      <div class="otab on" data-tr="otab1">Все заказы</div>
-      <div class="otab" data-tr="otab2">В обработке</div>
-      <div class="otab" data-tr="otab3">Выполнен</div>
-      <div class="otab" data-tr="otab4">Отменён</div>
+      <div class="otab on" data-tr="otab1" onclick="filterOrders(null, this)">Все заказы</div>
+      <div class="otab" data-tr="otab2" onclick="filterOrders('processing', this)">В обработке</div>
+      <div class="otab" data-tr="otab3" onclick="filterOrders('completed', this)">Выполнен</div>
+      <div class="otab" data-tr="otab4" onclick="filterOrders('cancelled', this)">Отменён</div>
     </div>
     <div id="orders-wrap">
       <div class="empty">
@@ -2634,6 +2634,14 @@ var ORDER_STATUS_LABELS = {
   refunded:   { text: 'Возврат',      color: '#8b5cf6' }
 };
 
+function filterOrders(status, tab) {
+  document.querySelectorAll('.otab').forEach(function(el){ el.classList.remove('on'); });
+  tab.classList.add('on');
+  var orders = window._allOrders || [];
+  var filtered = status ? orders.filter(function(o){ return o.status === status; }) : orders;
+  renderOrders(filtered, document.getElementById('orders-wrap'));
+}
+
 function loadOrders() {
   var wrap = document.getElementById('orders-wrap');
   if (!wrap) return;
@@ -2650,6 +2658,7 @@ function loadOrders() {
   })
   .then(function(r) { return r.json(); })
   .then(function(orders) {
+    window._allOrders = orders;
     renderOrders(orders, wrap);
   })
   .catch(function() {
