@@ -414,7 +414,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
         <div class="mtab" id="pt-login" onclick="switchMethod('login')" data-tr="pubg-tab-login">По входу</div>
         <div class="mtab" id="pt-rp" onclick="switchMethod('rp')" data-tr="pubg-tab-rp">Royal Pass</div>
         <div class="mtab" id="pt-pop" onclick="switchMethod('pop')" data-tr="pubg-tab-pop">Популярность</div>
-        <div class="mtab" id="pt-clan" onclick="switchMethod('clan')" data-tr="pubg-tab-clan">Кланы</div>
+        <div class="mtab" id="pt-prime" onclick="switchMethod('prime')" data-tr="pubg-tab-prime">Prime</div>
       </div></div>
       <div id="pm-id">
         <div class="pack-hdr"><span class="pack-badge lite">LITE PACKS</span></div>
@@ -464,12 +464,16 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
         <div class="plist" id="list-pop-big"></div>
         <div class="method-note">&#128336; Пополнение в течение 20–40 минут по QR-коду</div>
       </div>
-      <div id="pm-clan" style="display:none">
+      <div id="pm-prime" style="display:none">
         <div class="phdr" style="padding-top:12px;">
           <div class="phdr-icon"><img src="img/uc.png" alt=""/></div>
-          <div><div class="phdr-title">Кланы</div><div class="phdr-sub">&#128293; Ограниченное количество</div></div>
+          <div><div class="phdr-title">Prime &amp; Prime+</div><div class="phdr-sub">Доставка до 5 минут по ID</div></div>
         </div>
-        <div class="plist" id="list-clan"></div>
+        <div class="pack-hdr"><span class="pack-badge lite">PRIME — ОБЫЧНЫЕ</span></div>
+        <div class="plist" id="list-prime"></div>
+        <div class="pack-hdr"><span class="pack-badge elite">PRIME+ — ЭЛИТНЫЕ</span></div>
+        <div class="plist" id="list-prime-plus"></div>
+        <div class="method-note">&#9889; Подписки можно совмещать, например 1+6 месяцев</div>
       </div>
     </div>
     <div id="cat-tg" style="display:none">
@@ -1162,11 +1166,17 @@ var POP_BIG = [
   {name:'500.000 монет',   price:2720, tag:'Пополнение 20–40 мин', img:'img/uc.png'},
   {name:'1.000.000 монет', price:5180, tag:'Пополнение 20–40 мин', img:'img/uc.png'}
 ];
-var CLANS = [
-  {name:'Клан 10 уровня', price:880, tag:'Со сменой владельца'},
-  {name:'Клан 9 уровня',  price:800, tag:'Со сменой владельца'},
-  {name:'Клан 8 уровня',  price:600, tag:'Со сменой владельца'},
-  {name:'Клан 7 уровня',  price:450, tag:'Со сменой владельца'}
+var PRIME = [
+  {name:'PRIME 1 мес.',  price:50,  tag:'Доставка до 5 минут по ID', img:'img/uc.png'},
+  {name:'PRIME 3 мес.',  price:140, tag:'Доставка до 5 минут по ID', img:'img/uc.png'},
+  {name:'PRIME 6 мес.',  price:270, tag:'Доставка до 5 минут по ID', img:'img/uc.png'},
+  {name:'PRIME 12 мес.', price:530, tag:'Доставка до 5 минут по ID', img:'img/uc.png'}
+];
+var PRIME_PLUS = [
+  {name:'PRIME+ 1 мес.',  price:420,  tag:'Доставка до 5 минут по ID', img:'img/uc.png'},
+  {name:'PRIME+ 3 мес.',  price:1260, tag:'Доставка до 5 минут по ID', img:'img/uc.png'},
+  {name:'PRIME+ 6 мес.',  price:2520, tag:'Доставка до 5 минут по ID', img:'img/uc.png'},
+  {name:'PRIME+ 12 мес.', price:4200, tag:'Доставка до 5 минут по ID', img:'img/uc.png'}
 ];
 var STARS_SMALL = [
   {name:'13 Stars',  price:15,  eur:0.50, pln:2},
@@ -1333,7 +1343,7 @@ function renderPackList(id, items, prefix, tagDefault) {
 }
 
 function switchMethod(m) {
-  ['id','login','rp','pop','clan'].forEach(function(k){
+  ['id','login','rp','pop','prime'].forEach(function(k){
     var el = document.getElementById('pm-' + k);
     var tab = document.getElementById('pt-' + k);
     if (el) el.style.display = k===m ? 'block' : 'none';
@@ -1953,7 +1963,8 @@ function renderAllProducts() {
   renderPackList('list-pop-small', POP_SMALL,  'Популярность', 'Пополнение 20–40 мин');
   renderPackList('list-pop-med',   POP_MED,    'Популярность', 'Пополнение 20–40 мин');
   renderPackList('list-pop-big',   POP_BIG,    'Популярность', 'Пополнение 20–40 мин');
-  renderPackList('list-clan', CLANS, 'Клан', 'Со сменой владельца');
+  renderPackList('list-prime',      PRIME,      'Prime',  'Доставка до 5 минут по ID');
+  renderPackList('list-prime-plus', PRIME_PLUS, 'Prime+', 'Доставка до 5 минут по ID');
   renderPackList('stars-small', STARS_SMALL, 'Stars', 'Зачисление 2–3 минуты');
   renderPackList('stars-med',   STARS_MED,   'Stars', 'Зачисление 2–3 минуты');
   renderPackList('stars-big',   STARS_BIG,   'Stars', 'Зачисление 2–3 минуты');
