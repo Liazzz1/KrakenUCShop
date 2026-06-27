@@ -494,11 +494,11 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
         <div class="plist" id="stars-med"></div>
         <div class="pack-hdr"><span class="pack-badge elite" data-tr="badge-big">КРУПНЫЕ</span></div>
         <div class="plist" id="stars-big"></div>
-        <div class="method-note">&#9989; После оплаты звёзды поступят на аккаунт в течение 2–3 минут. Для получения обязательно укажите @тег. Паки можно объединять.</div>
+        <div class="method-note">&#9989; После оплаты звёзды поступят на аккаунт в течение 5–10 минут. Для получения обязательно укажите @тег. Паки можно объединять.</div>
       </div>
       <div id="tg-prem-wrap" style="display:none">
         <div class="plist" id="prem-list"></div>
-        <div class="method-note">&#9889; Активация по ссылке — доставка до 5 минут</div>
+        <div class="method-note">&#9889; Активация по ссылке · 5–10 мин — доставка до 5 минут</div>
       </div>
     </div>
   </div>
@@ -1205,9 +1205,9 @@ var STARS_BIG = [
   {name:'1500 Stars', price:1310, eur:40, pln:190}
 ];
 var PREM = [
-  {name:'Premium 3 Месяца',  price:660,  eur:20, pln:100, tag:'Активация по ссылке'},
-  {name:'Premium 6 Месяцев', price:895,  eur:30, pln:110, tag:'Активация по ссылке'},
-  {name:'Premium 12 Месяцев',price:1620, eur:50, pln:190, tag:'Активация по ссылке'}
+  {name:'Premium 3 Месяца',  price:660,  eur:20, pln:100, tag:'Активация по ссылке · 5–10 мин'},
+  {name:'Premium 6 Месяцев', price:895,  eur:30, pln:110, tag:'Активация по ссылке · 5–10 мин'},
+  {name:'Premium 12 Месяцев',price:1620, eur:50, pln:190, tag:'Активация по ссылке · 5–10 мин'}
 ];
 
 var cart = [];
@@ -1965,10 +1965,10 @@ function renderAllProducts() {
   renderPackList('list-pop-big',   POP_BIG,    'Популярность', 'Пополнение 20–40 мин');
   renderPackList('list-prime',      PRIME,      'Prime',  'Доставка до 5 минут по ID');
   renderPackList('list-prime-plus', PRIME_PLUS, 'Prime+', 'Доставка до 5 минут по ID');
-  renderPackList('stars-small', STARS_SMALL, 'Stars', 'Зачисление 2–3 минуты');
-  renderPackList('stars-med',   STARS_MED,   'Stars', 'Зачисление 2–3 минуты');
-  renderPackList('stars-big',   STARS_BIG,   'Stars', 'Зачисление 2–3 минуты');
-  renderPackList('prem-list',   PREM,        'Telegram', 'Активация по ссылке');
+  renderPackList('stars-small', STARS_SMALL, 'Stars', 'Зачисление 5–10 минут');
+  renderPackList('stars-med',   STARS_MED,   'Stars', 'Зачисление 5–10 минут');
+  renderPackList('stars-big',   STARS_BIG,   'Stars', 'Зачисление 5–10 минут');
+  renderPackList('prem-list',   PREM,        'Telegram', 'Активация по ссылке · 5–10 мин');
 }
 
 var TR = {
