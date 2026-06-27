@@ -432,6 +432,13 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
         <div class="plist" id="list-login-medium"></div>
         <div class="pack-hdr"><span class="pack-badge elite">ELITE PACKS</span></div>
         <div class="plist" id="list-login-elite"></div>
+        <div class="method-note" style="margin-top:16px;border-color:rgba(99,102,241,.3);color:#a5b4fc;">&#127381; ПРАЙС ПО ВХОДУ + БОНУС</div>
+        <div class="pack-hdr"><span class="pack-badge lite">LITE PACKS</span></div>
+        <div class="plist" id="list-login-bonus-lite"></div>
+        <div class="pack-hdr"><span class="pack-badge medium">MEDIUM PACKS</span></div>
+        <div class="plist" id="list-login-bonus-medium"></div>
+        <div class="pack-hdr"><span class="pack-badge elite">ELITE PACKS</span></div>
+        <div class="plist" id="list-login-bonus-elite"></div>
         <div class="method-note">&#128737; Зачисление от 5 до 20 минут</div>
       </div>
       <div id="pm-rp" style="display:none">
@@ -1093,27 +1100,36 @@ var UC_ID = {
 };
 var UC_LOGIN = {
   lite: [
-    {name:'1800 UC',  price:930},
-    {name:'2300 UC',  price:1450},
+    {name:'1800 UC',  price:950},
     {name:'3850 UC',  price:1850},
-    {name:'4500 UC',  price:2300},
-    {name:'8100 UC',  price:3500},
-    {name:'9500 UC',  price:4350}
+    {name:'8100 UC',  price:3600}
   ],
   medium: [
-    {name:'16200 UC', price:6900},
-    {name:'18100 UC', price:8300},
-    {name:'24300 UC', price:10300},
-    {name:'26500 UC', price:12100},
-    {name:'32400 UC', price:13700},
-    {name:'35500 UC', price:15700}
+    {name:'24300 UC', price:12600},
+    {name:'32400 UC', price:16800},
+    {name:'40500 UC', price:21000}
   ],
   elite: [
-    {name:'40500 UC', price:17000},
-    {name:'43500 UC', price:19500},
-    {name:'52100 UC', price:24100},
-    {name:'81000 UC', price:34000},
-    {name:'86250 UC', price:39000}
+    {name:'48600 UC', price:25100},
+    {name:'56700 UC', price:29250},
+    {name:'64800 UC', price:33300}
+  ]
+};
+var UC_LOGIN_BONUS = {
+  lite: [
+    {name:'2300 UC',  price:1450},
+    {name:'4500 UC',  price:2500},
+    {name:'9500 UC',  price:4250}
+  ],
+  medium: [
+    {name:'18100 UC', price:10100},
+    {name:'26500 UC', price:15150},
+    {name:'35500 UC', price:20200}
+  ],
+  elite: [
+    {name:'43500 UC', price:25200},
+    {name:'52100 UC', price:30250},
+    {name:'86250 UC', price:50300}
   ]
 };
 var ROYAL_PASS = [
@@ -1926,9 +1942,12 @@ function renderAllProducts() {
   renderPackList('list-id-lite',    UC_ID.lite,   'По ID', 'Мгновенное зачисление');
   renderPackList('list-id-medium',  UC_ID.medium, 'По ID', 'Мгновенное зачисление');
   renderPackList('list-id-elite',   UC_ID.elite,  'По ID', 'Мгновенное зачисление');
-  renderPackList('list-login-lite',    UC_LOGIN.lite,   'По входу', 'Зачисление 5–20 мин');
-  renderPackList('list-login-medium',  UC_LOGIN.medium, 'По входу', 'Зачисление 5–20 мин');
-  renderPackList('list-login-elite',   UC_LOGIN.elite,  'По входу', 'Зачисление 5–20 мин');
+  renderPackList('list-login-lite',         UC_LOGIN.lite,        'По входу',        'Зачисление 5–20 мин');
+  renderPackList('list-login-medium',       UC_LOGIN.medium,      'По входу',        'Зачисление 5–20 мин');
+  renderPackList('list-login-elite',        UC_LOGIN.elite,       'По входу',        'Зачисление 5–20 мин');
+  renderPackList('list-login-bonus-lite',   UC_LOGIN_BONUS.lite,  'По входу+бонус',  'Зачисление 5–20 мин');
+  renderPackList('list-login-bonus-medium', UC_LOGIN_BONUS.medium,'По входу+бонус',  'Зачисление 5–20 мин');
+  renderPackList('list-login-bonus-elite',  UC_LOGIN_BONUS.elite, 'По входу+бонус',  'Зачисление 5–20 мин');
   renderPackList('list-rp',   ROYAL_PASS, 'Royal Pass', 'Мгновенное зачисление по ID');
   renderPackList('list-pop-items', POPULARITY, 'Популярность', 'Пополнение по QR-коду');
   renderPackList('list-pop-small', POP_SMALL,  'Популярность', 'Пополнение 20–40 мин');
