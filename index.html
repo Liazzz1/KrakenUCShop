@@ -511,10 +511,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
     </div>
     <div id="cart-wrap"></div>
     <div id="cart-form" style="display:none">
-      <div class="iblock">
-        <div class="ilbl">&#128203; <span data-tr="ilbl-recipient">ДАННЫЕ ПОЛУЧАТЕЛЯ</span> <span>&#9650;</span></div>
-        <input class="ifield" id="recv-id" data-tr="recv-placeholder" data-tr-attr="placeholder" placeholder="Введите ваш PUBG Mobile ID или Telegram @username"/>
-      </div>
+      <div id="recv-fields"></div>
       <div class="promo-block">
         <div class="promo-input-row">
           <div class="iblock" style="flex:1;margin:0;">
@@ -1328,6 +1325,64 @@ function switchMethod(m) {
   });
 }
 
+function cartHasPubg() {
+  return cart.some(function(i){ return i.name.indexOf('Stars') === -1 && i.name.indexOf('Premium') === -1; });
+}
+function cartHasTg() {
+  return cart.some(function(i){ return i.name.indexOf('Stars') !== -1 || i.name.indexOf('Premium') !== -1; });
+}
+
+function updateRecvFields() {
+  var wrap = document.getElementById('recv-fields');
+  if (!wrap) return;
+  var hasPubg = cartHasPubg();
+  var hasTg = cartHasTg();
+  var html = '';
+  if (hasPubg) {
+    html += '<div class="iblock"><div class="ilbl">&#128203; PUBG MOBILE ID</div>' +
+      '<input class="ifield" id="recv-pubg" type="tel" inputmode="numeric" placeholder="Введите PUBG ID (начинается с 5, 9–15 цифр)"/></div>';
+  }
+  if (hasTg) {
+    html += '<div class="iblock"><div class="ilbl">&#128203; TELEGRAM @USERNAME</div>' +
+      '<input class="ifield" id="recv-tg" type="text" placeholder="@username (латиница)"/></div>';
+  }
+  wrap.innerHTML = html;
+}
+
+function validateRecvFields() {
+  var hasPubg = cartHasPubg();
+  var hasTg = cartHasTg();
+
+  if (hasPubg) {
+    var inp = document.getElementById('recv-pubg');
+    var val = inp ? inp.value.trim() : '';
+    if (!/^5\d{8,14}$/.test(val)) {
+      if (inp) { inp.style.borderBottom = '2px solid var(--red)'; inp.focus(); setTimeout(function(){ inp.style.borderBottom=''; }, 2500); }
+      showToast('PUBG ID: 9–15 цифр, начинается с 5');
+      return false;
+    }
+  }
+  if (hasTg) {
+    var inp2 = document.getElementById('recv-tg');
+    var val2 = inp2 ? inp2.value.trim() : '';
+    if (!/^@[a-zA-Z][a-zA-Z0-9_]{4,}$/.test(val2)) {
+      if (inp2) { inp2.style.borderBottom = '2px solid var(--red)'; inp2.focus(); setTimeout(function(){ inp2.style.borderBottom=''; }, 2500); }
+      showToast('Telegram: @username на латинице');
+      return false;
+    }
+  }
+  return true;
+}
+
+function getRecvId() {
+  var parts = [];
+  var pubg = document.getElementById('recv-pubg');
+  var tg = document.getElementById('recv-tg');
+  if (pubg && pubg.value.trim()) parts.push('PUBG: ' + pubg.value.trim());
+  if (tg && tg.value.trim()) parts.push('TG: ' + tg.value.trim());
+  return parts.join(' | ');
+}
+
 function addCartBtn(btn) {
   var fixedPrices = {};
   if (btn.getAttribute('data-eur') != null) fixedPrices.EUR = parseFloat(btn.getAttribute('data-eur'));
@@ -1429,6 +1484,7 @@ function renderCart() {
     '</div>';
   }
   wrap.innerHTML=html;
+  updateRecvFields();
   document.getElementById('csum').textContent=fmtCartTotal(total);
   var promoRow = document.getElementById('promo-row');
   var promoSave = document.getElementById('promo-save');
@@ -1508,17 +1564,7 @@ async function loadPaymentConfig() {
 var selectedPayMethod = null;
 
 function checkout(){
-  var inp = document.getElementById('recv-id');
-  if (!inp.value.trim()) {
-    inp.style.borderBottom = '2px solid var(--red)';
-    inp.placeholder = currentLang==='ua' ? 'Введіть ID!' : 'Введите ID!';
-    inp.focus();
-    setTimeout(function(){
-      inp.style.borderBottom = '';
-      inp.placeholder = TR['recv-placeholder'][currentLang] || TR['recv-placeholder'].ru;
-    }, 2500);
-    return;
-  }
+  if (!validateRecvFields()) return;
   renderPaymentScreen();
   goTo('payment');
 }
@@ -1531,9 +1577,7 @@ function renderPaymentScreen() {
   if (activePromoDisc > 0) {
     discountedTotal = total - Math.round(total * activePromoDisc / 100 * 100) / 100;
   }
-  var recvId = '';
-  var recvInput = document.getElementById('recv-id');
-  if (recvInput) { recvId = recvInput.value; }
+  var recvId = getRecvId();
 
   var itemsParts = [];
   for (var j=0; j<cart.length; j++) {
@@ -1645,9 +1689,7 @@ function selectPayMethod(id) {
 }
 
 function confirmPayment() {
-  var recvId = '';
-  var recvInput = document.getElementById('recv-id');
-  if (recvInput) { recvId = recvInput.value; }
+  var recvId = getRecvId();
 
   var total = 0;
   for (var i=0; i<cart.length; i++) { total = total + getCartItemPrice(cart[i]) * cart[i].qty; }
