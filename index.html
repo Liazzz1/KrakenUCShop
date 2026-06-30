@@ -97,8 +97,8 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
 .csw-item{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;display:flex;flex-direction:column;}
 .csw-item:active{transform:scale(.97);}
 .csw-item.on{border-color:var(--red);box-shadow:0 0 16px var(--red-glow);}
-.csw-img{width:100%;height:84px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg3);}
-.csw-img img{width:100%;height:100%;object-fit:contain;transition:transform .3s;}
+.csw-img{width:100%;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg3);}
+.csw-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
 .csw-item.on .csw-img img{transform:scale(1.05);}
 .csw-lbl{padding:10px 12px 12px;display:flex;align-items:center;justify-content:space-between;}
 .csw-name{font-size:13px;font-weight:800;}
