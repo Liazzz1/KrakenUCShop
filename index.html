@@ -2487,25 +2487,7 @@ function loadNotifications() {
     if (stored) {
       notifications = JSON.parse(stored);
     } else {
-      // Demo notifications for first launch
-      notifications = [
-        {
-          id: 1,
-          type: 'news',
-          title: 'Добро пожаловать!',
-          text: 'Kraken UC Shop готов к работе. Выбирайте товары и оформляйте заказы.',
-          time: Date.now() - 60000,
-          read: false
-        },
-        {
-          id: 2,
-          type: 'promo',
-          title: 'Промокоды доступны',
-          text: 'Используйте KRAKEN5 или KRAKEN10 для получения скидки на заказ.',
-          time: Date.now() - 120000,
-          read: false
-        }
-      ];
+      notifications = [];
       saveNotifications();
     }
   } catch(e) {
