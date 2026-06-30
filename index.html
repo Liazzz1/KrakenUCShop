@@ -413,6 +413,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
         <div class="mtab on" id="pt-id" onclick="switchMethod('id')" data-tr="pubg-tab-id">По ID</div>
         <div class="mtab" id="pt-login" onclick="switchMethod('login')" data-tr="pubg-tab-login">По входу</div>
         <div class="mtab" id="pt-rp" onclick="switchMethod('rp')" data-tr="pubg-tab-rp">Royal Pass</div>
+        <div class="mtab" id="pt-bp" onclick="switchMethod('bp')" data-tr="pubg-tab-bp">Бонус пасс</div>
         <div class="mtab" id="pt-pop" onclick="switchMethod('pop')" data-tr="pubg-tab-pop">Популярность</div>
         <div class="mtab" id="pt-prime" onclick="switchMethod('prime')" data-tr="pubg-tab-prime">Prime</div>
       </div></div>
@@ -447,6 +448,14 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
           <div><div class="phdr-title">Royal Pass</div><div class="phdr-sub">Мгновенное зачисление по ID</div></div>
         </div>
         <div class="plist" id="list-rp"></div>
+        <div class="method-note">&#9889; Зачисление мгновенно по Player ID</div>
+      </div>
+      <div id="pm-bp" style="display:none">
+        <div class="phdr" style="padding-top:12px;">
+          <div class="phdr-icon"><img src="img/bonuspass.PNG" alt=""/></div>
+          <div><div class="phdr-title">Бонус пасс</div><div class="phdr-sub">Мгновенное зачисление по ID</div></div>
+        </div>
+        <div class="plist" id="list-bp"></div>
         <div class="method-note">&#9889; Зачисление мгновенно по Player ID</div>
       </div>
       <div id="pm-pop" style="display:none">
@@ -1141,6 +1150,11 @@ var ROYAL_PASS = [
   {name:'Elite Pass 50-100lvl',   price:475,  tag:'Мгновенное зачисление по ID', img:'img/royalpass.png'},
   {name:'Elite Pass Plus 1-100lvl', price:1180, tag:'Мгновенное зачисление по ID', img:'img/royalpass.png'}
 ];
+var BONUS_PASS = [
+  {name:'475 UC',  price:360, eur:10, pln:36, tag:'Мгновенное зачисление по ID', img:'img/bonuspass.PNG'},
+  {name:'900 UC',  price:630, eur:16, pln:62, tag:'Мгновенное зачисление по ID', img:'img/bonuspass.PNG'},
+  {name:'1500 UC', price:980, eur:23, pln:95, tag:'Мгновенное зачисление по ID', img:'img/bonuspass.PNG'}
+];
 var POPULARITY = [
   {name:'Карточки на 50к', price2:435, price:380, tag:'Пополнение по ID', img:'img/uc.png'},
   {name:'Вертолёт',        price2:1035, price:855, tag:'Пополнение по ID', img:'img/uc.png'}
@@ -1343,7 +1357,7 @@ function renderPackList(id, items, prefix, tagDefault) {
 }
 
 function switchMethod(m) {
-  ['id','login','rp','pop','prime'].forEach(function(k){
+  ['id','login','rp','bp','pop','prime'].forEach(function(k){
     var el = document.getElementById('pm-' + k);
     var tab = document.getElementById('pt-' + k);
     if (el) el.style.display = k===m ? 'block' : 'none';
@@ -1991,6 +2005,7 @@ function renderAllProducts() {
   renderPackList('list-login-bonus-medium', UC_LOGIN_BONUS.medium,'По входу+бонус',  'Зачисление 10–20 мин по QR-коду');
   renderPackList('list-login-bonus-elite',  UC_LOGIN_BONUS.elite, 'По входу+бонус',  'Зачисление 10–20 мин по QR-коду');
   renderPackList('list-rp',   ROYAL_PASS, 'Royal Pass', 'Мгновенное зачисление по ID');
+  renderPackList('list-bp',   BONUS_PASS, 'Бонус пасс', 'Мгновенное зачисление по ID');
   renderPackList('list-pop-items', POPULARITY, 'Популярность', 'Пополнение по ID');
   renderPackList('list-pop-small', POP_SMALL,  'Популярность', 'Пополнение 20–40 мин');
   renderPackList('list-pop-med',   POP_MED,    'Популярность', 'Пополнение 20–40 мин');
@@ -2065,6 +2080,7 @@ var TR = {
   'pubg-tab-id':         {ru:'По ID', ua:'За ID'},
   'pubg-tab-login':      {ru:'По входу', ua:'За входом'},
   'pubg-tab-rp':         {ru:'Royal Pass', ua:'Royal Pass'},
+  'pubg-tab-bp':         {ru:'Бонус пасс', ua:'Бонус пасс'},
   'pubg-tab-pop':        {ru:'Популярность', ua:'Популярність'},
   'pubg-tab-prime':      {ru:'Prime', ua:'Prime'},
   'badge-lite':          {ru:'МАЛЕНЬКИЕ ПАКИ', ua:'МАЛЕНЬКІ ПАКИ'},
