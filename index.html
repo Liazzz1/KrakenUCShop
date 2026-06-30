@@ -203,6 +203,9 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
 .pack-badge.elite{background:rgba(224,32,32,.12);color:#e02020;border:1px solid rgba(224,32,32,.25);}
 .method-note{margin:12px 16px;font-size:11px;color:var(--text2);display:flex;align-items:center;gap:6px;padding:10px 14px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid var(--border);}
 .price2{font-size:11px;color:var(--text2);text-decoration:line-through;margin-bottom:2px;text-align:right;}
+.dual-price{display:flex;gap:8px;align-items:flex-end;}
+.dual-opt{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.dual-lbl{font-size:9px;color:var(--text2);font-weight:600;letter-spacing:.3px;text-align:center;white-space:nowrap;}
 @keyframes modalIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
 .modal-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;}
@@ -1368,29 +1371,82 @@ function renderPackList(id, items, prefix, tagDefault) {
 
     var rightDiv = document.createElement('div');
     rightDiv.className = 'pright';
-    if (p.price2) {
-      var p2 = document.createElement('div');
-      p2.className = 'price2';
-      p2.textContent = fmtPrice(p.price2);
-      rightDiv.appendChild(p2);
-    }
-    var priceDiv = document.createElement('div');
-    priceDiv.className = 'pprice';
-    priceDiv.textContent = getProductPriceDisplay(p);
-    rightDiv.appendChild(priceDiv);
 
-    var btnId = 'ab' + id + i;
-    var btn = document.createElement('button');
-    btn.className = 'abtn';
-    btn.id = btnId;
-    btn.textContent = '+';
-    btn.setAttribute('data-name', fullname);
-    btn.setAttribute('data-price', p.price);
-    if (p.eur != null) btn.setAttribute('data-eur', p.eur);
-    if (p.pln != null) btn.setAttribute('data-pln', p.pln);
-    btn.setAttribute('data-btn', btnId);
-    btn.addEventListener('click', function(){ addCartBtn(this); });
-    rightDiv.appendChild(btn);
+    if (p.price2) {
+      var dualDiv = document.createElement('div');
+      dualDiv.className = 'dual-price';
+
+      var opt1 = document.createElement('div');
+      opt1.className = 'dual-opt';
+      var lbl1 = document.createElement('div');
+      lbl1.className = 'dual-lbl';
+      lbl1.textContent = 'Обычная';
+      var pr1 = document.createElement('div');
+      pr1.className = 'pprice';
+      pr1.style.fontSize = '12px';
+      pr1.textContent = getProductPriceDisplay(p);
+      var btnId1 = 'ab' + id + i + 'a';
+      var btn1 = document.createElement('button');
+      btn1.className = 'abtn';
+      btn1.id = btnId1;
+      btn1.textContent = '+';
+      btn1.setAttribute('data-name', fullname + ' (обычная)');
+      btn1.setAttribute('data-price', p.price);
+      if (p.eur != null) btn1.setAttribute('data-eur', p.eur);
+      if (p.pln != null) btn1.setAttribute('data-pln', p.pln);
+      btn1.setAttribute('data-btn', btnId1);
+      btn1.addEventListener('click', function(){ addCartBtn(this); });
+      opt1.appendChild(lbl1);
+      opt1.appendChild(pr1);
+      opt1.appendChild(btn1);
+
+      var opt2 = document.createElement('div');
+      opt2.className = 'dual-opt';
+      var lbl2 = document.createElement('div');
+      lbl2.className = 'dual-lbl';
+      lbl2.textContent = 'В посл. мин.';
+      var p2obj = {price: p.price2, eur: p.eur2, pln: p.pln2};
+      var pr2 = document.createElement('div');
+      pr2.className = 'pprice';
+      pr2.style.fontSize = '12px';
+      pr2.textContent = getProductPriceDisplay(p2obj);
+      var btnId2 = 'ab' + id + i + 'b';
+      var btn2 = document.createElement('button');
+      btn2.className = 'abtn';
+      btn2.id = btnId2;
+      btn2.textContent = '+';
+      btn2.setAttribute('data-name', fullname + ' (последняя минута)');
+      btn2.setAttribute('data-price', p.price2);
+      if (p.eur2 != null) btn2.setAttribute('data-eur', p.eur2);
+      if (p.pln2 != null) btn2.setAttribute('data-pln', p.pln2);
+      btn2.setAttribute('data-btn', btnId2);
+      btn2.addEventListener('click', function(){ addCartBtn(this); });
+      opt2.appendChild(lbl2);
+      opt2.appendChild(pr2);
+      opt2.appendChild(btn2);
+
+      dualDiv.appendChild(opt1);
+      dualDiv.appendChild(opt2);
+      rightDiv.appendChild(dualDiv);
+    } else {
+      var priceDiv = document.createElement('div');
+      priceDiv.className = 'pprice';
+      priceDiv.textContent = getProductPriceDisplay(p);
+      rightDiv.appendChild(priceDiv);
+
+      var btnId = 'ab' + id + i;
+      var btn = document.createElement('button');
+      btn.className = 'abtn';
+      btn.id = btnId;
+      btn.textContent = '+';
+      btn.setAttribute('data-name', fullname);
+      btn.setAttribute('data-price', p.price);
+      if (p.eur != null) btn.setAttribute('data-eur', p.eur);
+      if (p.pln != null) btn.setAttribute('data-pln', p.pln);
+      btn.setAttribute('data-btn', btnId);
+      btn.addEventListener('click', function(){ addCartBtn(this); });
+      rightDiv.appendChild(btn);
+    }
 
     row.appendChild(imgDiv);
     row.appendChild(infoDiv);
