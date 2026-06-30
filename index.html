@@ -809,18 +809,31 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
       <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
       <div><div class="phdr-title" data-tr="rules-title">Правила использования</div><div class="phdr-sub" data-tr="rules-sub">Условия покупки и доставки</div></div>
     </div>
-    <div class="rules-list">
-      <div class="rule-card"><div class="rule-num">1</div><div class="rule-body"><div class="rule-title" data-tr="r1-title">Оформление заказа</div><div class="rule-text" data-tr="r1-text">Выберите нужный товар или пакет и укажите данные для доставки — игровой ID, ID профиля или username в Telegram, в зависимости от требований конкретного товара. Перед оплатой внимательно проверьте введённые данные.</div></div></div>
-      <div class="rule-card"><div class="rule-num">2</div><div class="rule-body"><div class="rule-title" data-tr="r2-title">Оплата</div><div class="rule-text" data-tr="r2-text">Заказ берётся в обработку только после полного подтверждения оплаты. Если оплата не поступила или не подтверждена, заказ не выполняется.</div></div></div>
-      <div class="rule-card"><div class="rule-num">3</div><div class="rule-body"><div class="rule-title" data-tr="r3-title">Выполнение заказа</div><div class="rule-text" data-tr="r3-text">После подтверждения оплаты товар зачисляется или отправляется по указанным вами реквизитам — на игровой ID или Telegram-аккаунт. Срок выполнения зависит от текущей загруженности систем и доступности сервисов.</div></div></div>
-      <div class="rule-card"><div class="rule-num">4</div><div class="rule-body"><div class="rule-title" data-tr="r4-title">Ответственность за данные</div><div class="rule-text" data-tr="r4-text">Магазин не отвечает за ошибки, допущенные при вводе данных. Если указан неверный ID или неправильный username в Telegram, возврат средств или повторная отправка товара не гарантируются.</div></div></div>
-      <div class="rule-card"><div class="rule-num">5</div><div class="rule-body"><div class="rule-title" data-tr="r5-title">Возврат средств</div><div class="rule-text" data-tr="r5-text">Возврат возможен только до момента передачи заказа в работу или его выполнения. После успешной доставки товара или зачисления валюты средства не возвращаются.</div></div></div>
-      <div class="rule-card"><div class="rule-num">6</div><div class="rule-body"><div class="rule-title" data-tr="r6-title">Поддержка</div><div class="rule-text" data-tr="r6-text">Если возникли вопросы или проблемы с заказом — обратитесь в нашу службу поддержки. Мы стараемся отвечать каждому клиенту максимально быстро.</div><div class="rule-contact">@KrAkeNn1n</div></div></div>
-      <div class="rule-card"><div class="rule-num">7</div><div class="rule-body"><div class="rule-title" data-tr="r7-title">Изменение правил</div><div class="rule-text" data-tr="r7-text">Магазин может изменять данные правила в одностороннем порядке. Действует версия правил, актуальная на момент оформления заказа.</div></div></div>
-      <div class="rule-card"><div class="rule-num">8</div><div class="rule-body"><div class="rule-title" data-tr="r8-title">Сообщения о статусе заказа</div><div class="rule-text" data-tr="r8-text">Просим не присылать повторяющиеся сообщения вроде «где мой товар?» сразу после оформления заказа. Напоминание можно отправить, если с момента заказа прошло более 10 минут. В противном случае магазин может отказать в дальнейшем обслуживании.</div></div></div>
-      <div class="rule-card"><div class="rule-num">9</div><div class="rule-body"><div class="rule-title" data-tr="r9-title">Отмена заказа с возвратом средств</div><div class="rule-text" data-tr="r9-text">Если заказ был отменён и деньги вернулись на вашу карту, возможны следующие причины: изменение закупочной цены на официальных платформах, технический сбой на стороне сервиса, либо временные проблемы у продавца. Для уточнения деталей напишите владельцу в личные сообщения или откройте тикет.</div></div></div>
+    <div style="overflow-x:auto;scrollbar-width:none;padding:12px 12px 0;"><div style="display:flex;gap:6px;min-width:max-content;">
+      <div class="mtab on" id="rt-general" onclick="switchRulesTab('general')" data-tr="rules-tab-general">Общие правила магазина</div>
+      <div class="mtab" id="rt-loyalty" onclick="switchRulesTab('loyalty')" data-tr="rules-tab-loyalty">Правила лояльности</div>
+      <div class="mtab" id="rt-payment" onclick="switchRulesTab('payment')" data-tr="rules-tab-payment">Правила платежей</div>
+    </div></div>
+    <div id="rm-general">
+      <div class="rules-list">
+        <div class="rule-card"><div class="rule-num">1</div><div class="rule-body"><div class="rule-title" data-tr="r1-title">Оформление заказа</div><div class="rule-text" data-tr="r1-text">Выберите нужный товар или пакет и укажите данные для доставки — игровой ID, ID профиля или username в Telegram, в зависимости от требований конкретного товара. Перед оплатой внимательно проверьте введённые данные.</div></div></div>
+        <div class="rule-card"><div class="rule-num">2</div><div class="rule-body"><div class="rule-title" data-tr="r2-title">Оплата</div><div class="rule-text" data-tr="r2-text">Заказ берётся в обработку только после полного подтверждения оплаты. Если оплата не поступила или не подтверждена, заказ не выполняется.</div></div></div>
+        <div class="rule-card"><div class="rule-num">3</div><div class="rule-body"><div class="rule-title" data-tr="r3-title">Выполнение заказа</div><div class="rule-text" data-tr="r3-text">После подтверждения оплаты товар зачисляется или отправляется по указанным вами реквизитам — на игровой ID или Telegram-аккаунт. Срок выполнения зависит от текущей загруженности систем и доступности сервисов.</div></div></div>
+        <div class="rule-card"><div class="rule-num">4</div><div class="rule-body"><div class="rule-title" data-tr="r4-title">Ответственность за данные</div><div class="rule-text" data-tr="r4-text">Магазин не отвечает за ошибки, допущенные при вводе данных. Если указан неверный ID или неправильный username в Telegram, возврат средств или повторная отправка товара не гарантируются.</div></div></div>
+        <div class="rule-card"><div class="rule-num">5</div><div class="rule-body"><div class="rule-title" data-tr="r5-title">Возврат средств</div><div class="rule-text" data-tr="r5-text">Возврат возможен только до момента передачи заказа в работу или его выполнения. После успешной доставки товара или зачисления валюты средства не возвращаются.</div></div></div>
+        <div class="rule-card"><div class="rule-num">6</div><div class="rule-body"><div class="rule-title" data-tr="r6-title">Поддержка</div><div class="rule-text" data-tr="r6-text">Если возникли вопросы или проблемы с заказом — обратитесь в нашу службу поддержки. Мы стараемся отвечать каждому клиенту максимально быстро.</div><div class="rule-contact">@KrAkeNn1n</div></div></div>
+        <div class="rule-card"><div class="rule-num">7</div><div class="rule-body"><div class="rule-title" data-tr="r7-title">Изменение правил</div><div class="rule-text" data-tr="r7-text">Магазин может изменять данные правила в одностороннем порядке. Действует версия правил, актуальная на момент оформления заказа.</div></div></div>
+        <div class="rule-card"><div class="rule-num">8</div><div class="rule-body"><div class="rule-title" data-tr="r8-title">Сообщения о статусе заказа</div><div class="rule-text" data-tr="r8-text">Просим не присылать повторяющиеся сообщения вроде «где мой товар?» сразу после оформления заказа. Напоминание можно отправить, если с момента заказа прошло более 10 минут. В противном случае магазин может отказать в дальнейшем обслуживании.</div></div></div>
+        <div class="rule-card"><div class="rule-num">9</div><div class="rule-body"><div class="rule-title" data-tr="r9-title">Отмена заказа с возвратом средств</div><div class="rule-text" data-tr="r9-text">Если заказ был отменён и деньги вернулись на вашу карту, возможны следующие причины: изменение закупочной цены на официальных платформах, технический сбой на стороне сервиса, либо временные проблемы у продавца. Для уточнения деталей напишите владельцу в личные сообщения или откройте тикет.</div></div></div>
+      </div>
+      <div class="method-note" style="margin:14px 12px;" data-tr="rules-footer">Оформляя заказ, вы подтверждаете, что ознакомились с данными правилами и согласны с их условиями.</div>
     </div>
-    <div class="method-note" style="margin:14px 12px;" data-tr="rules-footer">Оформляя заказ, вы подтверждаете, что ознакомились с данными правилами и согласны с их условиями.</div>
+    <div id="rm-loyalty" style="display:none">
+      <div class="rules-list"></div>
+    </div>
+    <div id="rm-payment" style="display:none">
+      <div class="rules-list"></div>
+    </div>
   </div>
   <div class="bnav">
     <div class="ni" onclick="goTo('home')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span data-tr="nav-home">Главная</span></div>
@@ -1354,6 +1367,15 @@ function renderPackList(id, items, prefix, tagDefault) {
     row.appendChild(rightDiv);
     el.appendChild(row);
   }
+}
+
+function switchRulesTab(m) {
+  ['general','loyalty','payment'].forEach(function(k){
+    var el = document.getElementById('rm-' + k);
+    var tab = document.getElementById('rt-' + k);
+    if (el) el.style.display = k===m ? 'block' : 'none';
+    if (tab) tab.className = 'mtab' + (k===m ? ' on' : '');
+  });
 }
 
 function switchMethod(m) {
@@ -2093,6 +2115,9 @@ var TR = {
   'badge-prime-plus':    {ru:'PRIME+ — ЭЛИТНЫЕ', ua:'PRIME+ — ЕЛІТНІ'},
   'tg-tab-stars':        {ru:'Stars', ua:'Stars'},
   'tg-tab-prem':         {ru:'Premium', ua:'Premium'},
+  'rules-tab-general': {ru:'Общие правила магазина', ua:'Загальні правила магазину'},
+  'rules-tab-loyalty': {ru:'Правила лояльности', ua:'Правила лояльності'},
+  'rules-tab-payment': {ru:'Правила платежей', ua:'Правила платежів'},
   'rules-title':  {ru:'Правила использования', ua:'Правила використання'},
   'rules-sub':    {ru:'Условия покупки и доставки', ua:'Умови покупки та доставки'},
   'rules-footer': {ru:'Оформляя заказ, вы подтверждаете, что ознакомились с данными правилами и согласны с их условиями.', ua:'Оформлюючи замовлення, ви підтверджуєте, що ознайомились із цими правилами та погоджуєтесь з їх умовами.'},
