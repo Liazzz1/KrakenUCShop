@@ -2984,6 +2984,31 @@ function filterOrders(status, tab) {
   renderOrders(filtered, document.getElementById('orders-wrap'));
 }
 
+var ORDER_STATUS_NOTIF = {
+  'processing': { title: 'Заказ принят', text: 'Ваш заказ #{id} принят в обработку.' },
+  'completed':  { title: '✅ Заказ выполнен', text: 'Заказ #{id} успешно выполнен. Спасибо!' },
+  'cancelled':  { title: '❌ Заказ отменён', text: 'Заказ #{id} был отменён.' },
+  'refunded':   { title: '💸 Возврат средств', text: 'По заказу #{id} выполнен возврат средств.' },
+};
+
+function checkOrderStatusChanges(orders) {
+  var key = 'kr_order_statuses';
+  var prev = {};
+  try { prev = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
+  var next = {};
+  for (var i = 0; i < orders.length; i++) {
+    var o = orders[i];
+    next[o.id] = o.status;
+    if (prev[o.id] && prev[o.id] !== o.status) {
+      var tpl = ORDER_STATUS_NOTIF[o.status];
+      if (tpl) {
+        addNotification('orders', tpl.title, tpl.text.replace('#{id}', '#' + o.id));
+      }
+    }
+  }
+  try { localStorage.setItem(key, JSON.stringify(next)); } catch(e) {}
+}
+
 function loadOrders() {
   var wrap = document.getElementById('orders-wrap');
   if (!wrap) return;
@@ -3001,6 +3026,7 @@ function loadOrders() {
   .then(function(r) { return r.json(); })
   .then(function(orders) {
     window._allOrders = orders;
+    checkOrderStatusChanges(orders);
     renderOrders(orders, wrap);
   })
   .catch(function() {
