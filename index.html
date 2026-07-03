@@ -1941,7 +1941,7 @@ function confirmPayment() {
 
   var payload = {
     items:          orderItems,
-    recipient_id:   recvId,
+    recipient_id:   recvId || '—',
     payment_method: selectedPayMethod || 'unknown',
     currency:       currentCurr,
     total_uah:      discountedTotal,
@@ -2259,6 +2259,7 @@ function renderVipCards() {
       var btnId = 'v' + tier.id[0] + (i === 0 ? '1m' : i === 1 ? '3m' : i === 2 ? '6m' : '12m');
       var btn = document.createElement('button');
       btn.id = btnId;
+      btn.setAttribute('data-btn', btnId);
       btn.setAttribute('data-name', tier.name + ' — ' + d.label);
       btn.setAttribute('data-price', d.uah);
       btn.setAttribute('data-eur', d.eur);
