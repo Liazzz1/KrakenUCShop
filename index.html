@@ -1617,10 +1617,10 @@ function getCartItemPrice(item) {
   return item.price * (RATES[currentCurr] || 1);
 }
 
-// VIP-скидка не действует на мелкие паки:
+// Скидки (VIP и промокоды) не действуют на мелкие паки:
 // по ID ≤ 3850 UC, по входу ≤ 8100 UC, по входу+бонус ≤ 9500 UC,
 // Stars ≤ 200, популярность ≤ 50.000 монет
-function vipDiscountApplies(name) {
+function discountApplies(name) {
   var m = name.match(/(\d+)\s*UC\b/);
   if (m) {
     var uc = parseInt(m[1]);
@@ -1636,19 +1636,19 @@ function vipDiscountApplies(name) {
   return true;
 }
 
-// Считает итоги корзины: VIP-скидка только на подходящие товары, промокод — на всё
+// Считает итоги корзины: VIP-скидка и промокод действуют только на подходящие товары
 function cartTotals() {
-  var total = 0, vipEligible = 0;
+  var total = 0, eligible = 0;
   for (var i = 0; i < cart.length; i++) {
     var line = getCartItemPrice(cart[i]) * cart[i].qty;
     total += line;
-    if (vipDiscountApplies(cart[i].name)) vipEligible += line;
+    if (discountApplies(cart[i].name)) eligible += line;
   }
   var vipDisc = USER_STATUS.discount || 0;
   var promoDisc = activePromoDisc || 0;
   if (vipDisc + promoDisc > MAX_DISCOUNT) promoDisc = Math.max(0, MAX_DISCOUNT - vipDisc);
-  var vipSave = Math.round(vipEligible * vipDisc / 100 * 100) / 100;
-  var promoSave = Math.round(total * promoDisc / 100 * 100) / 100;
+  var vipSave = Math.round(eligible * vipDisc / 100 * 100) / 100;
+  var promoSave = Math.round(eligible * promoDisc / 100 * 100) / 100;
   var discounted = Math.round((total - vipSave - promoSave) * 100) / 100;
   var pct = total > 0 ? Math.round((vipSave + promoSave) / total * 100) : 0;
   return { total: total, vipSave: vipSave, promoSave: promoSave, discounted: discounted, pct: pct };
