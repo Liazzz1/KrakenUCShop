@@ -818,7 +818,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
     </div>
     <div style="overflow-x:auto;scrollbar-width:none;padding:12px 12px 0;"><div style="display:flex;gap:6px;min-width:max-content;">
       <div class="mtab on" id="rt-general" onclick="switchRulesTab('general')" data-tr="rules-tab-general">Общие правила магазина</div>
-      <div class="mtab" id="rt-loyalty" onclick="switchRulesTab('loyalty')" data-tr="rules-tab-loyalty">Правила лояльности</div>
+      <div class="mtab" id="rt-loyalty" onclick="switchRulesTab('loyalty')" data-tr="rules-tab-loyalty">VIP Статусы</div>
       <div class="mtab" id="rt-payment" onclick="switchRulesTab('payment')" data-tr="rules-tab-payment">Правила платежей</div>
     </div></div>
     <div id="rm-general">
@@ -836,22 +836,159 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
       <div class="method-note" style="margin:14px 12px;" data-tr="rules-footer">Оформляя заказ, вы подтверждаете, что ознакомились с данными правилами и согласны с их условиями.</div>
     </div>
     <div id="rm-loyalty" style="display:none">
-      <div class="rules-list">
-        <div class="rule-card"><div class="rule-num">1</div><div class="rule-body"><div class="rule-title">Общие положения</div><div class="rule-text">Система лояльности является внутренней бонусно-статусной системой магазина KRAKEN UC SHOP. Она не является договором, публичной офертой или гарантией постоянного предоставления условий. Администрация оставляет за собой право изменять условия системы — актуальной считается последняя опубликованная версия. Участие в системе означает полное согласие пользователя с актуальными правилами.</div></div></div>
-        <div class="rule-card"><div class="rule-num">2</div><div class="rule-body"><div class="rule-title">Определения</div><div class="rule-text">«Покупка» — оплаченная и подтверждённая транзакция. «Завершённая покупка» — покупка, по которой произведена оплата, отсутствует возврат и отсутствует отмена. «Учётная единица покупки» — каждая завершённая покупка, независимо от суммы. «Активность» — количество учётных единиц покупок пользователя.</div></div></div>
-        <div class="rule-card"><div class="rule-num">3</div><div class="rule-body"><div class="rule-title">Система скидок и приоритет</div><div class="rule-text">Пользователь может иметь несколько оснований для скидки, но применяется только одна — максимальная доступная. Приоритет: индивидуальная скидка → система постоянного клиента → VIP-скидка (если активна) → промо-акции и промокоды. Скидки не суммируются. Максимальная стандартная скидка — 15%, максимальная индивидуальная — 18%.</div></div></div>
-        <div class="rule-card"><div class="rule-num">4</div><div class="rule-body"><div class="rule-title">VIP-статус (модель системы)</div><div class="rule-text">VIP-статус представляет собой временную систему доступа к привилегиям с фиксированным сроком (1 / 3 / 6 / 12 месяцев). VIP-статус существует как отдельная сущность и не является физическим товаром.</div></div></div>
-        <div class="rule-card"><div class="rule-num">5</div><div class="rule-body"><div class="rule-title">Состояния VIP</div><div class="rule-text">VIP может находиться в одном из состояний: ACTIVE — все привилегии доступны, FROZEN — привилегии временно отключены, EXPIRED — срок завершён.</div></div></div>
-        <div class="rule-card"><div class="rule-num">6</div><div class="rule-body"><div class="rule-title">Правила VIP-активности</div><div class="rule-text">VIP переходит в состояние FROZEN при отсутствии любых действий пользователя в системе (покупки / бонусы / рефералы / промо) в течение 30 календарных дней подряд. В состоянии FROZEN: VIP сохраняется, срок VIP не изменяется, привилегии временно не действуют. VIP автоматически возвращается в ACTIVE при любом новом действии пользователя. По окончании срока VIP переходит в EXPIRED. Неиспользование VIP не влияет на срок и не даёт права на компенсацию.</div></div></div>
-        <div class="rule-card"><div class="rule-num">7</div><div class="rule-body"><div class="rule-title">Система постоянного клиента</div><div class="rule-text">Основана на количестве завершённых покупок: 1 завершённая покупка = 1 единица. Уровни: I → ≥5 покупок → 3%; II → ≥10 → 6%; III → ≥20 → 9–12%; ELITE → ≥40 или оборот ≥ (средний чек × 40) → до 15%. Оборот — сумма всех завершённых покупок пользователя.</div></div></div>
-        <div class="rule-card"><div class="rule-num">8</div><div class="rule-body"><div class="rule-title">ELITE (формульный уровень)</div><div class="rule-text">ELITE присваивается автоматически при условии: A) ≥40 покупок, или B) оборот ≥ (средний чек системы × 40). Средний чек системы = total_spent всех пользователей / total_orders всех пользователей.</div></div></div>
-        <div class="rule-card"><div class="rule-num">9</div><div class="rule-body"><div class="rule-title">Бонусная система</div><div class="rule-text">Бонусы не влияют на скидки. Начисляются за завершённые покупки, реферальные действия и достижения порогов. Формы бонусов: Stars, UC, промокоды, подарки. Бонусы не являются денежными средствами.</div></div></div>
-        <div class="rule-card"><div class="rule-num">10</div><div class="rule-body"><div class="rule-title">Реферальная система</div><div class="rule-text">Бонус начисляется только за первую покупку приглашённого пользователя, при условии что покупка завершена, нет возврата и нет отмены.</div></div></div>
-        <div class="rule-card"><div class="rule-num">11</div><div class="rule-body"><div class="rule-title">Индивидуальные условия</div><div class="rule-text">Индивидуальная скидка назначается системой или администрацией. Основания: ELITE + стабильная активность, оборот ≥ 2× среднего по системе, попадание в топ-рейтинги. Приоритет — наивысший. Максимум — 18%.</div></div></div>
-        <div class="rule-card"><div class="rule-num">12</div><div class="rule-body"><div class="rule-title">Рейтинги</div><div class="rule-text">Формируются автоматически. Учитывается: покупки, оборот, рефералы, кланы. Период — 1 месяц.</div></div></div>
-        <div class="rule-card"><div class="rule-num">13</div><div class="rule-body"><div class="rule-title">VIP-статус (привилегии)</div><div class="rule-text">VIP даёт доступ к акциям, бонусам, персональным предложениям и приоритетному обслуживанию. VIP-скидка: VIP I → до 5%, VIP II → до 10%, VIP III → до 15%. VIP не суммируется с другими скидками.</div></div></div>
-        <div class="rule-card"><div class="rule-num">14</div><div class="rule-body"><div class="rule-title">Администрация</div><div class="rule-text">Администрация имеет право изменять систему, пересчитывать данные, корректировать начисления, изменять рейтинги, назначать индивидуальные условия и ограничивать доступ пользователя. Решения администрации являются окончательными.</div></div></div>
-        <div class="rule-card"><div class="rule-num">15</div><div class="rule-body"><div class="rule-title">Заключение</div><div class="rule-text">Использование магазина означает согласие с правилами. Система может быть изменена без уведомления.</div></div></div>
+      <div style="padding:12px;display:flex;flex-direction:column;gap:14px;">
+
+        <!-- VIP I -->
+        <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(212,175,55,0.35);">
+          <div style="background:linear-gradient(135deg,rgba(212,175,55,0.25) 0%,rgba(180,140,20,0.12) 100%);padding:13px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(212,175,55,0.2);">
+            <span style="font-size:22px;">👑</span>
+            <div>
+              <div style="font-size:15px;font-weight:800;color:#d4af37;letter-spacing:1px;">VIP I</div>
+              <div style="font-size:11px;color:rgba(212,175,55,0.7);margin-top:1px;">Скидка до 5%</div>
+            </div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:12px 14px;">
+            <div style="font-size:11px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;">Стоимость</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
+              <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">1 месяц</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">100 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">10 zł / 4 €</div>
+              </div>
+              <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">3 месяца</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">250 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">25 zł / 8 €</div>
+              </div>
+              <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">6 месяцев</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">450 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">45 zł / 13 €</div>
+              </div>
+              <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">12 месяцев</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">800 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">80 zł / 20 €</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:7px;text-transform:uppercase;">Что входит</div>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <div style="font-size:12px;color:#ccc;">• Скидка до 5%</div>
+              <div style="font-size:12px;color:#ccc;">• Персональные промокоды</div>
+              <div style="font-size:12px;color:#ccc;">• Дополнительные промокоды</div>
+              <div style="font-size:12px;color:#ccc;">• Увеличенные бонусы</div>
+            </div>
+            <div style="background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:9px 11px;">
+              <div style="font-size:11px;color:#d4af37;font-weight:700;margin-bottom:6px;">🎁 Бонусы</div>
+              <div style="font-size:12px;color:#ccc;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+50 Stars</b></div>
+              <div style="font-size:12px;color:#ccc;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+120 UC</b></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIP II -->
+        <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(224,32,32,0.35);">
+          <div style="background:linear-gradient(135deg,rgba(224,32,32,0.22) 0%,rgba(180,10,10,0.10) 100%);padding:13px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(224,32,32,0.2);">
+            <span style="font-size:22px;">👑</span>
+            <div>
+              <div style="font-size:15px;font-weight:800;color:#e02020;letter-spacing:1px;">VIP II</div>
+              <div style="font-size:11px;color:rgba(224,32,32,0.7);margin-top:1px;">Скидка до 10%</div>
+            </div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:12px 14px;">
+            <div style="font-size:11px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;">Стоимость</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
+              <div style="background:rgba(224,32,32,0.08);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">1 месяц</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">200 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">20 zł / 6 €</div>
+              </div>
+              <div style="background:rgba(224,32,32,0.08);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">3 месяца</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">500 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">50 zł / 15 €</div>
+              </div>
+              <div style="background:rgba(224,32,32,0.08);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">6 месяцев</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">900 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">85 zł / 23 €</div>
+              </div>
+              <div style="background:rgba(224,32,32,0.08);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">12 месяцев</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">1500 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">140 zł / 37 €</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:7px;text-transform:uppercase;">Преимущества</div>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <div style="font-size:12px;color:#ccc;">• Скидка до 10%</div>
+              <div style="font-size:12px;color:#ccc;">• Индивидуальные предложения</div>
+              <div style="font-size:12px;color:#ccc;">• Персональные промокоды</div>
+              <div style="font-size:12px;color:#ccc;">• Дополнительные промокоды</div>
+            </div>
+            <div style="background:rgba(224,32,32,0.07);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:9px 11px;">
+              <div style="font-size:11px;color:#e02020;font-weight:700;margin-bottom:6px;">🎁 Бонусы</div>
+              <div style="font-size:12px;color:#ccc;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+100 Stars</b></div>
+              <div style="font-size:12px;color:#ccc;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+240 UC</b></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIP III -->
+        <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(139,92,246,0.4);">
+          <div style="background:linear-gradient(135deg,rgba(139,92,246,0.25) 0%,rgba(109,60,210,0.12) 100%);padding:13px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(139,92,246,0.2);">
+            <span style="font-size:22px;">👑</span>
+            <div>
+              <div style="font-size:15px;font-weight:800;color:#a78bfa;letter-spacing:1px;">VIP III</div>
+              <div style="font-size:11px;color:rgba(167,139,250,0.7);margin-top:1px;">Скидка до 15%</div>
+            </div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:12px 14px;">
+            <div style="font-size:11px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;">Стоимость</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
+              <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">1 месяц</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">350 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">35 zł / 10 €</div>
+              </div>
+              <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">3 месяца</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">900 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">85 zł / 23 €</div>
+              </div>
+              <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">6 месяцев</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">1600 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">150 zł / 40 €</div>
+              </div>
+              <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:10px;color:#666;margin-bottom:3px;">12 месяцев</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">2800 грн</div>
+                <div style="font-size:10px;color:#888;margin-top:1px;">270 zł / 65 €</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:#666;font-weight:700;letter-spacing:1px;margin-bottom:7px;text-transform:uppercase;">Преимущества</div>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+              <div style="font-size:12px;color:#ccc;">• Скидка до 15%</div>
+              <div style="font-size:12px;color:#ccc;">• Максимальные бонусы</div>
+              <div style="font-size:12px;color:#ccc;">• Приоритетная поддержка</div>
+              <div style="font-size:12px;color:#ccc;">• Эксклюзивные предложения</div>
+              <div style="font-size:12px;color:#ccc;">• +1 эксклюзивный промокод в месяц</div>
+              <div style="font-size:12px;color:#ccc;">• Ранний доступ к акциям</div>
+            </div>
+            <div style="background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:9px 11px;">
+              <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:6px;">🎁 Бонусы</div>
+              <div style="font-size:12px;color:#ccc;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+200 Stars</b></div>
+              <div style="font-size:12px;color:#ccc;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+360 UC</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-align:center;">
+          <div style="font-size:12px;color:#888;margin-bottom:8px;">Для приобретения VIP-статуса обратитесь к администратору</div>
+          <div style="font-size:14px;font-weight:700;color:var(--red);">@KrAkeNn1n</div>
+        </div>
+
       </div>
     </div>
     <div id="rm-payment" style="display:none">
