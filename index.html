@@ -2476,7 +2476,7 @@ function updateProfileStatus() {
   }
 }
 
-var PROMOS = { 'KRAKEN5': 5, 'KRAKEN10': 10 };
+var PROMOS = {}; // промокоды теперь хранятся на бэкенде
 var MAX_DISCOUNT = 15;
 var activePromo = null;
 var activePromoDisc = 0;
@@ -2613,8 +2613,27 @@ function applyPromo() {
     showPromoMsg('err', currentLang==='ua' ? '✗ У вас вже максимальна знижка ' + MAX_DISCOUNT + '%' : '✗ У вас уже максимальная скидка ' + MAX_DISCOUNT + '%');
     return;
   }
-  if (PROMOS[code] !== undefined) {
-    var disc = PROMOS[code];
+  var btn = document.getElementById('promo-apply-btn');
+  btn.disabled = true;
+  btn.textContent = '...';
+  fetch(API_URL + '/api/loyalty/promo/validate/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: code })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    btn.disabled = false;
+    btn.textContent = currentLang==='ua' ? 'Застосувати' : 'Применить';
+    if (!data.valid) {
+      var errMap = {
+        not_found: currentLang==='ua' ? '✗ Невірний промокод' : '✗ Неверный промокод',
+        expired:   currentLang==='ua' ? '✗ Промокод більше не діє' : '✗ Промокод больше не действует',
+      };
+      showPromoMsg('err', errMap[data.error] || (currentLang==='ua' ? '✗ Невірний промокод' : '✗ Неверный промокод'));
+      return;
+    }
+    var disc = data.discount;
     var total = USER_STATUS.discount + disc;
     var actual = Math.min(total, MAX_DISCOUNT) - USER_STATUS.discount;
     if (actual <= 0) {
@@ -2623,16 +2642,18 @@ function applyPromo() {
     }
     activePromo = code;
     activePromoDisc = actual;
-    var btn = document.getElementById('promo-apply-btn');
     btn.textContent = currentLang==='ua' ? 'Скасувати' : 'Отменить';
     btn.className = 'promo-btn applied ripple';
     btn.onclick = removePromo;
     inp.disabled = true;
     showPromoMsg('ok', (currentLang==='ua' ? '✓ Промокод застосовано — знижка ' : '✓ Промокод применён — скидка ') + actual + '%');
     renderCart();
-  } else {
-    showPromoMsg('err', currentLang==='ua' ? '✗ Невірний промокод' : '✗ Неверный промокод');
-  }
+  })
+  .catch(function() {
+    btn.disabled = false;
+    btn.textContent = currentLang==='ua' ? 'Застосувати' : 'Применить';
+    showPromoMsg('err', currentLang==='ua' ? '⚠️ Помилка перевірки промокоду' : '⚠️ Ошибка проверки промокода');
+  });
 }
 
 function removePromo() {
