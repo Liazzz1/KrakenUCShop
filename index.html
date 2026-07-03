@@ -553,6 +553,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
         <div class="totrow"><span class="m" data-tr="tot-sum">Сумма товаров</span><span id="csum">0 ₴</span></div>
         <div class="totrow" id="vip-disc-row" style="display:none"><span class="m">VIP скидка</span><span id="vip-disc-save" style="color:var(--green)"></span></div>
         <div class="totrow" id="promo-row" style="display:none"><span class="m" data-tr="tot-promo">Скидка по промокоду</span><span id="promo-save" style="color:var(--green)"></span></div>
+        <div id="disc-note" style="display:none;font-size:11px;color:#f59e0b;padding:4px 0 2px;"></div>
         <div class="totrow"><span class="m" data-tr="tot-fee">Комиссия сервиса</span><span style="color:var(--green)">0 ₴</span></div>
         <div class="totrow big"><span data-tr="tot-total">Общая сумма заказа</span><span id="ctotal">0 ₴</span></div>
       </div>
@@ -1652,7 +1653,7 @@ function cartTotals() {
   var promoSave = Math.round(eligible * promoDisc / 100 * 100) / 100;
   var discounted = Math.round((total - vipSave - promoSave) * 100) / 100;
   var pct = total > 0 ? Math.round((vipSave + promoSave) / total * 100) : 0;
-  return { total: total, vipSave: vipSave, promoSave: promoSave, discounted: discounted, pct: pct };
+  return { total: total, eligible: eligible, vipSave: vipSave, promoSave: promoSave, discounted: discounted, pct: pct };
 }
 
 function fmtCartItemTotal(item) {
@@ -1756,6 +1757,32 @@ function renderCart() {
     if (promoSave) promoSave.textContent = '−' + fmtCartTotal(totals.promoSave);
   } else {
     if (promoRow) promoRow.style.display = 'none';
+  }
+  var discNote = document.getElementById('disc-note');
+  if (discNote) {
+    var hasDisc = (USER_STATUS.discount > 0) || (activePromoDisc > 0);
+    if (hasDisc && totals.eligible < totals.total) {
+      var both = activePromoDisc > 0 && USER_STATUS.discount > 0;
+      var noteName = both
+        ? (currentLang==='ua' ? 'VIP-знижка та промокод' : 'VIP-скидка и промокод')
+        : (activePromoDisc > 0
+          ? 'Промокод'
+          : (currentLang==='ua' ? 'VIP-знижка' : 'VIP-скидка'));
+      var verb;
+      if (totals.eligible === 0) {
+        verb = currentLang==='ua'
+          ? (both ? ' не діють на товари в кошику' : ' не діє на товари в кошику')
+          : (both ? ' не действуют на товары в корзине' : ' не действует на товары в корзине');
+      } else {
+        verb = currentLang==='ua'
+          ? (both ? ' не діють на частину товарів у кошику' : ' не діє на частину товарів у кошику')
+          : (both ? ' не действуют на часть товаров в корзине' : ' не действует на часть товаров в корзине');
+      }
+      discNote.textContent = '⚠️ ' + noteName + verb;
+      discNote.style.display = 'block';
+    } else {
+      discNote.style.display = 'none';
+    }
   }
   document.getElementById('ctotal').textContent=fmtCartTotal(totals.discounted);
   form.style.display='block';
@@ -2708,7 +2735,18 @@ function applyPromo() {
     btn.className = 'promo-btn applied ripple';
     btn.onclick = removePromo;
     inp.disabled = true;
-    showPromoMsg('ok', (currentLang==='ua' ? '✓ Промокод застосовано — знижка ' : '✓ Промокод применён — скидка ') + actual + '%');
+    var t = cartTotals();
+    if (t.total > 0 && t.eligible === 0) {
+      showPromoMsg('err', currentLang==='ua'
+        ? '⚠️ Промокод застосовано, але він не діє на товари в кошику'
+        : '⚠️ Промокод применён, но он не действует на товары в корзине');
+    } else if (t.eligible < t.total) {
+      showPromoMsg('ok', (currentLang==='ua'
+        ? '✓ Знижка ' + actual + '% — діє не на всі товари в кошику'
+        : '✓ Скидка ' + actual + '% — действует не на все товары в корзине'));
+    } else {
+      showPromoMsg('ok', (currentLang==='ua' ? '✓ Промокод застосовано — знижка ' : '✓ Промокод применён — скидка ') + actual + '%');
+    }
     renderCart();
   })
   .catch(function() {
