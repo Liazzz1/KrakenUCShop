@@ -1974,7 +1974,7 @@ function confirmPayment() {
       return resp.json();
     })
     .then(function(data) {
-      if (currentCurr === 'EUR') {
+      if (currentCurr === 'EUR' || currentCurr === 'PLN') {
         showQR(data.id);
       } else {
         finishOrder(data.id);
@@ -2025,7 +2025,8 @@ function showQR(orderId) {
     document.getElementById('qr-img-wrap').innerHTML = '<img src="' + d.qr + '" style="width:200px;height:200px;display:block;"/>';
     document.getElementById('qr-beneficiary').textContent = d.beneficiary;
     document.getElementById('qr-iban').textContent = d.iban;
-    document.getElementById('qr-amount').textContent = d.amount.replace('EUR', '') + ' EUR';
+    var qrCurr = d.amount.replace(/[\d.,\s]/g, '');
+    document.getElementById('qr-amount').textContent = d.amount.replace(/[^\d.,]/g, '') + ' ' + qrCurr;
     document.getElementById('qr-reference').textContent = d.reference;
     document.getElementById('qr-done-btn').setAttribute('data-order-id', orderId);
   })
