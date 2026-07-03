@@ -1748,7 +1748,8 @@ var PAYMENT_METHODS = {
     {id:'revolut_eur', name:'Revolut', icon:'img/revolut.png', link:'https://revolut.me/your_username'}
   ],
   PLN: [
-    {id:'revolut_pln', name:'Revolut', icon:'img/revolut.png', link:'https://revolut.me/your_username'}
+    {id:'revolut_pln', name:'Revolut', icon:'img/revolut.png', link:'https://revolut.me/krakenshop'},
+    {id:'revolut_link_pln', name:'Revolut по ссылке', icon:'img/revolut.png', link:'https://revolut.me/krakenshop', open_link:true}
   ]
 };
 
@@ -1974,7 +1975,14 @@ function confirmPayment() {
       return resp.json();
     })
     .then(function(data) {
-      if (currentCurr === 'EUR' || currentCurr === 'PLN') {
+      if (method && method.open_link && method.link) {
+        if (window.Telegram && Telegram.WebApp && Telegram.WebApp.openLink) {
+          Telegram.WebApp.openLink(method.link);
+        } else {
+          window.open(method.link, '_blank');
+        }
+        finishOrder(data.id);
+      } else if (currentCurr === 'EUR' || currentCurr === 'PLN') {
         showQR(data.id);
       } else {
         finishOrder(data.id);
