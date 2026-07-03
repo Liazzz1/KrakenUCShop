@@ -551,6 +551,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
       <div class="totblock">
         <div class="totttl" data-tr="tot-title">ИТОГО</div>
         <div class="totrow"><span class="m" data-tr="tot-sum">Сумма товаров</span><span id="csum">0 ₴</span></div>
+        <div class="totrow" id="vip-disc-row" style="display:none"><span class="m">VIP скидка</span><span id="vip-disc-save" style="color:var(--green)"></span></div>
         <div class="totrow" id="promo-row" style="display:none"><span class="m" data-tr="tot-promo">Скидка по промокоду</span><span id="promo-save" style="color:var(--green)"></span></div>
         <div class="totrow"><span class="m" data-tr="tot-fee">Комиссия сервиса</span><span style="color:var(--green)">0 ₴</span></div>
         <div class="totrow big"><span data-tr="tot-total">Общая сумма заказа</span><span id="ctotal">0 ₴</span></div>
@@ -1768,12 +1769,25 @@ function renderCart() {
   document.getElementById('csum').textContent=fmtCartTotal(total);
   var promoRow = document.getElementById('promo-row');
   var promoSave = document.getElementById('promo-save');
+  var vipRow = document.getElementById('vip-disc-row');
+  var vipSave = document.getElementById('vip-disc-save');
+  var effectiveDisc = Math.min((USER_STATUS.discount || 0) + activePromoDisc, MAX_DISCOUNT);
   var discountedTotal = total;
-  if (activePromoDisc > 0) {
-    var saving = Math.round(total * activePromoDisc / 100 * 100) / 100;
+  if (effectiveDisc > 0) {
+    var saving = Math.round(total * effectiveDisc / 100 * 100) / 100;
     discountedTotal = total - saving;
+  }
+  if (USER_STATUS.discount > 0) {
+    var vipSaving = Math.round(total * USER_STATUS.discount / 100 * 100) / 100;
+    if (vipRow) vipRow.style.display = 'flex';
+    if (vipSave) vipSave.textContent = '−' + fmtCartTotal(vipSaving) + ' (' + USER_STATUS.discount + '%)';
+  } else {
+    if (vipRow) vipRow.style.display = 'none';
+  }
+  if (activePromoDisc > 0) {
+    var promoSaving = Math.round(total * activePromoDisc / 100 * 100) / 100;
     if (promoRow) promoRow.style.display = 'flex';
-    if (promoSave) promoSave.textContent = '−' + fmtCartTotal(saving);
+    if (promoSave) promoSave.textContent = '−' + fmtCartTotal(promoSaving);
   } else {
     if (promoRow) promoRow.style.display = 'none';
   }
@@ -1853,10 +1867,8 @@ function renderPaymentScreen() {
   var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
   var total = 0;
   for (var i=0; i<cart.length; i++) { total = total + getCartItemPrice(cart[i]) * cart[i].qty; }
-  var discountedTotal = total;
-  if (activePromoDisc > 0) {
-    discountedTotal = total - Math.round(total * activePromoDisc / 100 * 100) / 100;
-  }
+  var effectiveDisc2 = Math.min((USER_STATUS.discount || 0) + activePromoDisc, MAX_DISCOUNT);
+  var discountedTotal = effectiveDisc2 > 0 ? total - Math.round(total * effectiveDisc2 / 100 * 100) / 100 : total;
   var recvId = getRecvId();
 
   var itemsParts = [];
@@ -1973,8 +1985,8 @@ function confirmPayment() {
 
   var total = 0;
   for (var i=0; i<cart.length; i++) { total = total + getCartItemPrice(cart[i]) * cart[i].qty; }
-  var discountedTotal = total;
-  if (activePromoDisc > 0) { discountedTotal = total - Math.round(total * activePromoDisc / 100 * 100) / 100; }
+  var effectiveDisc3 = Math.min((USER_STATUS.discount || 0) + activePromoDisc, MAX_DISCOUNT);
+  var discountedTotal = effectiveDisc3 > 0 ? total - Math.round(total * effectiveDisc3 / 100 * 100) / 100 : total;
 
   var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
   var method = null;
@@ -2000,7 +2012,8 @@ function confirmPayment() {
     total_uah:      discountedTotal,
     total_display:  fmtCartTotal(discountedTotal),
     promo_code:     activePromo || '',
-    discount_pct:   activePromoDisc || 0
+    discount_pct:   effectiveDisc3 || 0,
+    vip_discount:   USER_STATUS.discount || 0
   };
 
   // Disable confirm button to prevent double-tap
