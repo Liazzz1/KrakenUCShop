@@ -1618,7 +1618,8 @@ function getCartItemPrice(item) {
 }
 
 // VIP-скидка не действует на мелкие паки:
-// по ID ≤ 3850 UC, по входу ≤ 8100 UC, по входу+бонус ≤ 9500 UC, Stars ≤ 200
+// по ID ≤ 3850 UC, по входу ≤ 8100 UC, по входу+бонус ≤ 9500 UC,
+// Stars ≤ 200, популярность ≤ 50.000 монет
 function vipDiscountApplies(name) {
   var m = name.match(/(\d+)\s*UC\b/);
   if (m) {
@@ -1630,6 +1631,8 @@ function vipDiscountApplies(name) {
   }
   var s = name.match(/(\d+)\s*Stars\b/);
   if (s) return parseInt(s[1]) > 200;
+  var c = name.match(/([\d.]+)\s*монет/);
+  if (c) return parseInt(c[1].replace(/\./g, '')) > 50000;
   return true;
 }
 
