@@ -2054,8 +2054,21 @@ function confirmPayment() {
       return resp.json();
     })
     .then(function(data) {
-      if (currentCurr === 'EUR') {
+      var methods = PAYMENT_METHODS[currentCurr] || PAYMENT_METHODS.UAH;
+      var method = null;
+      for (var mi=0; mi<methods.length; mi++) {
+        if (methods[mi].id === selectedPayMethod) { method = methods[mi]; break; }
+      }
+      if (currentCurr === 'EUR' && method && !method.link) {
         showQR(data.id);
+      } else if (method && method.link) {
+        var revUrl = method.link;
+        if (window.Telegram && Telegram.WebApp && Telegram.WebApp.openLink) {
+          Telegram.WebApp.openLink(revUrl);
+        } else {
+          window.open(revUrl, '_blank');
+        }
+        finishOrder(data.id);
       } else {
         finishOrder(data.id);
       }
