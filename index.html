@@ -1049,7 +1049,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
             <div style="font-size:12px;color:#bbb;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+50 Stars</b></div>
             <div style="font-size:12px;color:#bbb;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+120 UC</b></div>
           </div>
-          <button onclick="openVipBot('VIP Bronze')" style="width:100%;background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:10px;padding:11px;color:#000;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:0.5px;">Купить VIP Bronze</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <button onclick="addCart('VIP Bronze — 1 мес.',100,'vb1m',{UAH:100,PLN:10,EUR:4})" id="vb1m" style="background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:8px;padding:9px 6px;color:#000;font-size:12px;font-weight:800;cursor:pointer;">1 мес. · 100₴</button>
+            <button onclick="addCart('VIP Bronze — 3 мес.',250,'vb3m',{UAH:250,PLN:25,EUR:8})" id="vb3m" style="background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:8px;padding:9px 6px;color:#000;font-size:12px;font-weight:800;cursor:pointer;">3 мес. · 250₴</button>
+            <button onclick="addCart('VIP Bronze — 6 мес.',450,'vb6m',{UAH:450,PLN:45,EUR:13})" id="vb6m" style="background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:8px;padding:9px 6px;color:#000;font-size:12px;font-weight:800;cursor:pointer;">6 мес. · 450₴</button>
+            <button onclick="addCart('VIP Bronze — 12 мес.',800,'vb12m',{UAH:800,PLN:80,EUR:20})" id="vb12m" style="background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:8px;padding:9px 6px;color:#000;font-size:12px;font-weight:800;cursor:pointer;">12 мес. · 800₴</button>
+          </div>
         </div>
       </div>
 
@@ -1098,7 +1103,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
             <div style="font-size:12px;color:#bbb;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+100 Stars</b></div>
             <div style="font-size:12px;color:#bbb;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+240 UC</b></div>
           </div>
-          <button onclick="openVipBot('VIP Silver')" style="width:100%;background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:10px;padding:11px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:0.5px;">Купить VIP Silver</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <button onclick="addCart('VIP Silver — 1 мес.',200,'vs1m',{UAH:200,PLN:20,EUR:6})" id="vs1m" style="background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">1 мес. · 200₴</button>
+            <button onclick="addCart('VIP Silver — 3 мес.',500,'vs3m',{UAH:500,PLN:50,EUR:15})" id="vs3m" style="background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">3 мес. · 500₴</button>
+            <button onclick="addCart('VIP Silver — 6 мес.',900,'vs6m',{UAH:900,PLN:85,EUR:23})" id="vs6m" style="background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">6 мес. · 900₴</button>
+            <button onclick="addCart('VIP Silver — 12 мес.',1500,'vs12m',{UAH:1500,PLN:140,EUR:37})" id="vs12m" style="background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">12 мес. · 1500₴</button>
+          </div>
         </div>
       </div>
 
@@ -1149,7 +1159,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
             <div style="font-size:12px;color:#bbb;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+200 Stars</b></div>
             <div style="font-size:12px;color:#bbb;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+360 UC</b></div>
           </div>
-          <button onclick="openVipBot('VIP Gold')" style="width:100%;background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:10px;padding:11px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:0.5px;">Купить VIP Gold</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <button onclick="addCart('VIP Gold — 1 мес.',350,'vg1m',{UAH:350,PLN:35,EUR:10})" id="vg1m" style="background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">1 мес. · 350₴</button>
+            <button onclick="addCart('VIP Gold — 3 мес.',900,'vg3m',{UAH:900,PLN:85,EUR:23})" id="vg3m" style="background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">3 мес. · 900₴</button>
+            <button onclick="addCart('VIP Gold — 6 мес.',1600,'vg6m',{UAH:1600,PLN:150,EUR:40})" id="vg6m" style="background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">6 мес. · 1600₴</button>
+            <button onclick="addCart('VIP Gold — 12 мес.',2800,'vg12m',{UAH:2800,PLN:270,EUR:65})" id="vg12m" style="background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">12 мес. · 2800₴</button>
+          </div>
         </div>
       </div>
 
