@@ -1020,29 +1020,6 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
           </div>
         </div>
         <div style="background:rgba(0,0,0,0.4);padding:12px 14px;">
-          <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;">Стоимость</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
-            <div style="background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">1 месяц</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">100 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">10 zł / 4 €</div>
-            </div>
-            <div style="background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">3 месяца</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">250 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">25 zł / 8 €</div>
-            </div>
-            <div style="background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">6 месяцев</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">450 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">45 zł / 13 €</div>
-            </div>
-            <div style="background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">12 месяцев</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">800 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">80 zł / 20 €</div>
-            </div>
-          </div>
           <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:1px;margin-bottom:7px;text-transform:uppercase;">Что входит</div>
           <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
             <div style="font-size:12px;color:#bbb;">• Скидка до 5%</div>
@@ -1055,12 +1032,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
             <div style="font-size:12px;color:#bbb;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+50 Stars</b></div>
             <div style="font-size:12px;color:#bbb;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+120 UC</b></div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-            <button onclick="addCart('VIP Bronze — 1 мес.',100,'vb1m',{UAH:100,PLN:10,EUR:4})" id="vb1m" style="background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:8px;padding:9px 6px;color:#000;font-size:12px;font-weight:800;cursor:pointer;">1 мес. · 100₴</button>
-            <button onclick="addCart('VIP Bronze — 3 мес.',250,'vb3m',{UAH:250,PLN:25,EUR:8})" id="vb3m" style="background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:8px;padding:9px 6px;color:#000;font-size:12px;font-weight:800;cursor:pointer;">3 мес. · 250₴</button>
-            <button onclick="addCart('VIP Bronze — 6 мес.',450,'vb6m',{UAH:450,PLN:45,EUR:13})" id="vb6m" style="background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:8px;padding:9px 6px;color:#000;font-size:12px;font-weight:800;cursor:pointer;">6 мес. · 450₴</button>
-            <button onclick="addCart('VIP Bronze — 12 мес.',800,'vb12m',{UAH:800,PLN:80,EUR:20})" id="vb12m" style="background:linear-gradient(135deg,#d4af37,#a07820);border:none;border-radius:8px;padding:9px 6px;color:#000;font-size:12px;font-weight:800;cursor:pointer;">12 мес. · 800₴</button>
-          </div>
+          <div id="vip-bronze-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"></div>
         </div>
       </div>
 
@@ -1074,29 +1046,6 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
           </div>
         </div>
         <div style="background:rgba(0,0,0,0.4);padding:12px 14px;">
-          <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;">Стоимость</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
-            <div style="background:rgba(224,32,32,0.07);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">1 месяц</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">200 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">20 zł / 6 €</div>
-            </div>
-            <div style="background:rgba(224,32,32,0.07);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">3 месяца</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">500 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">50 zł / 15 €</div>
-            </div>
-            <div style="background:rgba(224,32,32,0.07);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">6 месяцев</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">900 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">85 zł / 23 €</div>
-            </div>
-            <div style="background:rgba(224,32,32,0.07);border:1px solid rgba(224,32,32,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">12 месяцев</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">1500 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">140 zł / 37 €</div>
-            </div>
-          </div>
           <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:1px;margin-bottom:7px;text-transform:uppercase;">Преимущества</div>
           <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
             <div style="font-size:12px;color:#bbb;">• Скидка до 10%</div>
@@ -1109,12 +1058,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
             <div style="font-size:12px;color:#bbb;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+100 Stars</b></div>
             <div style="font-size:12px;color:#bbb;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+240 UC</b></div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-            <button onclick="addCart('VIP Silver — 1 мес.',200,'vs1m',{UAH:200,PLN:20,EUR:6})" id="vs1m" style="background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">1 мес. · 200₴</button>
-            <button onclick="addCart('VIP Silver — 3 мес.',500,'vs3m',{UAH:500,PLN:50,EUR:15})" id="vs3m" style="background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">3 мес. · 500₴</button>
-            <button onclick="addCart('VIP Silver — 6 мес.',900,'vs6m',{UAH:900,PLN:85,EUR:23})" id="vs6m" style="background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">6 мес. · 900₴</button>
-            <button onclick="addCart('VIP Silver — 12 мес.',1500,'vs12m',{UAH:1500,PLN:140,EUR:37})" id="vs12m" style="background:linear-gradient(135deg,#e02020,#8b0000);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">12 мес. · 1500₴</button>
-          </div>
+          <div id="vip-silver-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"></div>
         </div>
       </div>
 
@@ -1128,29 +1072,6 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
           </div>
         </div>
         <div style="background:rgba(0,0,0,0.4);padding:12px 14px;">
-          <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;">Стоимость</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
-            <div style="background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">1 месяц</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">350 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">35 zł / 10 €</div>
-            </div>
-            <div style="background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">3 месяца</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">900 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">85 zł / 23 €</div>
-            </div>
-            <div style="background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">6 месяцев</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">1600 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">150 zł / 40 €</div>
-            </div>
-            <div style="background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:8px 10px;">
-              <div style="font-size:10px;color:#555;margin-bottom:3px;">12 месяцев</div>
-              <div style="font-size:13px;font-weight:700;color:#fff;">2800 грн</div>
-              <div style="font-size:10px;color:#777;margin-top:1px;">270 zł / 65 €</div>
-            </div>
-          </div>
           <div style="font-size:11px;color:#555;font-weight:700;letter-spacing:1px;margin-bottom:7px;text-transform:uppercase;">Преимущества</div>
           <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
             <div style="font-size:12px;color:#bbb;">• Скидка до 15%</div>
@@ -1165,12 +1086,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
             <div style="font-size:12px;color:#bbb;margin-bottom:4px;">⭐ Каждые 10 покупок Stars → <b style="color:#fff;">+200 Stars</b></div>
             <div style="font-size:12px;color:#bbb;">😊 Каждые 10 покупок UC → <b style="color:#fff;">+360 UC</b></div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-            <button onclick="addCart('VIP Gold — 1 мес.',350,'vg1m',{UAH:350,PLN:35,EUR:10})" id="vg1m" style="background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">1 мес. · 350₴</button>
-            <button onclick="addCart('VIP Gold — 3 мес.',900,'vg3m',{UAH:900,PLN:85,EUR:23})" id="vg3m" style="background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">3 мес. · 900₴</button>
-            <button onclick="addCart('VIP Gold — 6 мес.',1600,'vg6m',{UAH:1600,PLN:150,EUR:40})" id="vg6m" style="background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">6 мес. · 1600₴</button>
-            <button onclick="addCart('VIP Gold — 12 мес.',2800,'vg12m',{UAH:2800,PLN:270,EUR:65})" id="vg12m" style="background:linear-gradient(135deg,#8b5cf6,#5b21b6);border:none;border-radius:8px;padding:9px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">12 мес. · 2800₴</button>
-          </div>
+          <div id="vip-gold-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"></div>
         </div>
       </div>
 
@@ -2294,6 +2210,71 @@ function renderAllProducts() {
   renderPackList('stars-med',   STARS_MED,   'Stars', 'Зачисление 5–10 минут');
   renderPackList('stars-big',   STARS_BIG,   'Stars', 'Зачисление 5–10 минут');
   renderPackList('prem-list',   PREM,        'Telegram', 'Активация по ссылке · 5–10 мин');
+  renderVipCards();
+}
+
+var VIP_TIERS = [
+  {
+    id: 'bronze',
+    name: 'VIP Bronze',
+    bg: 'linear-gradient(135deg,#d4af37,#a07820)',
+    textColor: '#000',
+    durations: [
+      {label:'1 мес.',  uah:100,  pln:10,  eur:4},
+      {label:'3 мес.',  uah:250,  pln:25,  eur:8},
+      {label:'6 мес.',  uah:450,  pln:45,  eur:13},
+      {label:'12 мес.', uah:800,  pln:80,  eur:20},
+    ]
+  },
+  {
+    id: 'silver',
+    name: 'VIP Silver',
+    bg: 'linear-gradient(135deg,#e02020,#8b0000)',
+    textColor: '#fff',
+    durations: [
+      {label:'1 мес.',  uah:200,  pln:20,  eur:6},
+      {label:'3 мес.',  uah:500,  pln:50,  eur:15},
+      {label:'6 мес.',  uah:900,  pln:85,  eur:23},
+      {label:'12 мес.', uah:1500, pln:140, eur:37},
+    ]
+  },
+  {
+    id: 'gold',
+    name: 'VIP Gold',
+    bg: 'linear-gradient(135deg,#8b5cf6,#5b21b6)',
+    textColor: '#fff',
+    durations: [
+      {label:'1 мес.',  uah:350,  pln:35,  eur:10},
+      {label:'3 мес.',  uah:900,  pln:85,  eur:23},
+      {label:'6 мес.',  uah:1600, pln:150, eur:40},
+      {label:'12 мес.', uah:2800, pln:270, eur:65},
+    ]
+  }
+];
+
+function renderVipCards() {
+  var curr = currentCurr || 'UAH';
+  var sym = curr === 'UAH' ? '₴' : curr === 'PLN' ? 'zł' : '€';
+  VIP_TIERS.forEach(function(tier) {
+    var wrap = document.getElementById('vip-' + tier.id + '-btns');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    tier.durations.forEach(function(d, i) {
+      var price = curr === 'UAH' ? d.uah : curr === 'PLN' ? d.pln : d.eur;
+      var btnId = 'v' + tier.id[0] + (i === 0 ? '1m' : i === 1 ? '3m' : i === 2 ? '6m' : '12m');
+      var btn = document.createElement('button');
+      btn.id = btnId;
+      btn.setAttribute('data-name', tier.name + ' — ' + d.label);
+      btn.setAttribute('data-price', d.uah);
+      btn.setAttribute('data-eur', d.eur);
+      btn.setAttribute('data-pln', d.pln);
+      btn.setAttribute('data-img', 'img/vip.png');
+      btn.style.cssText = 'background:' + tier.bg + ';border:none;border-radius:8px;padding:9px 6px;color:' + tier.textColor + ';font-size:12px;font-weight:800;cursor:pointer;';
+      btn.textContent = d.label + ' · ' + price + sym;
+      btn.onclick = function() { addCartBtn(btn); };
+      wrap.appendChild(btn);
+    });
+  });
 }
 
 var TR = {
