@@ -1517,6 +1517,7 @@ function renderPackList(id, items, prefix, tagDefault) {
       if (p.eur != null) btn1.setAttribute('data-eur', p.eur);
       if (p.pln != null) btn1.setAttribute('data-pln', p.pln);
       btn1.setAttribute('data-btn', btnId1);
+      btn1.setAttribute('data-img', imgSrc);
       btn1.addEventListener('click', function(){ addCartBtn(this); });
       opt1.appendChild(lbl1);
       opt1.appendChild(pr1);
@@ -1542,6 +1543,7 @@ function renderPackList(id, items, prefix, tagDefault) {
       if (p.eur2 != null) btn2.setAttribute('data-eur', p.eur2);
       if (p.pln2 != null) btn2.setAttribute('data-pln', p.pln2);
       btn2.setAttribute('data-btn', btnId2);
+      btn2.setAttribute('data-img', imgSrc);
       btn2.addEventListener('click', function(){ addCartBtn(this); });
       opt2.appendChild(lbl2);
       opt2.appendChild(pr2);
@@ -1566,6 +1568,7 @@ function renderPackList(id, items, prefix, tagDefault) {
       if (p.eur != null) btn.setAttribute('data-eur', p.eur);
       if (p.pln != null) btn.setAttribute('data-pln', p.pln);
       btn.setAttribute('data-btn', btnId);
+      btn.setAttribute('data-img', imgSrc);
       btn.addEventListener('click', function(){ addCartBtn(this); });
       rightDiv.appendChild(btn);
     }
@@ -1689,7 +1692,7 @@ function addCartBtn(btn) {
   var fixedPrices = {};
   if (btn.getAttribute('data-eur') != null) fixedPrices.EUR = parseFloat(btn.getAttribute('data-eur'));
   if (btn.getAttribute('data-pln') != null) fixedPrices.PLN = parseFloat(btn.getAttribute('data-pln'));
-  addCart(btn.getAttribute('data-name'), parseInt(btn.getAttribute('data-price')), btn.getAttribute('data-btn'), Object.keys(fixedPrices).length ? fixedPrices : null);
+  addCart(btn.getAttribute('data-name'), parseInt(btn.getAttribute('data-price')), btn.getAttribute('data-btn'), Object.keys(fixedPrices).length ? fixedPrices : null, btn.getAttribute('data-img'));
 }
 
 function getProductPriceDisplay(p) {
@@ -1718,10 +1721,10 @@ function fmtCartTotal(total) {
   return (rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(2)) + ' ' + sym;
 }
 
-function addCart(name, price, btnId, fixedPrices) {
+function addCart(name, price, btnId, fixedPrices, img) {
   var ex = null;
   for (var i=0;i<cart.length;i++) if (cart[i].name===name){ex=cart[i];break;}
-  if (ex) ex.qty++; else cart.push({name:name, price:price, qty:1, fixedPrices: fixedPrices||null});
+  if (ex) ex.qty++; else cart.push({name:name, price:price, qty:1, fixedPrices: fixedPrices||null, img: img||null});
   updateBadges();
   var parts=name.split(':');
   var itemTxt = parts[1]?parts[1].trim():parts[0];
@@ -1769,7 +1772,7 @@ function renderCart() {
   for(var j=0;j<cart.length;j++){
     var item=cart[j];
     html+='<div class="ci">'+
-      '<div class="ci-img"><img src="'+getImg(item.name)+'" alt=""/></div>'+
+      '<div class="ci-img"><img src="'+(item.img||getImg(item.name))+'" alt=""/></div>'+
       '<div class="ci-info">'+
         '<div class="ci-name">'+item.name+'</div>'+
         '<div class="ci-tag">&#9889; Мгновенное зачисление</div>'+
