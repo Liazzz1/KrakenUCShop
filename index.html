@@ -677,9 +677,9 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
     </div>
     <div class="otabs">
       <div class="otab on" data-tr="otab1" onclick="filterOrders(null, this)">Все заказы</div>
-      <div class="otab" data-tr="otab2" onclick="filterOrders('processing', this)">Принят</div>
-      <div class="otab" data-tr="otab3" onclick="filterOrders('completed', this)">Выполнен</div>
-      <div class="otab" data-tr="otab4" onclick="filterOrders('cancelled', this)">Отменён</div>
+      <div class="otab" data-tr="otab2" onclick="filterOrders(['pending','processing'], this)">Принят</div>
+      <div class="otab" data-tr="otab3" onclick="filterOrders(['completed'], this)">Выполнен</div>
+      <div class="otab" data-tr="otab4" onclick="filterOrders(['cancelled','refunded'], this)">Отменён</div>
     </div>
     <div id="orders-wrap">
       <div class="empty">
@@ -2980,7 +2980,9 @@ function filterOrders(status, tab) {
   document.querySelectorAll('.otab').forEach(function(el){ el.classList.remove('on'); });
   tab.classList.add('on');
   var orders = window._allOrders || [];
-  var filtered = status ? orders.filter(function(o){ return o.status === status; }) : orders;
+  var filtered = !status ? orders : orders.filter(function(o){
+    return Array.isArray(status) ? status.indexOf(o.status) !== -1 : o.status === status;
+  });
   renderOrders(filtered, document.getElementById('orders-wrap'));
 }
 
