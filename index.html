@@ -710,7 +710,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
   <div class="scroll">
     <div class="phero">
       <div class="ptop">
-        <div class="pavatar"><img src="img/logo.png" alt=""/></div>
+        <div class="pavatar"><img id="profile-avatar" src="img/logo.png" alt="" onerror="this.src='img/logo.png'"/></div>
         <div>
           <div class="pname" id="profile-name">@KrAkeNn1n</div>
           <div class="pvip" id="profile-status-badge">&#128081; <span data-tr="profile-vip">VIP Покупатель</span></div>
@@ -2728,6 +2728,13 @@ function applyUserData(user) {
   if (nameEl) {
     nameEl.textContent = user.username ? '@' + user.username
       : (user.first_name || '') + (user.last_name ? ' ' + user.last_name : '');
+  }
+  var avaEl = document.getElementById('profile-avatar');
+  if (avaEl) {
+    var tgPhoto = null;
+    try { tgPhoto = Telegram.WebApp.initDataUnsafe.user.photo_url || null; } catch(e) {}
+    var photo = user.photo_url || tgPhoto;
+    if (photo) avaEl.src = photo;
   }
   var ucEl  = document.getElementById('stat-uc-val');
   var ordEl = document.getElementById('stat-orders-val');
