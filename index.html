@@ -1573,7 +1573,12 @@ function switchMethod(m) {
 }
 
 function cartHasId() {
-  return cart.some(function(i){ return i.name.indexOf('По ID:') !== -1; });
+  return cart.some(function(i){
+    return i.name.indexOf('По ID:') !== -1
+      || i.name.indexOf('Prime') === 0
+      || i.name.indexOf('Royal Pass') === 0
+      || i.name.indexOf('Бонус пасс') === 0;
+  });
 }
 function cartHasLogin() {
   return cart.some(function(i){ return i.name.indexOf('По входу') !== -1; });
