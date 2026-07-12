@@ -1176,8 +1176,9 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
       <div><div class="phdr-title">Рейтинги</div><div class="phdr-sub">Лучшие покупатели и рефереры</div></div>
     </div>
     <div class="tabs" style="margin:0 12px 12px;">
-      <div class="tab on" id="rt-buyers" onclick="switchRatingTab('buyers')">🛒 Топ покупателей</div>
-      <div class="tab" id="rt-refs" onclick="switchRatingTab('refs')">👥 Топ рефереров</div>
+      <div class="tab on" id="rt-buyers" onclick="switchRatingTab('buyers')">🛒 Покупатели</div>
+      <div class="tab" id="rt-refs" onclick="switchRatingTab('refs')">👥 Рефереры</div>
+      <div class="tab" id="rt-clans" onclick="switchRatingTab('clans')">⚔️ Кланы</div>
     </div>
     <div id="ratings-wrap" style="margin:0 12px;">
       <div class="empty"><p>Загрузка...</p></div>
@@ -2355,13 +2356,16 @@ function switchRatingTab(tab) {
   _ratingTab = tab;
   document.getElementById('rt-buyers').className = 'tab' + (tab === 'buyers' ? ' on' : '');
   document.getElementById('rt-refs').className = 'tab' + (tab === 'refs' ? ' on' : '');
+  document.getElementById('rt-clans').className = 'tab' + (tab === 'clans' ? ' on' : '');
   renderRatings();
 }
 
 function renderRatings() {
   var wrap = document.getElementById('ratings-wrap');
   if (!_ratingsData) return;
-  var list = _ratingTab === 'buyers' ? (_ratingsData.buyers || []) : (_ratingsData.referrers || []);
+  var list = _ratingTab === 'buyers' ? (_ratingsData.buyers || [])
+    : _ratingTab === 'clans' ? (_ratingsData.clans || [])
+    : (_ratingsData.referrers || []);
   if (!list.length) {
     wrap.innerHTML = '<div class="empty"><p>Пока никого нет — станьте первым!</p></div>';
     return;
@@ -2371,9 +2375,9 @@ function renderRatings() {
   for (var i = 0; i < list.length; i++) {
     var it = list[i];
     var place = medals[i] || ('<span style="color:#666;font-size:13px;">' + (i + 1) + '</span>');
-    var value = _ratingTab === 'buyers'
-      ? Math.round(it.value).toLocaleString('ru-RU') + ' ₴'
-      : it.value + ' реф.';
+    var value = _ratingTab === 'refs'
+      ? it.value + ' реф.'
+      : Math.round(it.value).toLocaleString('ru-RU') + ' ₴';
     var row = document.createElement('div');
     row.style.cssText = 'display:flex;align-items:center;gap:12px;background:rgba(13,13,13,0.88);border:1px solid ' + (i < 3 ? 'rgba(224,32,32,0.25)' : 'rgba(255,255,255,0.06)') + ';border-radius:14px;padding:12px 14px;margin-bottom:8px;animation:fadeUp .3s ease both;';
     var nameEsc = String(it.name || '').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
