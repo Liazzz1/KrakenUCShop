@@ -1684,6 +1684,13 @@ function getCartItemPrice(item) {
 // по ID ≤ 3850 UC, по входу ≤ 8100 UC, по входу+бонус ≤ 9500 UC,
 // Stars ≤ 200, популярность ≤ 50.000 монет
 function discountApplies(name) {
+  // Проверка на запрещенные категории: Prime, Бонус пасс, Royal Pass
+  var lowerName = name.toLowerCase();
+  if (lowerName.includes('prime') || lowerName.includes('бонус пасс') || 
+      lowerName.includes('royal pass') || lowerName.includes('роял пасс')) {
+    return false;
+  }
+
   var m = name.match(/(\d+)\s*UC\b/);
   if (m) {
     var uc = parseInt(m[1]);
