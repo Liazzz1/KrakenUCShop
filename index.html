@@ -1422,6 +1422,44 @@ var PREM = [
   {name:'Premium 12 Месяцев',price:1650, eur:40, pln:165, tag:'Активация по ссылке · 5–10 мин'}
 ];
 
+// Загрузка каталога с бэкенда: цены из админки перекрывают зашитые выше
+var CATALOG_MAP = {
+  uc_id_lite:            function(v){ UC_ID.lite = v; },
+  uc_id_medium:          function(v){ UC_ID.medium = v; },
+  uc_id_elite:           function(v){ UC_ID.elite = v; },
+  uc_login_lite:         function(v){ UC_LOGIN.lite = v; },
+  uc_login_medium:       function(v){ UC_LOGIN.medium = v; },
+  uc_login_elite:        function(v){ UC_LOGIN.elite = v; },
+  uc_login_bonus_lite:   function(v){ UC_LOGIN_BONUS.lite = v; },
+  uc_login_bonus_medium: function(v){ UC_LOGIN_BONUS.medium = v; },
+  uc_login_bonus_elite:  function(v){ UC_LOGIN_BONUS.elite = v; },
+  royal_pass:            function(v){ ROYAL_PASS = v; },
+  bonus_pass:            function(v){ BONUS_PASS = v; },
+  popularity:            function(v){ POPULARITY = v; },
+  pop_small:             function(v){ POP_SMALL = v; },
+  pop_med:               function(v){ POP_MED = v; },
+  pop_big:               function(v){ POP_BIG = v; },
+  prime:                 function(v){ PRIME = v; },
+  prime_plus:            function(v){ PRIME_PLUS = v; },
+  stars_small:           function(v){ STARS_SMALL = v; },
+  stars_med:             function(v){ STARS_MED = v; },
+  stars_big:             function(v){ STARS_BIG = v; },
+  prem:                  function(v){ PREM = v; }
+};
+
+function loadCatalog() {
+  fetch(API_URL + '/api/config/products/')
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(data) {
+      var updated = false;
+      for (var key in CATALOG_MAP) {
+        if (data[key] && data[key].length) { CATALOG_MAP[key](data[key]); updated = true; }
+      }
+      if (updated) renderAllProducts();
+    })
+    .catch(function(e) { console.warn('Catalog load failed, using defaults:', e.message); });
+}
+
 var cart = [];
 
 var heroIdx = 0, heroTimer;
@@ -3442,6 +3480,7 @@ function init(){
 
   loadNotifications();
   loadPaymentConfig();
+  loadCatalog();
 
   if(window.Telegram&&window.Telegram.WebApp){
     Telegram.WebApp.ready();
