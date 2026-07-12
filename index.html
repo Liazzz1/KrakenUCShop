@@ -1203,7 +1203,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('
   <div class="scroll">
     <div class="phdr">
       <div class="phdr-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e02020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
-      <div><div class="phdr-title">Рейтинги</div><div class="phdr-sub">Лучшие покупатели и рефереры</div></div>
+      <div><div class="phdr-title">Рейтинги</div><div class="phdr-sub" id="ratings-season-label">Лучшие покупатели и рефереры</div></div>
     </div>
     <div class="tabs" style="margin:0 12px 12px;">
       <div class="tab on" id="rt-buyers" onclick="switchRatingTab('buyers')">🛒 Покупатели</div>
@@ -2499,6 +2499,8 @@ function loadRatings() {
     .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(function(data) {
       _ratingsData = data;
+      var sl = document.getElementById('ratings-season-label');
+      if (sl && data.season) sl.textContent = '🏆 Сезон: ' + data.season;
       renderRatings();
     })
     .catch(function() {
